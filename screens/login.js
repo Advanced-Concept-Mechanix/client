@@ -33,6 +33,7 @@ export default function login({ navigation }){
             <UselessTextInput placeholder="Email"/>
             <UselessTextInput placeholder="Password"/>
             <Button onPress={() => navigation.navigate('Scan')} title="Go" />
+            <Button onPress={() => navigation.navigate('NewUser')} title="Sign Up" />
         </View>
     );
 }

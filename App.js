@@ -14,6 +14,7 @@ import newProduct from './screens/newProduct';
 import scan from './screens/scan';
 import scanningResults from './screens/scanningResults';
 import singleProduct from './screens/singleProduct';
+import newUser from './screens/newUser';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +33,9 @@ export default function App(){
           //   </TouchableOpacity>
           // }
           }} />
+        <Drawer.Screen name="NewUser" component={newUser} options={{ 
+          title: 'Create User'
+           }} />
         <Drawer.Screen name="Scan" component={scan} options={{ 
           title: 'Scan'
            }} />
