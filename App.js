@@ -1,19 +1,57 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import { DrawerActions } from '@react-navigation/native';
 
-export default function App() {
+import account from './screens/account';
+import allProducts from './screens/allProducts';
+import login from './screens/login';
+import newProduct from './screens/newProduct';
+import scan from './screens/scan';
+import scanningResults from './screens/scanningResults';
+import singleProduct from './screens/singleProduct';
+
+const Drawer = createDrawerNavigator();
+
+export default function App(){
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="Login">
+        <Drawer.Screen name="Login" component={login} options={{ 
+          title: 'Login',
+          headerLeft: () => {
+            <TouchableOpacity onPress={() => DrawerActions.toggleDrawer()}>
+              <Image
+            source={require('./assets/drawer.png')}
+            style={{ width: 25, height: 25, marginLeft: 5 }}
+              />
+            </TouchableOpacity>
+          }
+          }} />
+        <Drawer.Screen name="Scan" component={scan} options={{ 
+          title: 'Scan'
+           }} />
+        <Drawer.Screen name="Account" component={account} options={{ 
+          title: 'Account'
+           }} />
+        <Drawer.Screen name="AllProducts" component={allProducts} options={{ 
+          title: 'All Products'
+           }} />
+        <Drawer.Screen name="NewProduct" component={newProduct} options={{ 
+          title: 'New Product'
+           }} />
+        <Drawer.Screen name="ScanningResults" component={scanningResults} options={{ 
+          title: 'Results'
+           }} />
+        <Drawer.Screen name="SingleProduct" component={singleProduct} options={{ 
+          title: 'Single Product'
+           }} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
