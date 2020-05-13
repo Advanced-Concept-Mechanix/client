@@ -22,15 +22,15 @@ export default function App(){
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Login">
         <Drawer.Screen name="Login" component={login} options={{ 
-          title: 'Login',
-          headerLeft: () => {
-            <TouchableOpacity onPress={() => DrawerActions.toggleDrawer()}>
-              <Image
-            source={require('./assets/drawer.png')}
-            style={{ width: 25, height: 25, marginLeft: 5 }}
-              />
-            </TouchableOpacity>
-          }
+          title: 'Login'
+          // headerLeft: () => {
+          //   <TouchableOpacity onPress={() => DrawerActions.toggleDrawer()}>
+          //     <Image
+          //   source={require('./assets/drawer.png')}
+          //   style={{ width: 25, height: 25, marginLeft: 5 }}
+          //     />
+          //   </TouchableOpacity>
+          // }
           }} />
         <Drawer.Screen name="Scan" component={scan} options={{ 
           title: 'Scan'
