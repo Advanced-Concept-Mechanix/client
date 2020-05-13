@@ -22,7 +22,7 @@ export default function newUser(){
     const[company, setCompany] = useState('');
     const[type, setType] = useState('manufacturer');
 
-    const registerUser = () => {
+    const registerUser = async () => {
         let user = {
             name:name,
             password:password,
@@ -31,6 +31,22 @@ export default function newUser(){
             company:company,
             type:type
         };
+
+        await fetch('http://localhost:5000/users/new/', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 
         console.log(user);
     }
@@ -66,7 +82,7 @@ export default function newUser(){
                     onChangeText={(company) => setCompany(company)}
                     />
                     <Picker
-                    company={company}
+                    type={type}
                     style={{ height: 50, width: 150 }}
                     onValueChange={(itemValue, itemIndex) => setType(itemValue)}
                     >
