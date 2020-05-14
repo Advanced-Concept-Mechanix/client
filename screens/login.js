@@ -34,6 +34,7 @@ export default function login({ navigation }){
             <UselessTextInput placeholder="Password"/>
             <Button onPress={() => navigation.navigate('Scan')} title="Go" />
             <Button onPress={() => navigation.navigate('NewUser')} title="Sign Up" />
+            <Button onPress={() => navigation.navigate('NewProduct')} title="Create Product" />
         </View>
     );
 }

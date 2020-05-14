@@ -32,23 +32,21 @@ export default function newUser(){
             type:type
         };
 
-        await fetch('http://localhost:5000/users/new/', {
-            method: 'POST',
+        await fetch('http://62.171.181.137/users/new', {
+            method: 'POST', // or 'PUT'
             headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(user)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-
-        console.log(user);
+            body: JSON.stringify(user),
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
 
     return(
