@@ -13,7 +13,7 @@ import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
 
-export default function newProduct(){
+export default function newProduct({ navigation }){
 
     const[name, setName] = useState('');
     const[description, setDescription] = useState([]);
@@ -21,28 +21,58 @@ export default function newProduct(){
     const[daysBeforeExpiry, setDaysBeforeExpiry] = useState(0);
 
     const registerProduct = async () => {
-        let product = {
-            name:name,
-            description:description,
-            manufacturer:manufacturer,
-            daysBeforeExpiry:daysBeforeExpiry
-        };
 
-        await fetch('http://62.171.181.137/products/new', {
-            method: 'POST', // or 'PUT'
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(product),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        if(name){
+            if(description){
+                if(manufacturer){
+                    if(daysBeforeExpiry){
+
+                        let product = {
+                            name:name,
+                            description:description,
+                            manufacturer:manufacturer,
+                            daysBeforeExpiry:daysBeforeExpiry
+                        };
+                
+                        await fetch('http://62.171.181.137/products/new', {
+                            method: 'POST', // or 'PUT'
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(product),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Success:', data);
+                                Alert.alert(
+                                    'Success',
+                                    'You are registered successfully',
+                                    [
+                                      {
+                                        text: 'Ok',
+                                        onPress: () => navigation.navigate('Scan'),
+                                      },
+                                    ],
+                                    { cancelable: false }
+                                );
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+
+                    }else{
+                        alert('Please fill days before expiry');
+                    }
+                }else{
+                    alert('Please fill manufacturer'); 
+                }
+            }else{
+                alert('Please fill description'); 
+            }
+        }else{
+            alert('Please fill name'); 
+        }
     }
 
     return(
