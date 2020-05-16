@@ -12,6 +12,7 @@ import MyText from '../components/mytext';
 import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
+import postData from '../fetchFunctions/postData';
 
 export default function newProduct({ navigation }){
 
@@ -32,22 +33,14 @@ export default function newProduct({ navigation }){
                             description:description,
                             manufacturer:manufacturer,
                             daysBeforeExpiry:daysBeforeExpiry
-                        };
+                        }; 
                 
-                        await fetch('http://62.171.181.137/products/new', {
-                            method: 'POST', // or 'PUT'
-                            headers: {
-                                Accept: 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(product),
-                            })
-                            .then(response => response.json())
+                        await postData('http://62.171.181.137/products/new', product)
                             .then(data => {
                                 console.log('Success:', data);
                                 Alert.alert(
                                     'Success',
-                                    'You are registered successfully',
+                                    'Product created successfully',
                                     [
                                       {
                                         text: 'Ok',
