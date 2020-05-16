@@ -42,7 +42,7 @@ export default function newUser({ navigation }){
                                 };
 
                                 await postData('http://62.171.181.137/users/new', user)
-                                    .then(handleErrors)
+                                    .then(handleErrors())
                                     .then(data => {
                                         console.log('Success:', data);
                                         Alert.alert(
