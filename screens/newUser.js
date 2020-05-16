@@ -12,8 +12,10 @@ import MyText from '../components/mytext';
 import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
+import postData from '../fetchFunctions/postData';
+import handleErrors from '../fetchFunctions/handleErrors';
 
-export default function newUser(){
+export default function newUser({ navigation }){
 
     const[name, setName] = useState('');
     const[password, setPassword] = useState('');
@@ -23,30 +25,59 @@ export default function newUser(){
     const[type, setType] = useState('manufacturer');
 
     const registerUser = async () => {
-        let user = {
-            name:name,
-            password:password,
-            email:email,
-            phone:phone,
-            company:company,
-            type:type
-        };
 
-        await fetch('http://62.171.181.137/users/new', {
-            method: 'POST', // or 'PUT'
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user),
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        if(name){
+            if(password){
+                if(email){
+                    if(phone){
+                        if(company){
+                            if(type){
+                                let user = {
+                                    name:name,
+                                    password:password,
+                                    email:email,
+                                    phone:phone,
+                                    company:company,
+                                    type:type
+                                };
+
+                                await postData('http://62.171.181.137/users/new', user)
+                                    .then(handleErrors)
+                                    .then(data => {
+                                        console.log('Success:', data);
+                                        Alert.alert(
+                                            'Success',
+                                            'User created successfully',
+                                            [
+                                                {
+                                                    text: 'Ok',
+                                                    onPress: () => navigation.navigate('Scan'),
+                                                },
+                                            ],
+                                            { cancelable: false }
+                                        );
+                                    })
+                                    .catch((error) => {
+                                        console.error('Error:', error);
+                                    });
+                            }else{
+                                alert("Please fill type");
+                            }
+                        }else{
+                            alert("Please fill company");
+                        }
+                    }else{
+                        alert("Please fill phone");
+                    }
+                }else{
+                    alert("Please fill email");
+                }
+            }else{
+                alert("Please fill password");
+            }
+        }else{
+            alert("Please fill name");
+        }
     }
 
     return(
