@@ -1,5 +1,5 @@
 export default function handleErrors(response) {
-    if (!response.ok) {
+    if (response.Error) {
         throw Error(response.statusText);
     }
     return response;

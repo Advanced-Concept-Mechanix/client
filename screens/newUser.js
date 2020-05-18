@@ -13,7 +13,6 @@ import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
 import postData from '../fetchFunctions/postData';
-import handleErrors from '../fetchFunctions/handleErrors';
 
 export default function newUser({ navigation }){
 
@@ -23,6 +22,15 @@ export default function newUser({ navigation }){
     const[phone, setPhone] = useState(0);
     const[company, setCompany] = useState('');
     const[type, setType] = useState('manufacturer');
+
+    const clearState = () => {
+        setName('')
+        setEmail('')
+        setPassword('')
+        setPhone(0)
+        setCompany('')
+        setType('manufacturer')
+    }
 
     const registerUser = async () => {
 
@@ -42,20 +50,34 @@ export default function newUser({ navigation }){
                                 };
 
                                 await postData('http://62.171.181.137/users/new', user)
-                                    .then(handleErrors())
                                     .then(data => {
-                                        console.log('Success:', data);
-                                        Alert.alert(
-                                            'Success',
-                                            'User created successfully',
-                                            [
-                                                {
-                                                    text: 'Ok',
-                                                    onPress: () => navigation.navigate('Scan'),
-                                                },
-                                            ],
-                                            { cancelable: false }
-                                        );
+                                        if(data.success){
+                                            console.log('Success:', data);
+                                            Alert.alert(
+                                                'Success',
+                                                'User created successfully',
+                                                [
+                                                    {
+                                                        text: 'Ok',
+                                                        onPress: () => clearState(),
+                                                    },
+                                                ],
+                                                { cancelable: false }
+                                            );
+                                        }else{
+                                            console.log('Failure:', data);
+                                            Alert.alert(
+                                                'Failure',
+                                                data.message,
+                                                [
+                                                    {
+                                                        text: 'Ok',
+                                                        //onPress: () => navigation.navigate('Scan'),
+                                                    },
+                                                ],
+                                                { cancelable: false }
+                                            );
+                                        }
                                     })
                                     .catch((error) => {
                                         console.error('Error:', error);
