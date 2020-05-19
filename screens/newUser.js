@@ -50,8 +50,9 @@ export default function newUser({ navigation }){
                                 };
 
                                 await postData('http://62.171.181.137/users/new', user)
-                                    .then(data => {
-                                        if(data.success){
+                                    .then(async (response) => {
+                                        if(response.ok){
+                                            let data = await response.json();
                                             console.log('Success:', data);
                                             Alert.alert(
                                                 'Success',
@@ -65,6 +66,7 @@ export default function newUser({ navigation }){
                                                 { cancelable: false }
                                             );
                                         }else{
+                                            let data = await response.json();
                                             console.log('Failure:', data);
                                             Alert.alert(
                                                 'Failure',

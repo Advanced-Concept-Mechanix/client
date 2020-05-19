@@ -36,19 +36,37 @@ export default function newProduct({ navigation }){
                         }; 
                 
                         await postData('http://62.171.181.137/products/new', product)
-                            .then(data => {
-                                console.log('Success:', data);
-                                Alert.alert(
-                                    'Success',
-                                    'Product created successfully',
-                                    [
-                                      {
-                                        text: 'Ok',
-                                        onPress: () => navigation.navigate('Scan'),
-                                      },
-                                    ],
-                                    { cancelable: false }
-                                );
+                            .then(async (response) => {
+                                if(response.ok){
+                                    let data = await response.json();
+                                    console.log('Success:', data);
+                                    Alert.alert(
+                                        'Success',
+                                        'Product created successfully',
+                                        [
+                                        {
+                                            text: 'Ok',
+                                            onPress: () => navigation.navigate('Scan'),
+                                        },
+                                        ],
+                                        { cancelable: false }
+                                    );
+                                }else{
+                                    let data = await response.json();
+                                        console.log('Failure:', data);
+                                        Alert.alert(
+                                            'Failure',
+                                            data.message,
+                                            [
+                                                {
+                                                    text: 'Ok',
+                                                        //onPress: () => navigation.navigate('Scan'),
+                                                },
+                                            ],
+                                            { cancelable: false }
+                                        );
+                                }
+                                
                             })
                             .catch((error) => {
                                 console.error('Error:', error);
