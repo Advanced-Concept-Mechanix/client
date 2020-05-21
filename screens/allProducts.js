@@ -11,82 +11,167 @@ import styles from './style';
 import getData from '../fetchFunctions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default class AllProducts extends Component{
-    state = {
-        products: []
-    };
+export default function AllProducts({navigation}){
+    const[products, setProducts] = useState([]);
+    const[loadingText, setLoadingText] = useState('Loading Products...');
 
-    UNSAFE_componentWillMount(){
-        this.getProducts();
-    }
+    useEffect(() => {
+        let loading = true;
+        let url = 'http://62.171.181.137/products/';
 
-    getProducts = async () => {
-        await getData('http://62.171.181.137/products/')
-        .then( async (response) => {
-            if(response.ok){
-                let data = await response.json();
-                //console.log(data.products);
-                this.setState({products: data.products});
-            }else{
-                let data = await response.json();
-                console.log('Failure: ', data);
-                Alert.alert(
-                    'Failed',
-                    data.message,
-                    [
-                        {
-                            text: 'Ok'
-                        },
-                    ],
-                    { cancelable: false }
-                );
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    };
+        async function fetchData(){
+            await getData(url)
+            .then(async (response) => {
+                if(response.ok){
+                    let data = await response.json();
+                    if(data.products.length === 0){
+                        setLoadingText('No Products Found!');
+                    }
+
+                    if(loading){
+                        setProducts(data.products);
+                        //console.log(data.transactions);
+                    }
+                }else{
+                    let data = await response.json();
+                    console.log('Failure: ', data);
+                    Alert.alert(
+                        'Failed',
+                        data.message,
+                        [
+                            {
+                                text: 'Ok'
+                            },
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            });
+        }
+
+        fetchData();
+
+        return () => {
+            loading = false;
+        };
+    }, []);
 
     ListViewItemSeparator = () => {
         return (
-          <View style={{ height: 0.5, width: '100%', backgroundColor: '#000' }} />
+            <View style={{ height: 0.5, width: '100%', backgroundColor: '#000' }} />
         );
     };
 
-    render(){
-        if(this.state.products.length === 0){
-            return(
-                <View style={styles.container}>
-                    <Text>
-                        Loading....
-                    </Text>
-                </View>
-            );
-        }else{
-            return(
-                <View style={styles.container}>
-                    <FlatList 
-                    data={this.state.products}
-                    ItemSeparatorComponent={this.ListViewItemSeparator}
-                    renderItem={({ item }) =>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('SingleProduct', {
-                            item: item
-                        })}>
-                            <View style={{ backgroundColor: 'white', padding: 20 }}>
-                                <Text>Id: {item._id}</Text>
-                                <Text>Name: {item.name}</Text>
-                                <Text>Manufacturer: {item.manufacturer}</Text>
-                                <Text>Description: {item.description}</Text>
-                                <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
-                                <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
-                            </View>
-                        </TouchableOpacity> 
-                    } 
-                    keyExtractor={(item) => item._id}
-                    //extraData={selected}
+    if(products.length === 0){
+        return(
+            <View style={styles.container}>
+                <Text>{loadingText}</Text>
+            </View>
+        );
+    }else{
+        return(
+            <View style={styles.container}>
+                <Text>List of My Products</Text>
+                <FlatList 
+                data={products}
+                ItemSeparatorComponent={ListViewItemSeparator}
+                renderItem={({ item }) =>
+                    <TouchableOpacity onPress={() => navigation.navigate('SingleProduct', {
+                        item: item
+                    })}>
+                        <View style={{ backgroundColor: 'white', padding: 20 }}>
+                            <Text>Id: {item._id}</Text>
+                            <Text>Name: {item.name}</Text>
+                            <Text>Manufacturer: {item.manufacturer}</Text>
+                            <Text>Description: {item.description}</Text>
+                            <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
+                            <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
+                        </View>
+                    </TouchableOpacity> 
+                } 
+                keyExtractor={(item) => item._id}
                 />
-                </View>
-            );
-        }
+            </View>
+        );
     }
 }
+
+// export default class AllProducts extends Component{
+//     state = {
+//         products: []
+//     };
+
+//     UNSAFE_componentWillMount(){
+//         this.getProducts();
+//     }
+
+//     getProducts = async () => {
+//         await getData('http://62.171.181.137/products/')
+//         .then( async (response) => {
+//             if(response.ok){
+//                 let data = await response.json();
+//                 //console.log(data.products);
+//                 this.setState({products: data.products});
+//             }else{
+//                 let data = await response.json();
+//                 console.log('Failure: ', data);
+//                 Alert.alert(
+//                     'Failed',
+//                     data.message,
+//                     [
+//                         {
+//                             text: 'Ok'
+//                         },
+//                     ],
+//                     { cancelable: false }
+//                 );
+//             }
+//         })
+//         .catch((error) => {
+//             console.error('Error:', error);
+//         });
+//     };
+
+//     ListViewItemSeparator = () => {
+//         return (
+//           <View style={{ height: 0.5, width: '100%', backgroundColor: '#000' }} />
+//         );
+//     };
+
+//     render(){
+//         if(this.state.products.length === 0){
+//             return(
+//                 <View style={styles.container}>
+//                     <Text>
+//                         Loading....
+//                     </Text>
+//                 </View>
+//             );
+//         }else{
+//             return(
+//                 <View style={styles.container}>
+//                     <FlatList 
+//                     data={this.state.products}
+//                     ItemSeparatorComponent={this.ListViewItemSeparator}
+//                     renderItem={({ item }) =>
+//                         <TouchableOpacity onPress={() => this.props.navigation.navigate('SingleProduct', {
+//                             item: item
+//                         })}>
+//                             <View style={{ backgroundColor: 'white', padding: 20 }}>
+//                                 <Text>Id: {item._id}</Text>
+//                                 <Text>Name: {item.name}</Text>
+//                                 <Text>Manufacturer: {item.manufacturer}</Text>
+//                                 <Text>Description: {item.description}</Text>
+//                                 <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
+//                                 <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
+//                             </View>
+//                         </TouchableOpacity> 
+//                     } 
+//                     keyExtractor={(item) => item._id}
+//                     //extraData={selected}
+//                 />
+//                 </View>
+//             );
+//         }
+//     }
+// }
