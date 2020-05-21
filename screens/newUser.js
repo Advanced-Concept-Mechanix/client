@@ -12,7 +12,7 @@ import MyText from '../components/mytext';
 import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
-import postData from '../fetchFunctions/postData';
+import postData from '../functions/postData';
 
 export default function newUser({ navigation }){
 
@@ -110,7 +110,7 @@ export default function newUser({ navigation }){
                 <KeyboardAvoidingView
                 behavior="padding"
                 style={{ flex: 1, justifyContent: 'space-between' }}>
-                    <MyText>Enter Details to Create Account</MyText>
+                    <MyText text="Enter Details to Create Account"/>
                     <MyTextInput
                     placeholder="Enter name"
                     onChangeText={(name) => setName(name)}

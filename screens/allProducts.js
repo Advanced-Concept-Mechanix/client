@@ -8,7 +8,7 @@ import {
   FlatList
 } from 'react-native';
 import styles from './style';
-import getData from '../fetchFunctions/getData';
+import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function AllProducts({navigation}){

@@ -12,7 +12,8 @@ import MyText from '../components/mytext';
 import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
-import postData from '../fetchFunctions/postData';
+import postData from '../functions/postData';
+import store from '../functions/store';
 
 export default function newProduct({ navigation }){
 
@@ -21,7 +22,15 @@ export default function newProduct({ navigation }){
     const[manufacturer, setManufacturer] = useState('');
     const[daysBeforeExpiry, setDaysBeforeExpiry] = useState(0);
 
+    const getId = async () => {
+        let user = await store('user');
+        console.log('id: ' + user.id + ' type: ' + typeof user.id);
+        setManufacturer(user.id);
+    }
+
     const registerProduct = async () => {
+
+        await getId();
 
         if(name){
             if(description){
@@ -71,12 +80,11 @@ export default function newProduct({ navigation }){
                             .catch((error) => {
                                 console.error('Error:', error);
                             });
-
                     }else{
                         alert('Please fill days before expiry');
                     }
                 }else{
-                    alert('Please fill manufacturer'); 
+                    alert('Please fill manufacturer');
                 }
             }else{
                 alert('Please fill description'); 
@@ -92,7 +100,7 @@ export default function newProduct({ navigation }){
                 <KeyboardAvoidingView
                 behavior="padding"
                 style={{ flex: 1, justifyContent: 'space-between' }}>
-                    <MyText>Enter Details to Create Product</MyText>
+                    <MyText text='Enter Details to Create Product'/>
                     <MyTextInput
                     placeholder="Enter name"
                     onChangeText={(name) => setName(name)}
@@ -105,10 +113,6 @@ export default function newProduct({ navigation }){
                     placeholder="Enter number of days before expiry"
                     onChangeText={(daysBeforeExpiry) => setDaysBeforeExpiry(daysBeforeExpiry)}
                     keyboardType="numeric"
-                    />
-                    <MyTextInput
-                    placeholder="Enter manufacturer"
-                    onChangeText={(manufacturer) => setManufacturer(manufacturer)}
                     />
                     <MyButton
                     title="Create"

@@ -1,48 +1,137 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Text,
   View,
   Button,
   StyleSheet,
-  TextInput
+  TextInput,
+  Image,
+  Alert,
+  KeyboardAvoidingView
 } from 'react-native';
 import styles from './style';
-import {Dimensions} from 'react-native';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-function UselessTextInput(props) {
-    const [value, onChangeText] = React.useState(props.placeholder);
-  
-    return (
-      <TextInput
-        style={{ height: 40, width: windowWidth/2, borderColor: 'gray', borderWidth: 2, margin: 10 }}
-        onChangeText={text => onChangeText(text)}
-        value={value}
-      />
-    );
-  }
+import logo from '../assets/logo.png';
+import strings from '../config/strings';
+import Mytextinput from '../components/mytextinput';
+import Mybutton from '../components/mybutton';
+import postData from '../functions/postData';
+import store from '../functions/store';
   
 
 export default function login({ navigation }){
+
+    const url = 'http://62.171.181.137/users/login';
+
+    const[email, setEmail] = useState('');
+    const[password, setPassword] = useState('');
+    const[emailTouched, setEmailTouched] = useState(false);
+    const[passwordTouched, setPasswordTouched] = useState(false);
+
+    passwordInputRef = useRef();
+
+    const handleEmailSubmit = () => {
+        // if (passwordInputRef.current) {
+        //     passwordInputRef.current.focus();
+        // }
+        passwordInputRef.current.focus();
+    }
+
+    const handleLogin = async () => {
+        console.log("Login button pressed");
+        if(email){
+          if(password){
+            let loginDetails = {
+              email:email,
+              password:password
+            };
+
+            await postData(url, loginDetails)
+            .then(async (response) => {
+              if(response.ok){
+                let data = await response.json();
+                console.log('Success:', data);
+                let wallet = {
+                  id:data.user._id,
+                  publicKey:data.user.publicKey,
+                  secretKey:data.user.secretKey
+                };
+                store('user', wallet);
+                navigation.navigate('Scan');
+              }else{
+                let data = await response.json();
+                console.log('Failure:', data);
+                Alert.alert(
+                    'Failure',
+                    'Login Failed',
+                    [
+                        {
+                            text: 'Ok',
+                            //onPress: () => navigation.navigate('Scan'),
+                        },
+                    ],
+                    { cancelable: false }
+                );
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+          }else{
+            alert("Please fill password");
+          }
+        }else{
+          alert("Please fill email");
+        }
+    }
+
+    const handleEmailBlur = () => {
+      setEmailTouched(true);
+    };
+  
+    const handlePasswordBlur = () => {
+      setPasswordTouched(true);
+    };
+
+    const emailError =
+      !email && emailTouched
+        ? strings.EMAIL_REQUIRED
+        : undefined;
+    const passwordError =
+      !password && passwordTouched
+        ? strings.PASSWORD_REQUIRED
+        : undefined;
+
     return(
         <View style={styles.container}>
-            <Text>login page</Text>
-            <UselessTextInput placeholder="Username"/>
-            <UselessTextInput placeholder="Email"/>
-            <UselessTextInput placeholder="Password"/>
-            <Button onPress={() => navigation.navigate('Scan')} title="Go" />
-            <Button onPress={() => navigation.navigate('NewUser')} title="Sign Up" />
-            <Button onPress={() => navigation.navigate('NewProduct')} title="Create Product" />
+            <Image source={logo} style={styles.logo}></Image>
+            <View style={styles.form}>
+                <Mytextinput
+                value={email}
+                placeholder={strings.EMAIL_PLACEHOLDER}
+                onChangeText={(email) => setEmail(email)}
+                onSubmitEditing={handleEmailSubmit}
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+                onBlur={handleEmailBlur}
+                error={emailError}
+                />
+                <Mytextinput
+                ref={passwordInputRef}
+                value={password}
+                placeholder={strings.PASSWORD_PLACEHOLDER}
+                onChangeText={(password) => setPassword(password)}
+                secureTextEntry={true}
+                returnKeyType="done"
+                onBlur={handlePasswordBlur}
+                error={passwordError}
+                />
+                <Mybutton
+                title={strings.LOGIN}
+                customClick={handleLogin}
+                disabled={!email || !password}
+                />
+            </View>
         </View>
     );
 }
-
-const loginStyles = StyleSheet.create({
-    textinputs: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-  });

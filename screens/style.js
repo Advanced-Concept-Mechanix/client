@@ -1,13 +1,25 @@
 import {
     StyleSheet,
-  } from 'react-native';
+} from 'react-native';
+import colors from '../config/colors';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20
+        backgroundColor: colors.WHITE
+    },
+    logo: {
+        flex: 1,
+        width: "100%",
+        resizeMode: "contain",
+        alignSelf: "center"
+    },
+    form: {
+        flex: 1,
+        justifyContent: "center",
+        width: "80%"
     }
   });
 
