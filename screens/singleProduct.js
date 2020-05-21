@@ -13,8 +13,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function SingleProduct({navigation, route}){
     const{item} = route.params;
     const[transactions, setTransactions] = useState([]);
+    const[loadingText, setLoadingText] = useState('Loading Transactions...');
 
     useEffect(() => {
+        let loading = true;
+
         function getFetchUrl(){
             return 'http://62.171.181.137/transactions/' + item._id;
         }
@@ -24,8 +27,14 @@ export default function SingleProduct({navigation, route}){
             .then(async (response) => {
                 if(response.ok){
                     let data = await response.json();
-                    console.log(data.transactions);
-                    setTransactions(data.transactions);
+                    if(data.transactions.length === 0){
+                        setLoadingText('No Transactions Found!');
+                    }
+
+                    if(loading){
+                        setTransactions(data.transactions);
+                        //console.log(data.transactions);
+                    }
                 }else{
                     let data = await response.json();
                     console.log('Failure: ', data);
@@ -44,6 +53,10 @@ export default function SingleProduct({navigation, route}){
         }
 
         fetchData();
+
+        return () => {
+            loading = false;
+        };
     }, [item]);
 
     ListViewItemSeparator = () => {
@@ -63,13 +76,14 @@ export default function SingleProduct({navigation, route}){
                     <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
                     <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
 
-                    <Text style={{ marginTop: 20}}>Loading Transactions....</Text>
+                    <Text style={{ marginTop: 20}}>{loadingText}</Text>
                 </View>
             </View>
         );
     }else{
         return(
             <View style={styles.container}>
+                <Text>Product Details</Text>
                 <View style={{ backgroundColor: 'white', padding: 20 }}>
                     <Text>Id: {item._id}</Text>
                     <Text>Name: {item.name}</Text>
@@ -77,24 +91,24 @@ export default function SingleProduct({navigation, route}){
                     <Text>Description: {item.description}</Text>
                     <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
                     <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
-
-                    <FlatList 
-                    data={transactions}
-                    ItemSeparatorComponent={ListViewItemSeparator}
-                    renderItem={({ item }) =>
-                        <TouchableOpacity>
-                            <View style={{ backgroundColor: 'white', padding: 20 }}>
-                                <Text>Id: {item._id}</Text>
-                                <Text>Timestamp: {item.createdAt}</Text>
-                                <Text>Creator: {item.user}</Text>
-                                <Text>Location: {item.location}</Text>
-                                <Text>Hash: {item.hash}</Text>
-                            </View>
-                        </TouchableOpacity> 
-                    } 
-                    keyExtractor={(item) => item._id}
-                    />
                 </View>
+                <Text>List of Transactions</Text>
+                <FlatList 
+                data={transactions}
+                ItemSeparatorComponent={ListViewItemSeparator}
+                renderItem={({ item }) =>
+                    <TouchableOpacity>
+                        <View style={{ backgroundColor: 'white', padding: 20 }}>
+                            <Text>Id: {item._id}</Text>
+                            <Text>Timestamp: {item.createdAt}</Text>
+                            <Text>Creator: {item.user}</Text>
+                            <Text>Location: {item.location}</Text>
+                            <Text>Hash: {item.hash}</Text>
+                        </View>
+                    </TouchableOpacity> 
+                } 
+                keyExtractor={(item) => item._id}
+                />
             </View>
         );
     }
