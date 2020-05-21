@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import styles from './style';
 import getData from '../fetchFunctions/getData';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class AllProducts extends Component{
     state = {
@@ -55,7 +56,7 @@ export default class AllProducts extends Component{
     render(){
         if(this.state.products.length === 0){
             return(
-                <View>
+                <View style={styles.container}>
                     <Text>
                         Loading....
                     </Text>
@@ -67,17 +68,22 @@ export default class AllProducts extends Component{
                     <FlatList 
                     data={this.state.products}
                     ItemSeparatorComponent={this.ListViewItemSeparator}
-                    renderItem={({ item }) => 
-                        <View style={{ backgroundColor: 'white', padding: 20 }}>
-                            <Text>Id: {item._id}</Text>
-                            <Text>Name: {item.name}</Text>
-                            <Text>Manufacturer: {item.manufacturer}</Text>
-                            <Text>Description: {item.description}</Text>
-                            <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
-                            <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
-                        </View>
+                    renderItem={({ item }) =>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('SingleProduct', {
+                            item: item
+                        })}>
+                            <View style={{ backgroundColor: 'white', padding: 20 }}>
+                                <Text>Id: {item._id}</Text>
+                                <Text>Name: {item.name}</Text>
+                                <Text>Manufacturer: {item.manufacturer}</Text>
+                                <Text>Description: {item.description}</Text>
+                                <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
+                                <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
+                            </View>
+                        </TouchableOpacity> 
                     } 
                     keyExtractor={(item) => item._id}
+                    //extraData={selected}
                 />
                 </View>
             );
