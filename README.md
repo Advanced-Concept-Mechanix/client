@@ -26,7 +26,7 @@ Use the app to scan the qr code
 
 The app should build and download
 
-You will get the login page as it the default page
+You will get the login page as it's the default page
 
 4. To access other pages
 

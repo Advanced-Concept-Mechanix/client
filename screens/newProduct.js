@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -22,15 +22,26 @@ export default function newProduct({ navigation }){
     const[manufacturer, setManufacturer] = useState('');
     const[daysBeforeExpiry, setDaysBeforeExpiry] = useState(0);
 
-    const getId = async () => {
-        let user = await store('user');
-        console.log('id: ' + user.id + ' type: ' + typeof user.id);
-        setManufacturer(user.id);
-    }
+    useEffect(() => {
+        let loading = true;
+
+        async function fetchUser(){
+            return await store('user');
+        }
+
+        fetchUser()
+        .then(async(user)=> {
+            if(loading){
+                setManufacturer(user.id);
+            }
+        });
+
+        return () => {
+            loading = false;
+        };
+    },[]);
 
     const registerProduct = async () => {
-
-        await getId();
 
         if(name){
             if(description){
@@ -84,7 +95,7 @@ export default function newProduct({ navigation }){
                         alert('Please fill days before expiry');
                     }
                 }else{
-                    alert('Please fill manufacturer');
+                    alert('Please login first');
                 }
             }else{
                 alert('Please fill description'); 

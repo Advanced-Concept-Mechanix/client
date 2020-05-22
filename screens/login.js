@@ -53,7 +53,12 @@ export default function login({ navigation }){
                 let wallet = {
                   id:data.user._id,
                   publicKey:data.user.publicKey,
-                  secretKey:data.user.secretKey
+                  secretKey:data.user.secretKey,
+                  name:data.user.name,
+                  phone:data.user.phone,
+                  email:data.user.email,
+                  company:data.user.company,
+                  type:data.user.type
                 };
                 store('user', wallet);
                 navigation.navigate('Scan');
