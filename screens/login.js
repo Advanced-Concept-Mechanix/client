@@ -49,7 +49,7 @@ export default function login({ navigation }){
             .then(async (response) => {
               if(response.ok){
                 let data = await response.json();
-                console.log('Success:', data);
+                //console.log('Success:', data);
                 let wallet = {
                   id:data.user._id,
                   publicKey:data.user.publicKey,
