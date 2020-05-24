@@ -36,8 +36,10 @@ export default function newUser({ navigation }){
     }
 
     const storeSecurity = async () => {
-        let ans = {answer:answer}
-        return await store(question, ans);
+        let securityQuestion = {
+            question:question,
+            answer:answer}
+        return await store('security', securityQuestion);
     }
 
     const registerUser = async () => {

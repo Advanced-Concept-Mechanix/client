@@ -31,9 +31,21 @@ export default function updatePassword({ navigation, route }){
             return 'http://62.171.181.137/users/password/' + user.id;
         }
 
+        async function getQuestion(){
+            await store('security')
+            .then((securityQuestion) => {
+                if(!securityQuestion){
+                    alert('No security question found');
+                }else{
+                    setQuestion(securityQuestion.question);
+                }
+            });
+        }
+
         if(loading){
             //console.log(getFetchUrl());
-            setUrl(getFetchUrl());
+            getQuestion()
+            .then(() => setUrl(getFetchUrl()));
         }
 
         return () => {
@@ -42,11 +54,9 @@ export default function updatePassword({ navigation, route }){
     }, [user]);
 
     const updatePermission = async () => {
-        await store(question)
-        .then((ans) => {
-            if(!ans){
-                alert('Please set the correct question');
-            }else if(ans.answer !== answer){
+        await store('security')
+        .then((securityQuestion) => {
+            if(securityQuestion.answer !== answer){
                 alert('Please set the correct answer');
             }else{
                 setPermission(true);
@@ -109,11 +119,7 @@ export default function updatePassword({ navigation, route }){
                     <KeyboardAvoidingView
                     behavior="padding"
                     style={{ flex: 1, justifyContent: 'space-between' }}>
-                        <MyText text="Enter Security Question"/>
-                        <MyTextInput
-                        placeholder="Enter Question"
-                        onChangeText={(question) => setQuestion(question)}
-                        />
+                        <Text>Please answer: {question}</Text>
                         <MyTextInput
                         placeholder="Enter Answer"
                         onChangeText={(answer) => setAnswer(answer)}
