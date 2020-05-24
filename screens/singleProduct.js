@@ -9,6 +9,7 @@ import {
 import styles from './style';
 import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Mybutton from '../components/mybutton';
 
 export default function SingleProduct({navigation, route}){
     const{item} = route.params;
@@ -108,6 +109,14 @@ export default function SingleProduct({navigation, route}){
                     </TouchableOpacity> 
                 } 
                 keyExtractor={(item) => item._id}
+                />
+                <Mybutton
+                title='Update Product'
+                customClick={() => navigation.navigate('UpdateProduct', {product:item})}
+                />
+                <Mybutton
+                title='Go Back'
+                customClick={() => navigation.goBack()}
                 />
             </View>
         );

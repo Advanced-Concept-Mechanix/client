@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 
+//import the screens
+
 import account from './screens/account';
 import allProducts from './screens/allProducts';
 import login from './screens/login';
@@ -15,6 +17,10 @@ import scan from './screens/scan';
 import scanningResults from './screens/scanningResults';
 import singleProduct from './screens/singleProduct';
 import newUser from './screens/newUser';
+import updatePassword from './screens/updatePassword';
+import updateProduct from './screens/updateProduct';
+import updateUser from './screens/updateUser';
+import userDetails from './screens/userDetails';
 
 const Drawer = createDrawerNavigator();
 
@@ -53,6 +59,18 @@ export default function App(){
            }} />
         <Drawer.Screen name="SingleProduct" component={singleProduct} options={{ 
           title: 'Single Product'
+           }} />
+        <Drawer.Screen name="UpdatePassword" component={updatePassword} options={{ 
+          title: 'Update Password'
+           }} />
+        <Drawer.Screen name="UpdateProduct" component={updateProduct} options={{ 
+          title: 'Update Product'
+           }} />
+        <Drawer.Screen name="UpdateUser" component={updateUser} options={{ 
+          title: 'Update User'
+           }} />
+        <Drawer.Screen name="UserDetails" component={userDetails} options={{ 
+          title: 'User Details'
            }} />
       </Drawer.Navigator>
     </NavigationContainer>
