@@ -13,6 +13,7 @@ import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
 import postData from '../functions/postData';
+import store from '../functions/store';
 
 export default function newUser({ navigation }){
 
@@ -22,6 +23,8 @@ export default function newUser({ navigation }){
     const[phone, setPhone] = useState(0);
     const[company, setCompany] = useState('');
     const[type, setType] = useState('manufacturer');
+    const[question, setQuestion] = useState('');
+    const[answer, setAnswer] = useState('');
 
     const clearState = () => {
         setName('')
@@ -32,6 +35,11 @@ export default function newUser({ navigation }){
         setType('manufacturer')
     }
 
+    const storeSecurity = async () => {
+        let ans = {answer:answer}
+        return await store(question, ans);
+    }
+
     const registerUser = async () => {
 
         if(name){
@@ -40,50 +48,59 @@ export default function newUser({ navigation }){
                     if(phone){
                         if(company){
                             if(type){
-                                let user = {
-                                    name:name,
-                                    password:password,
-                                    email:email,
-                                    phone:phone,
-                                    company:company,
-                                    type:type
-                                };
+                                if(question){
+                                    if(answer){
+                                        let user = {
+                                            name:name,
+                                            password:password,
+                                            email:email,
+                                            phone:phone,
+                                            company:company,
+                                            type:type
+                                        };
 
-                                await postData('http://62.171.181.137/users/new', user)
-                                    .then(async (response) => {
-                                        if(response.ok){
-                                            let data = await response.json();
-                                            console.log('Success:', data);
-                                            Alert.alert(
-                                                'Success',
-                                                'User created successfully',
-                                                [
-                                                    {
-                                                        text: 'Ok',
-                                                        onPress: () => clearState(),
-                                                    },
-                                                ],
-                                                { cancelable: false }
-                                            );
+                                        await postData('http://62.171.181.137/users/new', user)
+                                            .then(async (response) => {
+                                                if(response.ok){
+                                                    await storeSecurity();
+                                                    let data = await response.json();
+                                                    console.log('Success:', data);
+                                                    Alert.alert(
+                                                        'Success',
+                                                        data.msg,
+                                                        [
+                                                            {
+                                                                text: 'Ok',
+                                                                onPress: () => clearState(),
+                                                            },
+                                                        ],
+                                                        { cancelable: false }
+                                                    );
+                                                }else{
+                                                    let data = await response.json();
+                                                    console.log('Failure:', data);
+                                                    Alert.alert(
+                                                        'Failure',
+                                                        data.message,
+                                                        [
+                                                            {
+                                                                text: 'Ok',
+                                                                //onPress: () => navigation.navigate('Scan'),
+                                                            },
+                                                        ],
+                                                        { cancelable: false }
+                                                    );
+                                                }
+                                            })
+                                            .catch((error) => {
+                                                console.error('Error:', error);
+                                            });
                                         }else{
-                                            let data = await response.json();
-                                            console.log('Failure:', data);
-                                            Alert.alert(
-                                                'Failure',
-                                                data.message,
-                                                [
-                                                    {
-                                                        text: 'Ok',
-                                                        //onPress: () => navigation.navigate('Scan'),
-                                                    },
-                                                ],
-                                                { cancelable: false }
-                                            );
+                                            alert("Please fill answer");
                                         }
-                                    })
-                                    .catch((error) => {
-                                        console.error('Error:', error);
-                                    });
+                                    }else{
+                                        alert("Please fill question");
+                                    }
                             }else{
                                 alert("Please fill type");
                             }
@@ -144,6 +161,15 @@ export default function newUser({ navigation }){
                         <Picker.Item label="Retailer" value="retailer" />
                         <Picker.Item label="End-User" value="end-user" />
                     </Picker>
+                    <MyText text="Pleas provide a security question and answer to be used when resetting your password"/>
+                    <MyTextInput
+                    placeholder="Enter a security question"
+                    onChangeText={(question) => setQuestion(question)}
+                    />
+                    <MyTextInput
+                    placeholder="Enter the answer"
+                    onChangeText={(answer) => setAnswer(answer)}
+                    />
                     <MyButton
                     title="Create"
                     customClick={registerUser}

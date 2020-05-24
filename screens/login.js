@@ -36,6 +36,22 @@ export default function login({ navigation }){
         passwordInputRef.current.focus();
     }
 
+    const storeUser = async (data) => {
+      let wallet = {
+        id:data.user._id,
+        publicKey:data.user.publicKey,
+        secretKey:data.user.secretKey,
+        name:data.user.name,
+        phone:data.user.phone,
+        email:data.user.email,
+        company:data.user.company,
+        type:data.user.type
+      };
+      let id = data.user._id;
+
+      await store('user', wallet);
+    }
+
     const handleLogin = async () => {
         console.log("Login button pressed");
         if(email){
@@ -50,18 +66,7 @@ export default function login({ navigation }){
               if(response.ok){
                 let data = await response.json();
                 //console.log('Success:', data);
-                let wallet = {
-                  id:data.user._id,
-                  publicKey:data.user.publicKey,
-                  secretKey:data.user.secretKey,
-                  name:data.user.name,
-                  phone:data.user.phone,
-                  email:data.user.email,
-                  company:data.user.company,
-                  type:data.user.type
-                };
-                store('user', wallet);
-                navigation.navigate('Scan');
+                storeUser(data).then(() => navigation.navigate('Scan'));
               }else{
                 let data = await response.json();
                 console.log('Failure:', data);

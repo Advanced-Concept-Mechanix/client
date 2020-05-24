@@ -13,12 +13,16 @@ import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
 import postData from '../functions/postData';
+import store from '../functions/store';
 
 export default function updatePassword({ navigation, route }){
 
     const {user} = route.params;
     const[url, setUrl] = useState('');
     const[password, setPassword] = useState('');
+    const[question, setQuestion] = useState('');
+    const[answer, setAnswer] = useState('');
+    const[permission, setPermission] = useState(false);
 
     useEffect(() => {
         let loading = true;
@@ -36,6 +40,19 @@ export default function updatePassword({ navigation, route }){
             loading = false;
         };
     }, [user]);
+
+    const updatePermission = async () => {
+        await store(question)
+        .then((ans) => {
+            if(!ans){
+                alert('Please set the correct question');
+            }else if(ans.answer !== answer){
+                alert('Please set the correct answer');
+            }else{
+                setPermission(true);
+            }
+        })
+    }
 
     const registerUpdate = async () => {
 
@@ -85,27 +102,57 @@ export default function updatePassword({ navigation, route }){
             }
     }
 
-    return(
-        <View style={styles.container}>
-            <ScrollView keyboardShouldPersistTaps="handled">
-                <KeyboardAvoidingView
-                behavior="padding"
-                style={{ flex: 1, justifyContent: 'space-between' }}>
-                    <MyText text="Enter Password to Update Password"/>
-                    <MyTextInput
-                    placeholder="Enter password"
-                    onChangeText={(password) => setPassword(password)}
-                    />
-                    <MyButton
-                    title="Update"
-                    customClick={registerUpdate}
-                    />
-                    <MyButton
-                    title="Go Back"
-                    customClick={() => navigation.goBack()}
-                    />
-                </KeyboardAvoidingView>
-            </ScrollView>
-        </View>
-    );
+    if(permission === false){
+        return(
+            <View style={styles.container}>
+                <ScrollView keyboardShouldPersistTaps="handled">
+                    <KeyboardAvoidingView
+                    behavior="padding"
+                    style={{ flex: 1, justifyContent: 'space-between' }}>
+                        <MyText text="Enter Security Question"/>
+                        <MyTextInput
+                        placeholder="Enter Question"
+                        onChangeText={(question) => setQuestion(question)}
+                        />
+                        <MyTextInput
+                        placeholder="Enter Answer"
+                        onChangeText={(answer) => setAnswer(answer)}
+                        />
+                        <MyButton
+                        title="Check"
+                        customClick={updatePermission}
+                        />
+                        <MyButton
+                        title="Go Back"
+                        customClick={() => navigation.goBack()}
+                        />
+                    </KeyboardAvoidingView>
+                </ScrollView>
+            </View>
+        );
+    }else{
+        return(
+            <View style={styles.container}>
+                <ScrollView keyboardShouldPersistTaps="handled">
+                    <KeyboardAvoidingView
+                    behavior="padding"
+                    style={{ flex: 1, justifyContent: 'space-between' }}>
+                        <MyText text="Enter Password to Update Password"/>
+                        <MyTextInput
+                        placeholder="Enter password"
+                        onChangeText={(password) => setPassword(password)}
+                        />
+                        <MyButton
+                        title="Update"
+                        customClick={registerUpdate}
+                        />
+                        <MyButton
+                        title="Go Back"
+                        customClick={() => navigation.goBack()}
+                        />
+                    </KeyboardAvoidingView>
+                </ScrollView>
+            </View>
+        );
+    }
 }
