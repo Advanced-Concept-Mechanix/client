@@ -29,7 +29,10 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "realm": "^5.0.4",
-    "save": "^2.4.0"
+    "save": "^2.4.0",
+    "expo-permissions": "~8.1.0",
+    "expo-location": "~8.1.0",
+    "expo-barcode-scanner": "~8.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

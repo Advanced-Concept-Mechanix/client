@@ -10,6 +10,7 @@ import {
 import styles from './style';
 import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import store from '../functions/store';
 
 export default function AllProducts({navigation}){
     const[products, setProducts] = useState([]);
@@ -17,13 +18,26 @@ export default function AllProducts({navigation}){
 
     useEffect(() => {
         let loading = true;
-        let url = 'http://62.171.181.137/products/';
+
+        async function fetchUrl(){
+            await store('user')
+            .then((user) => {
+                if(!user){
+                    alert('Please login first');
+                }else{
+                    let url = 'http://62.171.181.137/products/' + user.id;
+                    //console.log(url);
+                    return url;
+                }
+            });
+        }
 
         async function fetchData(){
-            await getData(url)
+            await getData(fetchUrl())
             .then(async (response) => {
                 if(response.ok){
                     let data = await response.json();
+                    console.log(data);
                     if(data.products.length === 0){
                         setLoadingText('No Products Found!');
                     }
