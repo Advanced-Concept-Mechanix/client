@@ -22,6 +22,7 @@ import updateProduct from './screens/updateProduct';
 import updateUser from './screens/updateUser';
 import userDetails from './screens/userDetails';
 import products from './screens/products';
+import newTransaction from './screens/newTransaction';
 
 const Drawer = createDrawerNavigator();
 
@@ -75,6 +76,9 @@ export default function App(){
            }} />
         <Drawer.Screen name="Products" component={products} options={{ 
           title: 'Products'
+           }} />
+        <Drawer.Screen name="NewTransaction" component={newTransaction} options={{ 
+          title: 'New Transaction'
            }} />
       </Drawer.Navigator>
     </NavigationContainer>
