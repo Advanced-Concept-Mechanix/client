@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import styles from './style';
@@ -7,7 +7,6 @@ import Mybutton from '../components/mybutton';
 
 export default function scan({ navigation }){
     
-    const[scanData, setScanData] = useState(null);
     const [scanned, setScanned] = useState(false);
 
     useEffect(() => {
@@ -18,6 +17,7 @@ export default function scan({ navigation }){
             .then(async({ status }) => {
                 if(loading){
                     if(status !== 'granted'){
+                        alert('Permission to scan denied');
                     }
                 }
             });
@@ -32,8 +32,20 @@ export default function scan({ navigation }){
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-        setScanData(data);
+        navigation.navigate('NewTransaction', {data:data})
+        //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        //console.log("type: " + type + "data: " + data);
+        // Alert.alert(
+        //     'Success',
+        //     'The scan was successful',
+        //     [
+        //         {
+        //             text: 'Ok',
+        //             onPress: () => navigation.navigate('NewTransaction', {data:data})
+        //         },
+        //     ],
+        //     { cancelable: false }
+        // );
     };
 
     return(
@@ -43,7 +55,7 @@ export default function scan({ navigation }){
             style={StyleSheet.absoluteFillObject}
             />
 
-            {scanned && <Mybutton title={'Tap to Scan Again'} customClick={() => setScanned(false)} />}
+            {scanned && <Mybutton title={'Scan'} customClick={() => setScanned(false)} />}
         </View>
     );
 }
