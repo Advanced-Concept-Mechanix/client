@@ -1,90 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Text, View, Alert } from 'react-native';
-import * as Location from 'expo-location';
 
 import styles from './style';
 import Mybutton from '../components/mybutton';
-import store from '../functions/store';
 import postData from '../functions/postData';
 
 export default function newTransaction({ navigation, route }){
 
-    const url = 'http://62.171.181.137/transactions/new';
     const{data} = route.params;
-    const[location, setLocation] = useState(null);
-    const[user, setUser] = useState(null);
-    const[product, setProduct] = useState(null);
-    const[timestamp, setTimestamp] = useState(null);
-    const[locationText, setLocationText] = useState('Loading Location...');
-    const[scanText, setScanText] = useState('Loading scanning results...');
-    const[userText, setUserText] = useState('Loading User...');
-    const[timeText, setTimeText] = useState('Loading timestamp....')
+    const{user_id} = route.params;
+    const{loc} = route.params;
+    const{time} = route.params;
+    const[location, setLocation] = useState(loc);
+    const[user, setUser] = useState(user_id);
+    const[product, setProduct] = useState(data);
+    const[timestamp, setTimestamp] = useState(time);
+    const[locationText, setLocationText] = useState(null);
+    const[scanText, setScanText] = useState(null);
+    const[userText, setUserText] = useState(null);
+    const[hashText, setHashText] = useState(null);
+    const[timeText, setTimeText] = useState(null)
+    const[loadingText, setLoadingText] = useState('Creating Transaction...');
 
     useEffect(() => {
         let loading = true;
+        const url = 'http://62.171.181.137/transactions/new';
 
-        async function fetchUser(){
-            return await store('user');
-        }
-
-        async function getScan(){
-            if(loading){
-                //console.log(data + ' ' + typeof data);
-                setScanText(`Product: ${data}`);
-                setProduct(data);
-            }
-        }
-
-        async function getLocationPermission(){
-            return await Location.requestPermissionsAsync();
-        }
-
-        async function getLocation(){
-            await getLocationPermission()
-            .then(async({ status }) => {
-                if(loading){
-                    if (status !== 'granted') {
-                        setLocationText('Permission to access location was denied');
+        async function confirmDetails(){
+            if(user){
+                if(location){
+                    if(product){
+                        if(timestamp){
+                            return true;
+                        }else{
+                            alert('Timestamp is not set');
+                            return false;
+                        }
                     }else{
-                        let loc = await Location.getCurrentPositionAsync({});
-                        //console.log(typeof loc);
-                        //console.log(loc);
-                        let lat = loc.coords.latitude;
-                        let lon = loc.coords.longitude;
-                        let time = loc.timestamp;
-                        //console.log(typeof lat);
-                        //console.log(typeof lon);
-                        setLocation(`${lat}, ${lon}`);
-                        setTimestamp(time);
-                        setTimeText(`Time: ${time}`);
-                        setLocationText(`Location: ${lat}, ${lon}`);
+                        alert('Product is not set');
+                        return false;
                     }
+                }else{
+                    alert('Location is not set');
+                    return false;
                 }
-            })
+            }else{
+                alert('User is not set');
+                return false;
+            }
         }
 
-        getScan();
-        getLocation();
-        fetchUser()
-        .then((user) => {
-            if(!user){
-                setUserText('No user found');
-            }else{
-                setUserText(`User Id: ${user.id}`);
-                setUser(user.id);
-            }
-        });
-
-        return () => {
-            loading = false;
-        };
-    }, [data]);
-
-    const createTransaction = async () => {
-        if(user){
-            if(location){
-                if(product){
-                    if(timestamp){
+        async function createTx(){
+            await confirmDetails()
+            .then(async(status) => {
+                if(loading){
+                    if(status === false){
+                        alert('Cannot create transaction at this time');
+                    }else{
                         let tx = {
                             user:user,
                             location:location,
@@ -97,16 +69,14 @@ export default function newTransaction({ navigation, route }){
                             if(response.ok){
                                 let data = await response.json();
                                 console.log('Success:', data);
-                                Alert.alert(
-                                    'Success',
-                                    data.msg,
-                                    [
-                                        {
-                                            text: 'Ok',
-                                        },
-                                    ],
-                                    { cancelable: false }
-                                );
+                                if(loading){
+                                    setScanText(`Product: ${data.transaction.product}`);
+                                    setLocationText(`Location: ${data.transaction.location}`);
+                                    setUserText(`User: ${data.transaction.user}`);
+                                    setTimeText(`Created At: ${data.transaction.createdAt}`);
+                                    setHashText(`Hash: ${data.transaction.hash}`);
+                                    setLoadingText('Transaction created!');
+                                }
                             }else{
                                 let data = await response.json();
                                 console.log('Failure:', data);
@@ -126,30 +96,36 @@ export default function newTransaction({ navigation, route }){
                         .catch((error) => {
                             console.error('Error:', error);
                         });
-                    }else{
-                        alert('Timestamp is not set');
                     }
-                }else{
-                    alert('Product is not set');
                 }
-            }else{
-                alert('Location is not set');
-            }
-        }else{
-            alert('User is not set');
+            })
+            
         }
+
+        createTx();
+
+        return () => {
+            loading = false;
+        };
+    }, []);
+
+    
+    if(!locationText || !scanText || !userText || !timeText || !hashText){
+        return(
+            <View style={styles.container}>
+                <Text>{loadingText}</Text>
+            </View>
+        );
     }
 
     return(
         <View style={styles.container}>
+            <Text>{loadingText}</Text>
             <Text>{locationText}</Text>
             <Text>{scanText}</Text>
             <Text>{userText}</Text>
             <Text>{timeText}</Text>
-            <Mybutton
-            title="Create Transaction"
-            customClick={createTransaction}
-            />
+            <Text>{hashText}</Text>
         </View>
     );
 }
