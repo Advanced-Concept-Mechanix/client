@@ -68,7 +68,7 @@ export default function newTransaction({ navigation, route }){
                         .then(async(response) => {
                             if(response.ok){
                                 let data = await response.json();
-                                console.log('Success:', data);
+                                //console.log('Success:', data);
                                 if(loading){
                                     setScanText(`Product: ${data.transaction.product}`);
                                     setLocationText(`Location: ${data.transaction.location}`);
@@ -107,7 +107,7 @@ export default function newTransaction({ navigation, route }){
         return () => {
             loading = false;
         };
-    }, []);
+    }, [product, user, location, timestamp]);
 
     
     if(!locationText || !scanText || !userText || !timeText || !hashText){

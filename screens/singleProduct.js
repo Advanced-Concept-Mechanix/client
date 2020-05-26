@@ -50,6 +50,9 @@ export default function SingleProduct({navigation, route}){
                         { cancelable: false }
                     );
                 }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
             });
         }
 

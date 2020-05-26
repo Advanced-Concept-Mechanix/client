@@ -23,6 +23,9 @@ import updateUser from './screens/updateUser';
 import userDetails from './screens/userDetails';
 import products from './screens/products';
 import newTransaction from './screens/newTransaction';
+import blocks from './screens/blocks';
+import newBlock from './screens/newBlock';
+import allblocks from './screens/allblocks';
 
 const Drawer = createDrawerNavigator();
 
@@ -79,6 +82,15 @@ export default function App(){
            }} />
         <Drawer.Screen name="NewTransaction" component={newTransaction} options={{ 
           title: 'New Transaction'
+           }} />
+        <Drawer.Screen name="Blocks" component={blocks} options={{ 
+          title: 'Blocks'
+           }} />
+        <Drawer.Screen name="NewBlock" component={newBlock} options={{ 
+          title: 'New Block'
+           }} />
+        <Drawer.Screen name="AllBlocks" component={allblocks} options={{ 
+          title: 'All Blocks'
            }} />
       </Drawer.Navigator>
     </NavigationContainer>
