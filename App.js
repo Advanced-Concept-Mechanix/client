@@ -26,6 +26,7 @@ import newTransaction from './screens/newTransaction';
 import blocks from './screens/blocks';
 import newBlock from './screens/newBlock';
 import allblocks from './screens/allblocks';
+import myProducts from './screens/myProducts';
 
 const Drawer = createDrawerNavigator();
 
@@ -55,6 +56,9 @@ export default function App(){
            }} />
         <Drawer.Screen name="AllProducts" component={allProducts} options={{ 
           title: 'All Products'
+           }} />
+        <Drawer.Screen name="MyProducts" component={myProducts} options={{ 
+          title: 'My Products'
            }} />
         <Drawer.Screen name="NewProduct" component={newProduct} options={{ 
           title: 'New Product'

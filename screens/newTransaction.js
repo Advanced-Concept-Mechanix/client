@@ -11,10 +11,6 @@ export default function newTransaction({ navigation, route }){
     const{user_id} = route.params;
     const{loc} = route.params;
     const{time} = route.params;
-    const[location, setLocation] = useState(loc);
-    const[user, setUser] = useState(user_id);
-    const[product, setProduct] = useState(data);
-    const[timestamp, setTimestamp] = useState(time);
     const[locationText, setLocationText] = useState(null);
     const[scanText, setScanText] = useState(null);
     const[userText, setUserText] = useState(null);
@@ -27,10 +23,10 @@ export default function newTransaction({ navigation, route }){
         const url = 'http://62.171.181.137/transactions/new';
 
         async function confirmDetails(){
-            if(user){
-                if(location){
-                    if(product){
-                        if(timestamp){
+            if(user_id){
+                if(loc){
+                    if(data){
+                        if(time){
                             return true;
                         }else{
                             alert('Timestamp is not set');
@@ -58,10 +54,10 @@ export default function newTransaction({ navigation, route }){
                         alert('Cannot create transaction at this time');
                     }else{
                         let tx = {
-                            user:user,
-                            location:location,
-                            product:product,
-                            createdAt:timestamp
+                            user:user_id,
+                            location:loc,
+                            product:data,
+                            createdAt:time
                         }
 
                         await postData(url, tx)
@@ -107,7 +103,7 @@ export default function newTransaction({ navigation, route }){
         return () => {
             loading = false;
         };
-    }, [product, user, location, timestamp]);
+    }, [data, user_id, loc, time]);
 
     
     if(!locationText || !scanText || !userText || !timeText || !hashText){

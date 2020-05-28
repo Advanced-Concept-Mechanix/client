@@ -11,14 +11,16 @@ import styles from './style';
 import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function AllProducts({navigation, route}){
+export default function myProducts({ navigation, route}){
 
-    const{user_id} = route.params;
-    //const[manufacturer, setManufacturer] = useState(user_id);
     const[products, setProducts] = useState([]);
+    const{user_id} = route.params;
     const[loadingText, setLoadingText] = useState('Loading Products...');
+    console.log(user_id);
 
+    //usEffect to get url and fetch products
     useEffect(() => {
+
         let loading = true;
 
         async function fetchUrl(){
@@ -28,8 +30,9 @@ export default function AllProducts({navigation, route}){
 
         async function fetchData(){
             await getData(fetchUrl())
-            .then(async (response) => {
+            .then(async(response) => {
                 if(response.ok){
+                    console.log(response);
                     let data = await response.json();
                     console.log(data);
                     if(data.products.length === 0){
@@ -54,9 +57,9 @@ export default function AllProducts({navigation, route}){
                         { cancelable: false }
                     );
                 }
-            });
+            })
         }
-        
+
         fetchData();
 
         return () => {
@@ -102,4 +105,5 @@ export default function AllProducts({navigation, route}){
             </View>
         );
     }
+
 }
