@@ -16,25 +16,20 @@ export default function myProducts({ navigation, route}){
     const[products, setProducts] = useState([]);
     const{user_id} = route.params;
     const[loadingText, setLoadingText] = useState('Loading Products...');
-    console.log(user_id);
+    //console.log(user_id);
 
     //usEffect to get url and fetch products
     useEffect(() => {
 
         let loading = true;
 
-        async function fetchUrl(){
-            //console.log('http://62.171.181.137/products/' + user_id);
-            return 'http://62.171.181.137/products/' + user_id;
-        }
-
         async function fetchData(){
-            await getData(fetchUrl())
+            await getData(`http://62.171.181.137/products/${user_id}`)
             .then(async(response) => {
                 if(response.ok){
-                    console.log(response);
+                    //console.log(response);
                     let data = await response.json();
-                    console.log(data);
+                    //console.log(data);
                     if(data.products.length === 0){
                         setLoadingText('No Products Found!');
                     }

@@ -19,12 +19,12 @@ export default function SingleProduct({navigation, route}){
     useEffect(() => {
         let loading = true;
 
-        function getFetchUrl(){
-            return 'http://62.171.181.137/transactions/' + item._id;
-        }
+        // function getFetchUrl(){
+        //     return 'http://62.171.181.137/transactions/' + item._id;
+        // }
 
         async function fetchData(){
-            await getData(getFetchUrl())
+            await getData(`http://62.171.181.137/transactions/${item._id}`)
             .then(async (response) => {
                 if(response.ok){
                     let data = await response.json();

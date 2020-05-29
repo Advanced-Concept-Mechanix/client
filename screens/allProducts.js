@@ -10,24 +10,18 @@ import {
 import styles from './style';
 import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import strings from '../config/strings';
 
-export default function AllProducts({navigation, route}){
+export default function AllProducts({navigation}){
 
-    const{user_id} = route.params;
-    //const[manufacturer, setManufacturer] = useState(user_id);
     const[products, setProducts] = useState([]);
     const[loadingText, setLoadingText] = useState('Loading Products...');
 
     useEffect(() => {
         let loading = true;
 
-        async function fetchUrl(){
-            //console.log('http://62.171.181.137/products/' + user_id);
-            return 'http://62.171.181.137/products/' + user_id;
-        }
-
         async function fetchData(){
-            await getData(fetchUrl())
+            await getData(`${strings.API_KEY}products`)
             .then(async (response) => {
                 if(response.ok){
                     let data = await response.json();
@@ -62,7 +56,7 @@ export default function AllProducts({navigation, route}){
         return () => {
             loading = false;
         };
-    }, [user_id]);
+    }, []);
 
     ListViewItemSeparator = () => {
         return (

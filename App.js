@@ -27,6 +27,7 @@ import blocks from './screens/blocks';
 import newBlock from './screens/newBlock';
 import allblocks from './screens/allblocks';
 import myProducts from './screens/myProducts';
+import singleBlock from './screens/singleBlock';
 
 const Drawer = createDrawerNavigator();
 
@@ -95,6 +96,9 @@ export default function App(){
            }} />
         <Drawer.Screen name="AllBlocks" component={allblocks} options={{ 
           title: 'All Blocks'
+           }} />
+        <Drawer.Screen name="SingleBlock" component={singleBlock} options={{ 
+          title: 'Single Blocks'
            }} />
       </Drawer.Navigator>
     </NavigationContainer>
