@@ -28,6 +28,7 @@ import newBlock from './screens/newBlock';
 import allblocks from './screens/allblocks';
 import myProducts from './screens/myProducts';
 import singleBlock from './screens/singleBlock';
+import qr from './screens/qr';
 
 const Drawer = createDrawerNavigator();
 
@@ -99,6 +100,9 @@ export default function App(){
            }} />
         <Drawer.Screen name="SingleBlock" component={singleBlock} options={{ 
           title: 'Single Blocks'
+           }} />
+        <Drawer.Screen name="Qr" component={qr} options={{ 
+          title: 'QR Code Generator'
            }} />
       </Drawer.Navigator>
     </NavigationContainer>
