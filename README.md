@@ -26,10 +26,12 @@ Use the app to scan the qr code
 
 The app should build and download
 
-You will get the login page as it's the default page
+You will get the scan page as it's the default page
 
 4. To access other pages
 
 Am using a drawer navigation so swipe from the upperleft
 
 Select the menu item
+
+5. The pages have tabs too. You can use the tabs to access other pages too
