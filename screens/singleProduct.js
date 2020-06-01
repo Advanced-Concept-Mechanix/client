@@ -115,7 +115,7 @@ export default function SingleProduct({navigation, route}){
                 />
                 <Mybutton
                 title='Update Product'
-                customClick={() => navigation.navigate('UpdateProduct', {product:item})}
+                customClick={() => navigation.navigate('updateProduct', {product:item})}
                 />
                 <Mybutton
                 title='Go Back'

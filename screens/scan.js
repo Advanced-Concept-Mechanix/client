@@ -139,7 +139,7 @@ export default function scan({ navigation }){
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        navigation.navigate('NewTransaction', {data:data, user_id:user, loc:location, time:timestamp})
+        navigation.navigate('newTransaction', {data:data, user_id:user, loc:location, time:timestamp})
     };
 
     if(!location || !user || !timestamp || !scanPermission ||!locationPermission){

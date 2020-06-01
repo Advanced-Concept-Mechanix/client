@@ -85,7 +85,7 @@ export default function Allblocks({navigation}){
                 data={blocks}
                 ItemSeparatorComponent={ListViewItemSeparator}
                 renderItem={({ item }) =>
-                    <TouchableOpacity onPress={() => navigation.navigate('SingleBlock', {
+                    <TouchableOpacity onPress={() => navigation.navigate('singleBlock', {
                         item: item
                     })}>
                         <View style={{ backgroundColor: 'white', padding: 20 }}>

@@ -28,13 +28,13 @@ export default function createQr(){
 
     }, [getDataURL]);
 
-    const print = () => {
-        Print.printAsync({
-          html: `
-             <img src="data:image/jpeg;base64,${qrData}"/>
-           `
-        });
-    }
+    // const print = () => {
+    //     Print.printAsync({
+    //       html: `
+    //          <img src="data:image/jpeg;base64,${qrData}"/>
+    //        `
+    //     });
+    // }
 
     const getDataURL = () => {
 
@@ -74,10 +74,10 @@ export default function createQr(){
             title='Create'
             customClick={handleChange}
             />
-            <Mybutton
+            {/* <Mybutton
             title='Print'
             customClick={print}
-            />
+            /> */}
         </View>
     );
 }

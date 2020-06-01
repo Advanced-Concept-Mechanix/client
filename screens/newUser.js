@@ -73,7 +73,8 @@ export default function newUser({ navigation }){
                                                         [
                                                             {
                                                                 text: 'Ok',
-                                                                onPress: () => clearState(),
+                                                                //onPress: () => clearState(),
+                                                                onPress: () => navigation.navigate('login'),
                                                             },
                                                         ],
                                                         { cancelable: false }
@@ -87,7 +88,7 @@ export default function newUser({ navigation }){
                                                         [
                                                             {
                                                                 text: 'Ok',
-                                                                //onPress: () => navigation.navigate('Scan'),
+                                                                //onPress: () => navigation.navigate('login'),
                                                             },
                                                         ],
                                                         { cancelable: false }

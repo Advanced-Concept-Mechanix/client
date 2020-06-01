@@ -73,7 +73,7 @@ export default function updateProduct({ navigation, route }){
                                         [
                                             {
                                                 text: 'Ok',
-                                                //onPress: () => clearState(),
+                                                onPress: () => navigation.navigate('myProducts'),
                                             },
                                         ],
                                         { cancelable: false }

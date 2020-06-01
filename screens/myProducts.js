@@ -82,7 +82,7 @@ export default function myProducts({ navigation, route}){
                 data={products}
                 ItemSeparatorComponent={ListViewItemSeparator}
                 renderItem={({ item }) =>
-                    <TouchableOpacity onPress={() => navigation.navigate('SingleProduct', {
+                    <TouchableOpacity onPress={() => navigation.navigate('singleProduct', {
                         item: item
                     })}>
                         <View style={{ backgroundColor: 'white', padding: 20 }}>

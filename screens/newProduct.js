@@ -60,13 +60,14 @@ export default function newProduct({ navigation }){
                                 if(response.ok){
                                     let data = await response.json();
                                     console.log('Success:', data);
+                                    const item = data.product;
                                     Alert.alert(
                                         'Success',
-                                        'Product created successfully',
+                                        data.msg,
                                         [
                                         {
                                             text: 'Ok',
-                                            onPress: () => navigation.navigate('Scan'),
+                                            //onPress: () => navigation.navigate('singleProduct', {item:item}),
                                         },
                                         ],
                                         { cancelable: false }

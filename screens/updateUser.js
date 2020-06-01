@@ -13,6 +13,7 @@ import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
 import postData from '../functions/postData';
+import store from '../functions/store';
 
 export default function updateUser({ navigation, route }){
 
@@ -41,6 +42,16 @@ export default function updateUser({ navigation, route }){
         };
     }, [user]);
 
+    const updateLocalUser = async () => {
+        user.name = name;
+        user.email = email;
+        user.phone = phone;
+        user.company = company;
+        user.type = type;
+
+        await store('user', user);
+    }
+
     const registerUpdate = async () => {
 
         if(name){
@@ -60,7 +71,7 @@ export default function updateUser({ navigation, route }){
                             await postData(url, updatedUser)
                                 .then(async (response) => {
                                     if(response.ok){
-                                        let data = await response.json();
+                                        await updateLocalUser();
                                         console.log('Success:', data);
                                         Alert.alert(
                                             'Success',
@@ -68,7 +79,7 @@ export default function updateUser({ navigation, route }){
                                             [
                                                 {
                                                     text: 'Ok',
-                                                    //onPress: () => clearState(),
+                                                    onPress: () => navigation.navigate('userDetails'),
                                                 },
                                             ],
                                             { cancelable: false }

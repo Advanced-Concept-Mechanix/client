@@ -46,6 +46,26 @@ export default function userDetails({ navigation }){
         };
     },[]);
 
+    const logout = async () => {
+        await store('user', 'delete')
+        .then(() => {
+            Alert.alert(
+                'Success',
+                'User logged out successfully',
+                [
+                {
+                    text: 'Ok',
+                    //onPress: () => navigation.navigate('Scan'),
+                },
+                ],
+                { cancelable: false }
+            );
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
     ListViewItemSeparator = () => {
         return (
             <View style={{ height: 0.5, width: '100%', backgroundColor: '#000' }} />
@@ -72,11 +92,11 @@ export default function userDetails({ navigation }){
                         <Text>Secret Key: {secretKey}</Text>
                         <Mybutton
                         title='Update User'
-                        customClick={() => navigation.navigate('UpdateUser', {user:user})}
+                        customClick={() => navigation.navigate('updateUser', {user:user})}
                         />
                         <Mybutton
-                        title='Forgot Password'
-                        customClick={() => navigation.navigate('UpdatePassword', {user:user})}
+                        title='logout'
+                        customClick={logout}
                         />
                         <Mybutton
                         title='Go Back'

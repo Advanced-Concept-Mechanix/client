@@ -141,6 +141,14 @@ export default function login({ navigation }){
                 customClick={handleLogin}
                 disabled={!email || !password}
                 />
+                <Mybutton
+                title='Forgot Password'
+                customClick={() => navigation.navigate('updatePassword',)}
+                />
+                <Mybutton
+                title='Sign Up'
+                customClick={() => navigation.navigate('newUser',)}
+                />
             </View>
         </View>
     );
