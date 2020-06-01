@@ -13,33 +13,13 @@ import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
 import postData from '../functions/postData';
-import store from '../functions/store';
 
 export default function newProduct({ navigation }){
 
     const[name, setName] = useState('');
     const[description, setDescription] = useState([]);
-    const[manufacturer, setManufacturer] = useState('');
+    const[manufacturer, setManufacturer] = useState(global.User.id);
     const[daysBeforeExpiry, setDaysBeforeExpiry] = useState(0);
-
-    useEffect(() => {
-        let loading = true;
-
-        async function fetchUser(){
-            return await store('user');
-        }
-
-        fetchUser()
-        .then(async(user)=> {
-            if(loading){
-                setManufacturer(user.id);
-            }
-        });
-
-        return () => {
-            loading = false;
-        };
-    },[]);
 
     const registerProduct = async () => {
 

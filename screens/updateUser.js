@@ -17,7 +17,7 @@ import store from '../functions/store';
 
 export default function updateUser({ navigation, route }){
 
-    const {user} = route.params;
+    const user = global.User;
     const[url, setUrl] = useState('');
     const[name, setName] = useState(user.name);
     const[email, setEmail] = useState(user.email);

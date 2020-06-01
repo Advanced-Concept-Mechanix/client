@@ -17,39 +17,13 @@ import store from '../functions/store';
 
 export default function updatePassword({ navigation, route }){
 
-    const[user, setUser] = useState(null);
+    const user = global.User;
+    //const[user, setUser] = useState(null);
     const[url, setUrl] = useState('');
     const[password, setPassword] = useState('');
     const[question, setQuestion] = useState('');
     const[answer, setAnswer] = useState('');
     const[permission, setPermission] = useState(false);
-
-    useEffect(() => {
-        let loading = true;
-
-        async function fetchUser(){
-            return await store('user');
-        }
-
-        if(loading){
-            if(!user){
-                fetchUser()
-                .then((user) => {
-                    if(!user){
-                        alert('Please login first');
-                        setUser(null)
-                    }else{
-                        setUser(user);
-                    }
-                });
-            }
-        }
-
-        return () => {
-            loading = false;
-        };
-        
-    }, [user])
 
     useEffect(() => {
         let loading = true;

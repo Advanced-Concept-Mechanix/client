@@ -10,13 +10,43 @@ import {
 import styles from './style';
 import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import store from '../functions/store';
 
 export default function myProducts({ navigation, route}){
 
     const[products, setProducts] = useState([]);
-    const{user_id} = route.params;
+    //const[user, setUser] = useState(null);
+    const user = global.User;
     const[loadingText, setLoadingText] = useState('Loading Products...');
     //console.log(user_id);
+
+    //UseEffect for getting user
+    // useEffect(() => {
+    //     let loading = true;
+
+    //     async function fetchUser(){
+    //         return await store('user');
+    //     }
+
+    //     if(loading){
+    //         if(!user){
+    //             fetchUser()
+    //             .then((user) => {
+    //                 if(!user){
+    //                     alert('Please login first');
+    //                     setUser(null)
+    //                 }else{
+    //                     setUser(user.id);
+    //                 }
+    //             });
+    //         }
+    //     }
+
+    //     return () => {
+    //         loading = false;
+    //     };
+        
+    // }, [user])
 
     //usEffect to get url and fetch products
     useEffect(() => {
@@ -24,7 +54,7 @@ export default function myProducts({ navigation, route}){
         let loading = true;
 
         async function fetchData(){
-            await getData(`http://62.171.181.137/products/${user_id}`)
+            await getData(`http://62.171.181.137/products/${user.id}`)
             .then(async(response) => {
                 if(response.ok){
                     //console.log(response);
@@ -60,7 +90,7 @@ export default function myProducts({ navigation, route}){
         return () => {
             loading = false;
         };
-    }, [user_id]);
+    }, [user]);
 
     ListViewItemSeparator = () => {
         return (

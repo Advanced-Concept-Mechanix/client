@@ -34,6 +34,7 @@ export default function scan({ navigation }){
                         setUser(null)
                     }else{
                         setUser(user.id);
+                        global.User = user;
                     }
                 });
             }

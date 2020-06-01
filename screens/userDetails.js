@@ -12,7 +12,7 @@ import hash from '../functions/hash';
 import Mybutton from '../components/mybutton';
 
 export default function userDetails({ navigation }){
-    const[user, setUser] = useState({});
+    const user = global.User;
     const[publicKey, setPublicKey] = useState('');
     const[secretKey, setSecretKey] = useState('');
     const[loadingText, setLoadingText] = useState('Loading User Details...');
@@ -20,12 +20,7 @@ export default function userDetails({ navigation }){
     useEffect(() => {
         let loading = true;
 
-        async function fetchUser(){
-            return await store('user');
-        }
-
-        fetchUser()
-        .then(async(user)=> {
+        (async()=> {
             if(loading){
                 if(!user){
                     setLoadingText('No user found. Please login first');
@@ -34,12 +29,11 @@ export default function userDetails({ navigation }){
                     let public_key = await hash(JSON.stringify(user.publicKey));
                     let secret_key = await hash(JSON.stringify(user.secretKey));
                     //console.log(user);
-                    setUser(user);
                     setPublicKey(public_key);
                     setSecretKey(secret_key);
                 }
             }
-        });
+        })();
 
         return () => {
             loading = false;
@@ -92,7 +86,7 @@ export default function userDetails({ navigation }){
                         <Text>Secret Key: {secretKey}</Text>
                         <Mybutton
                         title='Update User'
-                        customClick={() => navigation.navigate('updateUser', {user:user})}
+                        customClick={() => navigation.navigate('updateUser')}
                         />
                         <Mybutton
                         title='logout'
