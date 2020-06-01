@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import {
     Text,
     View,
@@ -10,7 +10,9 @@ import {
     KeyboardAvoidingView
 } from 'react-native';
 import styles from './style';
-import { QRCode } from 'react-native-custom-qr-codes-expo';
+//import { QRCode } from 'react-native-custom-qr-codes-expo';
+import QRCode from 'react-native-qrcode-svg';
+import * as Print from 'expo-print';
 import Mytextinput from '../components/mytextinput';
 import Mybutton from '../components/mybutton';
 
@@ -18,31 +20,49 @@ export default function createQr(){
 
     const[qrText, setQrText] = useState('change me');
     const[qrTextHolder, setQrTextHolder] = useState('');
+    const[qrData, setQrData] = useState('');
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     function generateQr(){
-    //         return(
-    //             <QRCode 
-    //             content={qrText}
-    //             logo={require('../assets/logo.png')}
-    //             />
-    //         );
-    //     }
+        getDataURL();
 
-    //     generateQr()
-    // },[qrText]);
+    }, [getDataURL]);
+
+    const print = () => {
+        Print.printAsync({
+          html: `
+             <img src="data:image/jpeg;base64,${qrData}"/>
+           `
+        });
+    }
+
+    const getDataURL = () => {
+
+        svg.toDataURL(callback);
+
+    }
+
+
+    const callback = (dataURL) => {
+
+        console.log(dataURL);
+        setQrData(dataURL);
+
+    }
 
     const handleChange = () => {
+
         setQrText(qrTextHolder);
+
     }
 
     return(
         <View style={styles.container}>
             <QRCode 
-                content={qrText}
-                logo={require('../assets/logo.png')}
+                value={qrText}
+                //logo={require('../assets/logo.png')}
                 ecl='H'
+                getRef={(c) => svg = c}
             />
             <Mytextinput
             value={qrTextHolder}
@@ -53,6 +73,10 @@ export default function createQr(){
             <Mybutton
             title='Create'
             customClick={handleChange}
+            />
+            <Mybutton
+            title='Print'
+            customClick={print}
             />
         </View>
     );
