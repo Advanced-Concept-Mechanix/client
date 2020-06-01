@@ -16,7 +16,11 @@ function myProductStackScreen(){
         <myProductStack.Navigator initialRouteName="myProducts">
             <myProductStack.Screen name="myProducts" component={myProducts} options={{ title: 'My Products'}}/>
             <myProductStack.Screen name="allProducts" component={allProducts} options={{ title: 'All Products'}}/>
-            <myProductStack.Screen name="singleProduct" component={singleProduct} options={{ title: 'Single Product'}}/>
+            <myProductStack.Screen 
+            name="singleProduct" 
+            component={singleProduct} 
+            options={({ route }) => ({ title: route.params.item.name })}
+            />
             <myProductStack.Screen name="updateProduct" component={updateProduct} options={{ title: 'Update Product'}}/>
             {/* <myProductStack.Screen name="deleteProduct" component={deleteProduct} options={{ title: 'Delete Product'}}/> */}
         </myProductStack.Navigator>

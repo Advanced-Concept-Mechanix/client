@@ -23,7 +23,11 @@ function allblockStackScreen(){
     return(
         <allblockStack.Navigator initialRouteName="allBlocks">
             <allblockStack.Screen name="allBlocks" component={allblocks} options={{ title: 'List'}}/>
-            <allblockStack.Screen name="singleBlock" component={singleBlock} options={{ title: 'Single Block'}}/>
+            <allblockStack.Screen 
+            name="singleBlock" 
+            component={singleBlock} 
+            options={({ route }) => ({ title: route.params.item.index })}
+            />
         </allblockStack.Navigator>
     );
 }
