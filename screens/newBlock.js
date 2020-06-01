@@ -79,7 +79,6 @@ export default function newBlock({navigation}){
             <Text>{loadingText}</Text>
             <Text>{index}</Text>
             <Text>{timestamp}</Text>
-            <Text>{txSummary}</Text>
             <Text>{hash}</Text>
             <Text>{previousHash}</Text>
             <Text>{nonce}</Text>

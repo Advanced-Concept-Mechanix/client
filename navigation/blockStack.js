@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import allblocks from '../screens/allblocks';
 import newBlock from '../screens/newBlock';
@@ -32,8 +33,26 @@ const blockTab = createBottomTabNavigator();
 export default function blockNav(){
     return(
         <blockTab.Navigator initialRouteName="allBlocksTab">
-            <blockTab.Screen name="allBlocksTab" component={allblockStackScreen} options={{ title: 'List'}}/>
-            <blockTab.Screen name="createBlockTab" component={createBlockStackScreen} options={{ title: 'Create'}}/>     
+            <blockTab.Screen 
+            name="allBlocksTab" 
+            component={allblockStackScreen} 
+            options={{
+                tabBarLabel: 'List',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="view-list" color={color} size={size} />
+                ),
+            }}
+            />
+            <blockTab.Screen 
+            name="createBlockTab" 
+            component={createBlockStackScreen} 
+            options={{
+                tabBarLabel: 'Create',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="drawing" color={color} size={size} />
+                ),
+            }}
+            />     
         </blockTab.Navigator>
     );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import newQr from '../screens/newQr';
 import newTransaction from '../screens/newTransaction';
@@ -32,8 +33,26 @@ const qrTab = createBottomTabNavigator();
 export default function qrNav(){
     return(
         <qrTab.Navigator initialRouteName="scanTab">
-            <qrTab.Screen name="createQrTab" component={createQrStackScreen} options={{ title: 'Create'}}/>
-            <qrTab.Screen name="scanTab" component={scanStackScreen} options={{ title: 'Scan'}}/>
+            <qrTab.Screen 
+            name="createQrTab" 
+            component={createQrStackScreen} 
+            options={{
+                tabBarLabel: 'Create',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="drawing" color={color} size={size} />
+                ),
+            }}
+            />
+            <qrTab.Screen 
+            name="scanTab" 
+            component={scanStackScreen} 
+            options={{
+                tabBarLabel: 'Scan',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="qrcode-scan" color={color} size={size} />
+                ),
+            }}
+            />
         </qrTab.Navigator>
     );
 }

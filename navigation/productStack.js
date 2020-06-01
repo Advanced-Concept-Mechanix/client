@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import newProduct from '../screens/newProduct';
 import allProducts from '../screens/allProducts';
@@ -38,8 +39,26 @@ const productTab = createBottomTabNavigator();
 export default function productNav(){
     return(
         <productTab.Navigator initialRouteName="myProductTab">
-            <productTab.Screen name="myProductTab" component={myProductStackScreen} options={{ title: 'List'}}/>
-            <productTab.Screen name="createProductTab" component={createProductStackScreen} options={{ title: 'Create'}}/>
+            <productTab.Screen 
+            name="myProductTab" 
+            component={myProductStackScreen} 
+            options={{
+                tabBarLabel: 'List',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="view-list" color={color} size={size} />
+                ),
+            }}
+            />
+            <productTab.Screen 
+            name="createProductTab" 
+            component={createProductStackScreen} 
+            options={{
+                tabBarLabel: 'Create',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="drawing" color={color} size={size} />
+                ),
+            }}
+            />
         </productTab.Navigator>
     );
 }
