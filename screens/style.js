@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         width: "80%"
+    },
+    title: {
+        fontWeight: 'bold',
+        textAlign: 'center'
     }
   });
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from '../screens/style';
 
 import newProduct from '../screens/newProduct';
 import allProducts from '../screens/allProducts';
@@ -13,7 +14,12 @@ const myProductStack = createStackNavigator();
 
 function myProductStackScreen(){
     return(
-        <myProductStack.Navigator initialRouteName="myProducts">
+        <myProductStack.Navigator 
+        initialRouteName="myProducts"
+        screenOptions={{
+            headerTitleStyle: styles.title
+        }}
+        >
             <myProductStack.Screen name="myProducts" component={myProducts} options={{ title: 'My Products'}}/>
             <myProductStack.Screen name="allProducts" component={allProducts} options={{ title: 'All Products'}}/>
             <myProductStack.Screen 
@@ -31,7 +37,12 @@ const createProductStack = createStackNavigator();
 
 function createProductStackScreen(){
     return(
-        <createProductStack.Navigator initialRouteName="newProduct">
+        <createProductStack.Navigator 
+        initialRouteName="newProduct"
+        screenOptions={{
+            headerTitleStyle: styles.title
+        }}
+        >
             <createProductStack.Screen name="newProduct" component={newProduct} options={{ title: 'Create Profile'}}/>
             <createProductStack.Screen name="singleProduct" component={singleProduct} options={{ title: 'Single Product'}}/>
         </createProductStack.Navigator>

@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from '../screens/style';
 
 import allblocks from '../screens/allblocks';
 import newBlock from '../screens/newBlock';
@@ -11,7 +12,12 @@ const createBlockStack = createStackNavigator();
 
 function createBlockStackScreen(){
     return(
-        <createBlockStack.Navigator initialRouteName="newBlock">
+        <createBlockStack.Navigator 
+        initialRouteName="newBlock"
+        screenOptions={{
+            headerTitleStyle: styles.title
+        }}
+        >
             <createBlockStack.Screen name="newBlock" component={newBlock} options={{ title: 'Create'}}/>
         </createBlockStack.Navigator>
     );
@@ -21,7 +27,12 @@ const allblockStack = createStackNavigator();
 
 function allblockStackScreen(){
     return(
-        <allblockStack.Navigator initialRouteName="allBlocks">
+        <allblockStack.Navigator 
+        initialRouteName="allBlocks"
+        screenOptions={{
+            headerTitleStyle: styles.title
+        }}
+        >
             <allblockStack.Screen name="allBlocks" component={allblocks} options={{ title: 'List'}}/>
             <allblockStack.Screen 
             name="singleBlock" 

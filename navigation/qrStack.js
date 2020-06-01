@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from '../screens/style';
 
 import newQr from '../screens/newQr';
 import newTransaction from '../screens/newTransaction';
@@ -11,7 +12,12 @@ const createQrStack = createStackNavigator();
 
 function createQrStackScreen(){
     return(
-        <createQrStack.Navigator initialRouteName="newQr">
+        <createQrStack.Navigator 
+        initialRouteName="newQr"
+        screenOptions={{
+            headerTitleStyle: styles.title
+        }}
+        >
             <createQrStack.Screen name="newQr" component={newQr} options={{ title: 'Create'}}/>
         </createQrStack.Navigator>
     );
@@ -21,7 +27,12 @@ const scanStack = createStackNavigator();
 
 function scanStackScreen(){
     return(
-        <scanStack.Navigator initialRouteName="Scan">
+        <scanStack.Navigator 
+        initialRouteName="Scan"
+        screenOptions={{
+            headerTitleStyle: styles.title
+        }}
+        >
             <scanStack.Screen name="scan" component={scan} options={{ title: 'Scan'}}/>
             <scanStack.Screen name="newTransaction" component={newTransaction} options={{ title: 'Create Transaction'}}/>
         </scanStack.Navigator>
