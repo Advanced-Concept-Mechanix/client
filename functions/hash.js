@@ -2,7 +2,7 @@ import * as Crypto from 'expo-crypto';
 
 const hash = async(value) => {
     let digest = await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA256,
+        Crypto.CryptoDigestAlgorithm.SHA512,
         value
     );
     //console.log(digest.toString(16))
