@@ -37,6 +37,7 @@ export default function createQr({ route }){
     const[qrTextHolder, setQrTextHolder] = useState('');
     const[qrNum, setQrNum] = useState(0);
     const[qrList, setQrList] = useState([]);
+    const[qrSize, setQrSize] = useState(200);
     // const[qrData, setQrData] = useState([]);
     const qrDataSet = [];
 
@@ -168,8 +169,9 @@ export default function createQr({ route }){
                         <View style={{ backgroundColor: 'white', padding: 20 }}>
                             <QRCode 
                                 value={JSON.stringify(item)}
-                                logo={require('../assets/logo.png')}
+                                //logo={require('../assets/logo.png')}
                                 ecl='M'
+                                size={qrSize}
                             />
                         </View>
                     </TouchableOpacity> 
