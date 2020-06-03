@@ -117,7 +117,7 @@ export default function updateProduct({ navigation, route }){
                 <KeyboardAvoidingView
                 behavior="padding"
                 style={{ flex: 1, justifyContent: 'space-between' }}>
-                    <MyText text='Enter Details to Update Product'/>
+                    <MyText text='Enter Details to Update Profile'/>
                     <MyTextInput
                     placeholder="Enter name"
                     onChangeText={(name) => setName(name)}

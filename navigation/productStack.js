@@ -9,6 +9,7 @@ import allProducts from '../screens/allProducts';
 import myProducts from '../screens/myProducts';
 import singleProduct from '../screens/singleProduct';
 import updateProduct from '../screens/updateProduct';
+import myProductsList from '../screens/myProductsList';
 
 const myProductStack = createStackNavigator();
 
@@ -20,7 +21,8 @@ function myProductStackScreen(){
             headerTitleStyle: styles.title
         }}
         >
-            <myProductStack.Screen name="myProducts" component={myProducts} options={{ title: 'My Products'}}/>
+            <myProductStack.Screen name="myProducts" component={myProducts} options={{ title: 'My Profiles'}}/>
+            <myProductStack.Screen name="myProductsList" component={myProductsList} options={{ title: 'Products List'}}/>
             <myProductStack.Screen name="allProducts" component={allProducts} options={{ title: 'All Products'}}/>
             <myProductStack.Screen 
             name="singleProduct" 

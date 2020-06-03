@@ -11,29 +11,25 @@ import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Mybutton from '../components/mybutton';
 
-export default function SingleProduct({navigation, route}){
+export default function myProductList({navigation, route}){
     const{item} = route.params;
-    const[transactions, setTransactions] = useState([]);
-    const[loadingText, setLoadingText] = useState('Loading Transactions...');
+    const[products, setProducts] = useState([]);
+    const[loadingText, setLoadingText] = useState('Loading products...');
 
     useEffect(() => {
         let loading = true;
 
-        // function getFetchUrl(){
-        //     return 'http://62.171.181.137/transactions/' + item._id;
-        // }
-
         async function fetchData(){
-            await getData(`http://62.171.181.137/transactions/${item._id}`)
+            await getData(`http://62.171.181.137/createProducts/${item._id}`)
             .then(async (response) => {
                 if(response.ok){
                     let data = await response.json();
-                    if(data.transactions.length === 0){
-                        setLoadingText('No Transactions Found!');
+                    if(data.products.length === 0){
+                        setLoadingText('No Products Found!');
                     }
 
                     if(loading){
-                        setTransactions(data.transactions);
+                        setProducts(data.products);
                         //console.log(data.transactions);
                     }
                 }else{
@@ -69,10 +65,11 @@ export default function SingleProduct({navigation, route}){
         );
     };
 
-    if(transactions.length === 0){
+    if(products.length === 0){
         return(
             <View style={styles.container}>
                 <View style={{ backgroundColor: 'white', padding: 20 }}>
+                    <Text>Profile</Text>
                     <Text>Id: {item._id}</Text>
                     <Text>Name: {item.name}</Text>
                     <Text>Manufacturer: {item.manufacturer}</Text>
@@ -87,7 +84,7 @@ export default function SingleProduct({navigation, route}){
     }else{
         return(
             <View style={styles.container}>
-                <Text>Product Details</Text>
+                <Text>Profile</Text>
                 <View style={{ backgroundColor: 'white', padding: 20 }}>
                     <Text>Id: {item._id}</Text>
                     <Text>Name: {item.name}</Text>
@@ -96,22 +93,29 @@ export default function SingleProduct({navigation, route}){
                     <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
                     <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
                 </View>
-                <Text>List of Transactions</Text>
+                <Text>List of Products Created Using Profile</Text>
                 <FlatList 
-                data={transactions}
+                data={products}
                 ItemSeparatorComponent={ListViewItemSeparator}
                 renderItem={({ item }) =>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('singleProduct', {
+                        item: item
+                    })}>
                         <View style={{ backgroundColor: 'white', padding: 20 }}>
                             <Text>Id: {item._id}</Text>
-                            <Text>Timestamp: {item.createdAt}</Text>
-                            <Text>Creator: {item.user}</Text>
-                            <Text>Location: {item.location}</Text>
-                            <Text>Hash: {item.hash}</Text>
+                            <Text>Name: {item.name}</Text>
+                            <Text>Date of Manufacture: {item.dateOfManufacture}</Text>
+                            <Text>Date of Expiry: {item.dateOfExpiry}</Text>
+                            <Text>Description: {item.description}</Text>
+                            <Text>Manufacturer: {item.manufacturer}</Text>
                         </View>
                     </TouchableOpacity> 
                 } 
                 keyExtractor={(item) => item._id}
+                />
+                <Mybutton
+                title='Update Profile'
+                customClick={() => navigation.navigate('updateProduct', {product:item})}
                 />
                 <Mybutton
                 title='Go Back'
