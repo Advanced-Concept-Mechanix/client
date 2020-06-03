@@ -20,6 +20,8 @@ npm start
 
 Wait until a qr code appears on the terminal or browser
 
+**Please make sure that your phone and the client are on the same network i.e. Your phone and the computer running the client**
+
 Open expo app on phone
 
 Use the app to scan the qr code

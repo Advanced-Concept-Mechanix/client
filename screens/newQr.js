@@ -18,6 +18,7 @@ import Mybutton from '../components/mybutton';
 //import generateQrData from '../functions/generateQrData';
 import QrData from '../functions/generateQrData';
 import hash from '../functions/hash';
+import postData from '../functions/postData';
 
 function addDays(days) {
     var result = new Date();
@@ -28,10 +29,12 @@ function addDays(days) {
 export default function createQr({ route }){
 
     const{item} = route.params;
+    const url = 'http://62.171.181.137/createProducts/new';
     console.log(item);
     const[qrText, setQrText] = useState('change me');
     const[qrTextHolder, setQrTextHolder] = useState('');
     const[qrNum, setQrNum] = useState(0);
+    const[update, setUpdate] = useState(null);
     // const[qrData, setQrData] = useState([]);
     const qrDataSet = [];
 
@@ -39,6 +42,7 @@ export default function createQr({ route }){
         if(qrNum === 0){
             alert('Please set a number!');
         }
+        //setUpdate(true);
         for(i = 1; i <= qrNum; i++){
             //let _qrdata = new QrData(item);
             let randomNumString = Math.floor((Math.random()*1000) + 1).toString();
@@ -57,6 +61,51 @@ export default function createQr({ route }){
             qrDataSet.push(_qrdata);
         }
         console.log(qrDataSet);
+        if(qrDataSet.length = qrNum){
+            setUpdate(true);
+        }
+        while(update === true){
+            await postData(url, qrDataSet)
+            .then(async(response) => {
+                if(response.ok){
+                    setUpdate(false)
+                    let data = await response.json();
+                    console.log('Success:', data);
+                    Alert.alert(
+                        'Success',
+                        'Qr data successfully added',
+                        [
+                            {
+                                text: 'Ok',
+                                onPress: () => setUpdate(false),
+                                //onPress: () => navigation.navigate('login'),
+                            },
+                        ],
+                        { cancelable: false }
+                    );
+                }else{
+                    setUpdate(false)
+                    let data = await response.json();
+                    console.log('Failure:', data);
+                    Alert.alert(
+                        'Failure',
+                        data.message,
+                        [
+                            {
+                                text: 'Ok',
+                                onPress: () => setUpdate(false)
+                                //onPress: () => navigation.navigate('login'),
+                            },
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        
     }
 
     // useEffect(() => {
