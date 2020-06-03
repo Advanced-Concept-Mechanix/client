@@ -34,7 +34,7 @@ export default function createQr({ route }){
     const[qrText, setQrText] = useState('change me');
     const[qrTextHolder, setQrTextHolder] = useState('');
     const[qrNum, setQrNum] = useState(0);
-    const[update, setUpdate] = useState(null);
+    const[update, setUpdate] = useState(false);
     // const[qrData, setQrData] = useState([]);
     const qrDataSet = [];
 
@@ -55,20 +55,9 @@ export default function createQr({ route }){
                 dateOfExpiry: addDays(item.daysBeforeExpiry),
                 UUID:await hash(item._id + item.manufacturer + new Date() + randomNumString)
             }
-
-            // _qrdata.dateOfExpiry = new Date() + item.daysBeforeExpiry;
-            // _qrdata.UUID = await hash(item._id + item.manufacturer + new Date() + randomNumString);
-            qrDataSet.push(_qrdata);
-        }
-        console.log(qrDataSet);
-        if(qrDataSet.length = qrNum){
-            setUpdate(true);
-        }
-        while(update === true){
-            await postData(url, qrDataSet)
+            await postData(url, _qrdata)
             .then(async(response) => {
                 if(response.ok){
-                    setUpdate(false)
                     let data = await response.json();
                     console.log('Success:', data);
                     Alert.alert(
@@ -77,14 +66,13 @@ export default function createQr({ route }){
                         [
                             {
                                 text: 'Ok',
-                                onPress: () => setUpdate(false),
                                 //onPress: () => navigation.navigate('login'),
                             },
                         ],
                         { cancelable: false }
                     );
                 }else{
-                    setUpdate(false)
+                    qrDataSet.length = 0;
                     let data = await response.json();
                     console.log('Failure:', data);
                     Alert.alert(
@@ -93,7 +81,6 @@ export default function createQr({ route }){
                         [
                             {
                                 text: 'Ok',
-                                onPress: () => setUpdate(false)
                                 //onPress: () => navigation.navigate('login'),
                             },
                         ],
@@ -104,6 +91,15 @@ export default function createQr({ route }){
             .catch((error) => {
                 console.error('Error:', error);
             });
+            qrDataSet.push(_qrdata);
+        }
+        // console.log(qrDataSet);
+        // console.log(`data length: ${qrDataSet.length}`);
+        // console.log(`qrNum: ${qrNum}`);
+        // console.log((qrDataSet.length == qrNum).toString());
+        // console.log(typeof qrDataSet.length + ' ' + typeof qrNum);
+        if(qrDataSet.length == qrNum){
+            console.log(qrDataSet);
         }
         
     }
