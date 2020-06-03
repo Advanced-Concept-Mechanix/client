@@ -1,4 +1,7 @@
 import React from 'react';
+import {
+    Image
+} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,17 +10,29 @@ import styles from '../screens/style';
 import newQr from '../screens/newQr';
 import newTransaction from '../screens/newTransaction';
 import scan from '../screens/scan';
+import myProductsCreate from '../screens/myProductsCreate';
+
+function LogoTitle() {
+    return (
+      <Image
+        style={styles.logoTitle}
+        source={require('../assets/logo.png')}
+      />
+    );
+}
 
 const createQrStack = createStackNavigator();
 
 function createQrStackScreen(){
     return(
         <createQrStack.Navigator 
-        initialRouteName="newQr"
+        initialRouteName="myProductsCreate"
         screenOptions={{
-            headerTitleStyle: styles.title
+            headerTitleStyle: styles.title,
+            // headerTitle: props => <LogoTitle {...props} />
         }}
         >
+            <createQrStack.Screen name="myProductsCreate" component={myProductsCreate} options={{ title: 'Product Profiles'}}/>
             <createQrStack.Screen name="newQr" component={newQr} options={{ title: 'Create'}}/>
         </createQrStack.Navigator>
     );

@@ -13,6 +13,7 @@ export default function newTransaction({ navigation, route }){
     const{time} = route.params;
     const[locationText, setLocationText] = useState(null);
     const[scanText, setScanText] = useState(null);
+    const[UUIDText, setUUIDText] = useState(null);
     const[userText, setUserText] = useState(null);
     const[hashText, setHashText] = useState(null);
     const[timeText, setTimeText] = useState(null)
@@ -53,10 +54,12 @@ export default function newTransaction({ navigation, route }){
                     if(status === false){
                         alert('Cannot create transaction at this time');
                     }else{
+                        let dataObj = JSON.parse(data);
                         let tx = {
+                            _id:dataObj.UUID,
                             user:user_id,
                             location:loc,
-                            product:data,
+                            product:dataObj.name,
                             createdAt:time
                         }
 
@@ -66,6 +69,7 @@ export default function newTransaction({ navigation, route }){
                                 let data = await response.json();
                                 //console.log('Success:', data);
                                 if(loading){
+                                    setUUIDText(`UUID: ${data.transaction.UUID}`);
                                     setScanText(`Product: ${data.transaction.product}`);
                                     setLocationText(`Location: ${data.transaction.location}`);
                                     setUserText(`User: ${data.transaction.user}`);
@@ -106,7 +110,7 @@ export default function newTransaction({ navigation, route }){
     }, [data, user_id, loc, time]);
 
     
-    if(!locationText || !scanText || !userText || !timeText || !hashText){
+    if(!locationText || !scanText || !userText || !timeText || !hashText || !UUIDText){
         return(
             <View style={styles.container}>
                 <Text>{loadingText}</Text>
@@ -117,6 +121,7 @@ export default function newTransaction({ navigation, route }){
     return(
         <View style={styles.container}>
             <Text>{loadingText}</Text>
+            <Text>{UUIDText}</Text>
             <Text>{locationText}</Text>
             <Text>{scanText}</Text>
             <Text>{userText}</Text>

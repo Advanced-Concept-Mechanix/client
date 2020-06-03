@@ -16,6 +16,13 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         alignSelf: "center"
     },
+    logoTitle: {
+        flex: 1,
+        width: "50%",
+        height: "100%",
+        resizeMode: "contain",
+        alignSelf: "center"
+    },
     form: {
         flex: 1,
         justifyContent: "center",
