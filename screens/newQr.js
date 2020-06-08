@@ -12,15 +12,12 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styles from './style';
-//import { QRCode } from 'react-native-custom-qr-codes-expo';
 import QRCode from 'react-native-qrcode-svg';
-import * as Print from 'expo-print';
 import Mytextinput from '../components/mytextinput';
 import Mybutton from '../components/mybutton';
-//import generateQrData from '../functions/generateQrData';
-import QrData from '../functions/generateQrData';
 import hash from '../functions/hash';
 import postData from '../functions/postData';
+import convertNum from '../functions/convertNumToString';
 
 function addDays(days) {
     var result = new Date();
@@ -42,10 +39,13 @@ export default function createQr({ route }){
             alert('Please set a number!');
         }
         let count = 0;
-        //setUpdate(true);
         for(i = 1; i <= qrNum; i++){
-            //let _qrdata = new QrData(item);
-            let randomNumString = Math.floor((Math.random()*100000000) + 1).toString();
+            //let randomString = await generateRandomString();
+            // let randomNum = Math.floor((Math.random()*100000000) + 1);
+            let randomNum = Math.random();
+            let randomString = convertNum(randomNum);
+            console.log(`randomNum: ${randomNum}`);
+            console.log(`randomString: ${randomString}`);
             let _qrdata = {
                 profileId:item._id,
                 name:item.name,
@@ -53,14 +53,15 @@ export default function createQr({ route }){
                 manufacturer:item.manufacturer,
                 dateOfManufacture:new Date(),
                 dateOfExpiry: addDays(item.daysBeforeExpiry),
-                UUID:await hash(item._id + item.manufacturer + new Date() + randomNumString)
+                UUID:await hash(item._id + item.manufacturer + randomString),
+                nonce:randomNum.toString().slice(2)
             }
             await postData(url, _qrdata)
             .then(async(response) => {
                 if(response.ok){
                     count++;
                     let data = await response.json();
-                    console.log('Success:', data);
+                    //console.log('Success:', data);
                 }else{
                     let data = await response.json();
                     console.log('Failure:', data);

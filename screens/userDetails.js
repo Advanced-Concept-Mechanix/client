@@ -89,6 +89,10 @@ export default function userDetails({ navigation }){
                         customClick={() => navigation.navigate('updateUser')}
                         />
                         <Mybutton
+                        title='Generate Keys'
+                        customClick={() => navigation.navigate('masterKeys')}
+                        />
+                        <Mybutton
                         title='logout'
                         customClick={logout}
                         />

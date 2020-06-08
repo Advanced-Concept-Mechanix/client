@@ -9,8 +9,10 @@ import styles from '../screens/style';
 
 import newQr from '../screens/newQr';
 import newTransaction from '../screens/newTransaction';
+import productDetails from '../screens/productDetails';
 import scan from '../screens/scan';
 import myProductsCreate from '../screens/myProductsCreate';
+import authentic from '../screens/authenticate';
 
 function LogoTitle() {
     return (
@@ -38,6 +40,50 @@ function createQrStackScreen(){
     );
 }
 
+const scanningTab = createBottomTabNavigator();
+
+function scanningNav(){
+
+    // const{data} = route.params;
+    // const{user_id} = route.params;
+    // const{loc} = route.params;
+    // const{time} = route.params;
+    return(
+        <scanningTab.Navigator initialRouteName="authenticate">
+            <scanningTab.Screen 
+            name="authenticate"
+            component={authentic}
+            options={{
+                tabBarLabel: 'Check',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="shield-check" color={color} size={size} />
+                ),
+            }}
+            />
+            <scanningTab.Screen 
+            name="productDetails"
+            component={productDetails}
+            options={{
+                tabBarLabel: 'Details',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="details" color={color} size={size} />
+                ),
+            }}
+            />
+            <scanningTab.Screen 
+            name="newTransaction"
+            component={newTransaction}
+            options={{
+                tabBarLabel: 'Transaction',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="shield-airplane" color={color} size={size} />
+                ),
+            }}
+            />
+        </scanningTab.Navigator>
+    );
+}
+
 const scanStack = createStackNavigator();
 
 function scanStackScreen(){
@@ -49,7 +95,7 @@ function scanStackScreen(){
         }}
         >
             <scanStack.Screen name="scan" component={scan} options={{ title: 'Scan'}}/>
-            <scanStack.Screen name="newTransaction" component={newTransaction} options={{ title: 'Create Transaction'}}/>
+            <scanStack.Screen name="scanningNav" component={scanningNav} options={{ title: 'Scanning Results'}}/>
         </scanStack.Navigator>
     );
 }

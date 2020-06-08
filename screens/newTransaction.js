@@ -7,10 +7,16 @@ import postData from '../functions/postData';
 
 export default function newTransaction({ navigation, route }){
 
-    const{data} = route.params;
-    const{user_id} = route.params;
-    const{loc} = route.params;
-    const{time} = route.params;
+    const productData = global.PRODUCTDATA;
+    const data = productData.data;
+    const user_id = productData.user_id;
+    const loc = productData.loc;
+    const time = productData.time;
+
+    // const{data} = route.params;
+    // const{user_id} = route.params;
+    // const{loc} = route.params;
+    // const{time} = route.params;
     const[locationText, setLocationText] = useState(null);
     const[scanText, setScanText] = useState(null);
     const[userText, setUserText] = useState(null);
