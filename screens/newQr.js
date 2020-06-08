@@ -44,8 +44,8 @@ export default function createQr({ route }){
             // let randomNum = Math.floor((Math.random()*100000000) + 1);
             let randomNum = Math.random();
             let randomString = convertNum(randomNum);
-            console.log(`randomNum: ${randomNum}`);
-            console.log(`randomString: ${randomString}`);
+            // console.log(`randomNum: ${randomNum}`);
+            // console.log(`randomString: ${randomString}`);
             let _qrdata = {
                 profileId:item._id,
                 name:item.name,

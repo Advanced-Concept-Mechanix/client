@@ -4,6 +4,8 @@ import { Text, View, Alert } from 'react-native';
 import styles from './style';
 import hash from '../functions/hash';
 import convertNum from '../functions/convertNumToString';
+import isJson from '../functions/isJson';
+import hasProperties from '../functions/hasProperties';
 
 export default function authentic({ navigation, route}){
 
@@ -18,20 +20,28 @@ export default function authentic({ navigation, route}){
         let loading = true;
 
         async function authenticate(){
-            let dataObj = await JSON.parse(data);
-            if(typeof dataObj !== 'object' || dataObj === null){
-                setAuthentication(false);
-            }else{
-                let nonceString = '0.' + dataObj.nonce;
-                let nonceNum = parseFloat(nonceString);
-                let randomString = convertNum(nonceNum);
+            if(isJson(data)){
+                let dataObj = await JSON.parse(data);
+                let arrProps = ["UUID", "dateOfExpiry", "dateOfManufacture", "description", "manufacturer", "name", "nonce", "profileId"];
+                if(hasProperties(arrProps,dataObj)){
+                    let nonceString = '0.' + dataObj.nonce;
+                    let nonceNum = parseFloat(nonceString);
+                    let randomString = convertNum(nonceNum);
 
-                let currentUUID = await hash(dataObj.profileId + dataObj.manufacturer + randomString);
-                console.log(`nonceNum: ${nonceNum} type: ${typeof nonceNum}`);
-                console.log(`nonceString: ${nonceString} type: ${typeof nonceString}`);
-                console.log(`randomString: ${randomString}`);
-                console.log(`currentUUID: ${currentUUID}`);
-                setAuthentication(currentUUID === dataObj.UUID);
+                    let currentUUID = await hash(dataObj.profileId + dataObj.manufacturer + randomString);
+                    // console.log(`nonceNum: ${nonceNum} type: ${typeof nonceNum}`);
+                    // console.log(`nonceString: ${nonceString} type: ${typeof nonceString}`);
+                    // console.log(`randomString: ${randomString}`);
+                    // console.log(`currentUUID: ${currentUUID}`);
+                    setAuthentication(currentUUID === dataObj.UUID);
+                }else{
+                    alert("Invalid Data. Wrong Properties");
+                    setAuthentication(false);
+                }
+            }else{
+                alert("Invalid Data. The data is not JSON");
+                setAuthentication(false);
+                console.log(data);
             }
         }
 
