@@ -4,6 +4,8 @@ import { Text, View, Alert } from 'react-native';
 import styles from './style';
 import Mybutton from '../components/mybutton';
 import postData from '../functions/postData';
+import isJson from '../functions/isJson';
+import hasProperties from '../functions/hasProperties';
 
 export default function newTransaction({ navigation, route }){
 
@@ -12,11 +14,7 @@ export default function newTransaction({ navigation, route }){
     const user_id = productData.user_id;
     const loc = productData.loc;
     const time = productData.time;
-
-    // const{data} = route.params;
-    // const{user_id} = route.params;
-    // const{loc} = route.params;
-    // const{time} = route.params;
+    const[dataObj, setDataObj] = useState(null);
     const[locationText, setLocationText] = useState(null);
     const[scanText, setScanText] = useState(null);
     const[userText, setUserText] = useState(null);
@@ -28,10 +26,25 @@ export default function newTransaction({ navigation, route }){
         let loading = true;
         const url = 'http://62.171.181.137/transactions/new';
 
+        async function confirmData(){
+            if(isJson(data)){
+                let json = await JSON.parse(data);
+                let arrProps = ["UUID", "dateOfExpiry", "dateOfManufacture", "description", "manufacturer", "name", "nonce", "profileId"];
+                if(hasProperties(arrProps,json)){
+                    setDataObj(json);
+                }else{
+                    setLoadingText("Invalid Data. Wrong Properties");
+                }
+            }else{
+                setLoadingText("Invalid Data. The data is not JSON");
+            }
+        }
+
         async function confirmDetails(){
+            await confirmData();
             if(user_id){
                 if(loc){
-                    if(data){
+                    if(dataObj){
                         if(time){
                             return true;
                         }else{
@@ -39,7 +52,7 @@ export default function newTransaction({ navigation, route }){
                             return false;
                         }
                     }else{
-                        alert('Product is not set');
+                        alert('Invalid Product Data');
                         return false;
                     }
                 }else{
@@ -59,7 +72,6 @@ export default function newTransaction({ navigation, route }){
                     if(status === false){
                         alert('Cannot create transaction at this time');
                     }else{
-                        let dataObj = JSON.parse(data);
                         let tx = {
                             user:user_id,
                             location:loc,
