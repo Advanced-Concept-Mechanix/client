@@ -9,8 +9,6 @@ export default function productDetails(){
 
     const productData = global.PRODUCTDATA;
     const data = productData.data;
-    //const{data} = route.params;
-    // const dataObj = JSON.parse(data);
     const[dataObj, setDataObj] = useState(null);
     const[loadingText, setLoadingText] = useState('Loading Product Details...');
 

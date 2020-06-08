@@ -13,6 +13,8 @@ export default function newTransaction({ navigation, route }){
     const data = productData.data;
     const user_id = productData.user_id;
     const loc = productData.loc;
+    console.log(loc);
+    console.log(`product data: ${data}`);
     const time = productData.time;
     const[dataObj, setDataObj] = useState(null);
     const[locationText, setLocationText] = useState(null);
@@ -30,43 +32,68 @@ export default function newTransaction({ navigation, route }){
             if(isJson(data)){
                 let json = await JSON.parse(data);
                 let arrProps = ["UUID", "dateOfExpiry", "dateOfManufacture", "description", "manufacturer", "name", "nonce", "profileId"];
+                let locProps = ["latitude", "longitude"];
                 if(hasProperties(arrProps,json)){
+                    console.log(`product data is okay`);
                     setDataObj(json);
-                }else{
-                    setLoadingText("Invalid Data. Wrong Properties");
-                }
-            }else{
-                setLoadingText("Invalid Data. The data is not JSON");
-            }
-        }
-
-        async function confirmDetails(){
-            await confirmData();
-            if(user_id){
-                if(loc){
-                    if(dataObj){
-                        if(time){
-                            return true;
+                    if(user_id){
+                        if(hasProperties(locProps, loc)){
+                            console.log(`location props okay`);
+                            if(time){
+                                return true;
+                            }else{
+                                alert('Timestamp is not set');
+                                return false;
+                            }
                         }else{
-                            alert('Timestamp is not set');
+                            alert('Invalid Location Data');
                             return false;
                         }
                     }else{
-                        alert('Invalid Product Data');
+                        alert('User is not set');
                         return false;
                     }
                 }else{
-                    alert('Location is not set');
+                    setLoadingText("Invalid Data. Wrong Properties");
                     return false;
                 }
             }else{
-                alert('User is not set');
+                setLoadingText("Invalid Data. The data is not JSON");
                 return false;
             }
         }
 
+        // async function confirmDetails(){
+        //     let locProps = ["latitude", "longitude"];
+        //     await confirmData()
+        //     .then(async(status) =>{
+        //         if(status === false){
+        //             alert("Invalid Product Data");
+        //             return false;
+        //         }else{
+        //             if(user_id){
+        //                 if(hasProperties(locProps, loc)){
+        //                     console.log(`location props okay`);
+        //                     if(time){
+        //                         return true;
+        //                     }else{
+        //                         alert('Timestamp is not set');
+        //                         return false;
+        //                     }
+        //                 }else{
+        //                     alert('Location is not set');
+        //                     return false;
+        //                 }
+        //             }else{
+        //                 alert('User is not set');
+        //                 return false;
+        //             }
+        //         }
+        //     })
+        // }
+
         async function createTx(){
-            await confirmDetails()
+            await confirmData()
             .then(async(status) => {
                 if(loading){
                     if(status === false){
@@ -86,7 +113,7 @@ export default function newTransaction({ navigation, route }){
                                 //console.log('Success:', data);
                                 if(loading){
                                     setScanText(`Product: ${data.transaction.product}`);
-                                    setLocationText(`Location: ${data.transaction.location}`);
+                                    setLocationText(`Latitude: ${data.transaction.location.latitude}, Longitude: ${data.transaction.location.longitude}`);
                                     setUserText(`User: ${data.transaction.user}`);
                                     setTimeText(`Created At: ${data.transaction.createdAt}`);
                                     setHashText(`Hash: ${data.transaction.hash}`);

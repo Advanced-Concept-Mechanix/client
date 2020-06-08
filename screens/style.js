@@ -1,5 +1,5 @@
 import {
-    StyleSheet,
+    StyleSheet, Dimensions
 } from 'react-native';
 import colors from '../config/colors';
 
@@ -31,7 +31,11 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         textAlign: 'center'
-    }
+    },
+    mapStyle: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
   });
 
   export default styles;

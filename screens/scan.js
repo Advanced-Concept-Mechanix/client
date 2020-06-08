@@ -7,6 +7,10 @@ import styles from './style';
 import Mybutton from '../components/mybutton';
 import store from '../functions/store';
 
+import postData from '../functions/postData';
+import isJson from '../functions/isJson';
+import hasProperties from '../functions/hasProperties';
+
 export default function scan({ navigation }){
     
     const[scanned, setScanned] = useState(false);
@@ -111,7 +115,10 @@ export default function scan({ navigation }){
                             let time = loc.timestamp;
                             //console.log(typeof lat);
                             //console.log(typeof lon);
-                            setLocation(`${lat}, ${lon}`);
+                            setLocation({
+                                latitude:lat,
+                                longitude:lon
+                            });
                             setTimestamp(time);
                         }
                     })
@@ -138,7 +145,7 @@ export default function scan({ navigation }){
         if(!user)setUser(true);
     }
 
-    const handleBarCodeScanned = ({ type, data }) => {
+    const handleBarCodeScanned = async({ type, data }) => {
         setScanned(true);
         global.PRODUCTDATA = {
             data:data, 
@@ -146,7 +153,68 @@ export default function scan({ navigation }){
             loc:location, 
             time:timestamp
         }
-        navigation.navigate('scanningNav');
+        let url = 'http://62.171.181.137/transactions/new';
+        if(isJson(data)){
+            let json = await JSON.parse(data);
+            let prodProps = ["UUID", "dateOfExpiry", "dateOfManufacture", "description", "manufacturer", "name", "nonce", "profileId"];
+            let locProps = ["latitude", "longitude"];
+            if(hasProperties(prodProps,json)){
+                console.log(`product props okay`);
+                if(hasProperties(locProps, location)){
+                    console.log(`location props okay`);
+                    let tx = {
+                        user:user,
+                        location:location,
+                        product:json.UUID,
+                        createdAt:timestamp
+                    }
+
+                    await postData(url, tx)
+                        .then(async(response) => {
+                            if(response.ok){
+                                let data = await response.json();
+                                //console.log('Success:', data);
+                                Alert.alert(
+                                    'Success',
+                                    'Transaction Created',
+                                    [
+                                        {
+                                            text: 'Ok',
+                                            onPress: () => navigation.navigate('scanningNav'),
+                                        },
+                                    ],
+                                    { cancelable: false }
+                                );
+                                
+                            }else{
+                                let data = await response.json();
+                                console.log('Failure:', data);
+                                Alert.alert(
+                                    'Failure',
+                                    data.message,
+                                    [
+                                        {
+                                            text: 'Ok',
+                                            //onPress: () => navigation.navigate('Scan'),
+                                        },
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                }else{
+                    setLoadingText("Invalid Location Data. Wrong Properties");
+                }
+            }else{
+                setLoadingText("Invalid Data. Wrong Properties");
+            }
+        }else{
+            setLoadingText("Invalid Data. The data is not JSON");
+        }
+        //navigation.navigate('scanningNav');
         //navigation.navigate('scanningNav', {data:data, user_id:user, loc:location, time:timestamp})
     };
 

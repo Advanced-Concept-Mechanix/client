@@ -13,6 +13,8 @@ import productDetails from '../screens/productDetails';
 import scan from '../screens/scan';
 import myProductsCreate from '../screens/myProductsCreate';
 import authentic from '../screens/authenticate';
+import singleProduct from '../screens/singleProduct';
+import productJourney from '../screens/productJourney';
 
 function LogoTitle() {
     return (
@@ -71,10 +73,10 @@ function scanningNav(){
             }}
             />
             <scanningTab.Screen 
-            name="newTransaction"
-            component={newTransaction}
+            name="productJourney"
+            component={productJourney}
             options={{
-                tabBarLabel: 'Transaction',
+                tabBarLabel: 'Journey',
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="shield-airplane" color={color} size={size} />
                 ),
