@@ -1,7 +1,3 @@
-const hasProperties = (arr, obj) => {
-    if (arr.every(function(x) { return x in obj; }));
-}
-
 const checkProps = (arr, obj) => {
     for(i = 1; i < arr.length; i++){
         if(!(arr[i] in obj)){
@@ -12,5 +8,4 @@ const checkProps = (arr, obj) => {
     return true;
 }
 
-//export default hasProperties;
 export default checkProps;

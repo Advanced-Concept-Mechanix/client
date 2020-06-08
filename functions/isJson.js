@@ -15,7 +15,6 @@ const CheckJson = (str) => {
         }else{
             return true;
         }
-        //return (typeof json === 'object' && json !== null);
     } catch (e) {
         console.log('Parsing Error');
         return false;
