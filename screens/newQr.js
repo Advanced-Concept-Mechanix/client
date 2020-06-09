@@ -185,7 +185,7 @@ export default function createQr({ route }){
                 onChangeText={(qrNum) => setQrNum(qrNum)}
                 />
                 <Mybutton
-                title='Generate Data'
+                title='Create'
                 customClick={getQrData}
                 />
             </View>
@@ -210,6 +210,10 @@ export default function createQr({ route }){
                     </TouchableOpacity> 
                 } 
                 keyExtractor={(item) => item.UUID}
+                />
+                <Mybutton
+                title='Create Again'
+                customClick={() => setQrList([])}
                 />
             </View>
         );
