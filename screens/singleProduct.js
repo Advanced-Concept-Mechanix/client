@@ -106,7 +106,10 @@ export default function SingleProduct({navigation, route}){
                             <Text>Id: {item._id}</Text>
                             <Text>Timestamp: {item.createdAt}</Text>
                             <Text>Creator: {item.user}</Text>
-                            <Text>Location: {item.location}</Text>
+                            <View>
+                                <Text>Latitude: {item.location.latitude}</Text>
+                                <Text>Longitude: {item.location.longitude}</Text>
+                            </View>
                             <Text>Hash: {item.hash}</Text>
                         </View>
                     </TouchableOpacity> 

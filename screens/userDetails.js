@@ -78,6 +78,7 @@ export default function userDetails({ navigation }){
                 <TouchableOpacity>
                     <View style={{ backgroundColor: 'white', padding: 20 }}>
                         <Text>Id: {user.id}</Text>
+                        <Text>Name: {user.name}</Text>
                         <Text>Email: {user.email}</Text>
                         <Text>Phone: {user.phone}</Text>
                         <Text>Company: {user.company}</Text>
@@ -87,10 +88,6 @@ export default function userDetails({ navigation }){
                         <Mybutton
                         title='Update User'
                         customClick={() => navigation.navigate('updateUser')}
-                        />
-                        <Mybutton
-                        title='Generate Keys'
-                        customClick={() => navigation.navigate('masterKeys')}
                         />
                         <Mybutton
                         title='logout'

@@ -37,7 +37,7 @@ export default function scan({ navigation }){
                         alert('Please login first');
                         setUser(null)
                     }else{
-                        setUser(user.id);
+                        setUser(user.name);
                         global.User = user;
                     }
                 });
