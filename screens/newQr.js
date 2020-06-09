@@ -11,8 +11,6 @@ import {
     FlatList
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Dropdown } from 'react-native-material-dropdown';
-import {Picker} from '@react-native-community/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import styles from './style';
 import QRCode from 'react-native-qrcode-svg';
@@ -156,15 +154,6 @@ export default function createQr({ route }){
             alert('Products were not added!');
         }
         
-    }
-
-    const pickers = () => {
-        return products.map((product) => 
-            <Picker.item 
-            label={product.label}
-            value={product.value}
-            />
-        );
     }
 
     ListViewItemSeparator = () => {
