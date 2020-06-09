@@ -53,7 +53,14 @@ export default function createQr({ route }){
 
                     if(loading){
                         console.log(data.products);
-                        let productArr = [];
+                        let productArr = [
+                            {
+                                label:"Please select a profile",
+                                value:"Select Profile",
+                                selected: true,
+                                disabled: true
+                            }
+                        ];
                         for(i=0;i<data.products.length;i++){
                             let itemObj = {
                                 label:data.products[i].name,
@@ -173,11 +180,14 @@ export default function createQr({ route }){
             <View style={styles.container}>
                 <DropDownPicker
                     items={products}
-                    defaultValue={products[0].value}
+                    //defaultValue={products[0].value}
                     containerStyle={{height: 40}}
                     style={{backgroundColor: '#fafafa'}}
                     dropDownStyle={{backgroundColor: '#fafafa'}}
                     onChangeItem={item => setSelectedProduct(item.value)}
+                    searchable={true}
+                    searchablePlaceholder="Search..."
+                    searchableError="Not Found"
                 />
                 <Mytextinput
                 placeholder={'Enter number of qr codes'}
