@@ -180,7 +180,6 @@ export default function createQr({ route }){
             <View style={styles.container}>
                 <DropDownPicker
                     items={products}
-                    //defaultValue={products[0].value}
                     containerStyle={{height: 40}}
                     style={{backgroundColor: '#fafafa'}}
                     dropDownStyle={{backgroundColor: '#fafafa'}}
