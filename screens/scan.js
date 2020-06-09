@@ -206,13 +206,13 @@ export default function scan({ navigation }){
                             console.error('Error:', error);
                         });
                 }else{
-                    setLoadingText("Invalid Location Data. Wrong Properties");
+                    alert("Invalid Location Data. Wrong Properties");
                 }
             }else{
-                setLoadingText("Invalid Data. Wrong Properties");
+                alert("Invalid Data. Wrong Properties");
             }
         }else{
-            setLoadingText("Invalid Data. The data is not JSON");
+            alert("Invalid Data. The data is not JSON");
         }
         //navigation.navigate('scanningNav');
         //navigation.navigate('scanningNav', {data:data, user_id:user, loc:location, time:timestamp})

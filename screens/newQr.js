@@ -18,12 +18,7 @@ import Mybutton from '../components/mybutton';
 import hash from '../functions/hash';
 import postData from '../functions/postData';
 import convertNum from '../functions/convertNumToString';
-
-function addDays(days) {
-    var result = new Date();
-    result.setDate(result.getDate() + days);
-    return result;
-}
+import addDays from '../functions/addDays';
 
 export default function createQr({ route }){
 
@@ -56,6 +51,7 @@ export default function createQr({ route }){
                 UUID:await hash(item._id + item.manufacturer + randomString),
                 nonce:randomNum.toString().slice(2)
             }
+            console.log(_qrdata);
             await postData(url, _qrdata)
             .then(async(response) => {
                 if(response.ok){

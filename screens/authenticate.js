@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Text, View, Alert } from 'react-native';
+import { Text, View, Alert, Image } from 'react-native';
 
 import styles from './style';
 import hash from '../functions/hash';
@@ -60,10 +60,22 @@ export default function authentic({ navigation, route}){
                 <Text>{loadingText}</Text>
             </View>
         );
+    }else if(authentication === false){
+        return(
+            <View style={styles.container}>
+                <Text>{`Authentication: ${authentication.toString()}`}</Text>
+                <Image 
+                source={require("../assets/no.webp")}
+                />
+            </View>
+        );
     }else{
         return(
             <View style={styles.container}>
                 <Text>{`Authentication: ${authentication.toString()}`}</Text>
+                <Image 
+                source={require("../assets/ok.webp")}
+                />
             </View>
         );
     }

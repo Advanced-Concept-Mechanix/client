@@ -78,6 +78,10 @@ export default function myProductList({navigation, route}){
                     <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
 
                     <Text style={{ marginTop: 20}}>{loadingText}</Text>
+                    <Mybutton
+                    title='Update Profile'
+                    customClick={() => navigation.navigate('updateProduct', {product:item})}
+                    />
                 </View>
             </View>
         );
