@@ -30,13 +30,13 @@ const createQrStack = createStackNavigator();
 function createQrStackScreen(){
     return(
         <createQrStack.Navigator 
-        initialRouteName="myProductsCreate"
+        initialRouteName="newQr"
         screenOptions={{
             headerTitleStyle: styles.title,
             // headerTitle: props => <LogoTitle {...props} />
         }}
         >
-            <createQrStack.Screen name="myProductsCreate" component={myProductsCreate} options={{ title: 'Product Profiles'}}/>
+            {/* <createQrStack.Screen name="myProductsCreate" component={myProductsCreate} options={{ title: 'Product Profiles'}}/> */}
             <createQrStack.Screen name="newQr" component={newQr} options={{ title: 'Create'}}/>
         </createQrStack.Navigator>
     );

@@ -92,7 +92,7 @@ export default function newProduct({ navigation }){
                 <KeyboardAvoidingView
                 behavior="padding"
                 style={{ flex: 1, justifyContent: 'space-between' }}>
-                    <MyText text='Enter Details to Create Product'/>
+                    <MyText text='Enter Details to Create Product Profile'/>
                     <MyTextInput
                     placeholder="Enter name"
                     onChangeText={(name) => setName(name)}

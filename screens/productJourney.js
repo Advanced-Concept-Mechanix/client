@@ -83,8 +83,8 @@ export default function SingleProduct({navigation, route}){
             <Marker
             key={transaction._id}
             coordinate={{ latitude: transaction.location.latitude, longitude: transaction.location.longitude }}
-            title={transaction.createdAt}
-            description={transaction.user}
+            title={transaction.user}
+            description={transaction.createdAt}
             >
             </Marker >
         );

@@ -11,6 +11,9 @@ import {
     FlatList
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Dropdown } from 'react-native-material-dropdown';
+import {Picker} from '@react-native-community/picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import styles from './style';
 import QRCode from 'react-native-qrcode-svg';
 import Mytextinput from '../components/mytextinput';
@@ -19,15 +22,74 @@ import hash from '../functions/hash';
 import postData from '../functions/postData';
 import convertNum from '../functions/convertNumToString';
 import addDays from '../functions/addDays';
+import getData from '../functions/getData';
 
 export default function createQr({ route }){
 
-    const{item} = route.params;
     const url = 'http://62.171.181.137/createProducts/new';
     const[qrNum, setQrNum] = useState(0);
     const[qrList, setQrList] = useState([]);
     const[qrSize, setQrSize] = useState(200);
     const qrDataSet = [];
+
+    const user = global.User;
+    const[products, setProducts] = useState([]);
+    const[loadingText, setLoadingText] = useState('Loading products...');
+    const[selectedProduct, setSelectedProduct] = useState('select a profile');
+
+    //usEffect to get url and fetch products
+    useEffect(() => {
+
+        let loading = true;
+
+        async function fetchData(){
+            await getData(`http://62.171.181.137/products/${user.id}`)
+            .then(async(response) => {
+                if(response.ok){
+                    //console.log(response);
+                    let data = await response.json();
+                    //console.log(data);
+                    if(data.products.length === 0){
+                        setLoadingText('No Products Found!');
+                    }
+
+                    if(loading){
+                        console.log(data.products);
+                        let productArr = [];
+                        for(i=0;i<data.products.length;i++){
+                            let itemObj = {
+                                label:data.products[i].name,
+                                value:data.products[i]
+                            }
+                            productArr.push(itemObj);
+                        }
+                        console.log(productArr);
+                        setProducts(productArr);
+                    }
+                }else{
+                    let data = await response.json();
+                    console.log('Failure: ', data);
+                    Alert.alert(
+                        'Failed',
+                        data.message,
+                        [
+                            {
+                                text: 'Ok'
+                            },
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            })
+        }
+
+        fetchData();
+
+        return () => {
+            loading = false;
+        };
+    }, [user]);
+
 
     const getQrData = async() => {
         if(qrNum === 0){
@@ -35,20 +97,16 @@ export default function createQr({ route }){
         }
         let count = 0;
         for(i = 1; i <= qrNum; i++){
-            //let randomString = await generateRandomString();
-            // let randomNum = Math.floor((Math.random()*100000000) + 1);
             let randomNum = Math.random();
             let randomString = convertNum(randomNum);
-            // console.log(`randomNum: ${randomNum}`);
-            // console.log(`randomString: ${randomString}`);
             let _qrdata = {
-                profileId:item._id,
-                name:item.name,
-                description:item.description,
-                manufacturer:item.manufacturer,
+                profileId:selectedProduct._id,
+                name:selectedProduct.name,
+                description:selectedProduct.description,
+                manufacturer:selectedProduct.manufacturer,
                 dateOfManufacture:new Date(),
-                dateOfExpiry: addDays(item.daysBeforeExpiry),
-                UUID:await hash(item._id + item.manufacturer + randomString),
+                dateOfExpiry: addDays(selectedProduct.daysBeforeExpiry),
+                UUID:await hash(selectedProduct._id + selectedProduct.manufacturer + randomString),
                 nonce:randomNum.toString().slice(2)
             }
             console.log(_qrdata);
@@ -100,15 +158,38 @@ export default function createQr({ route }){
         
     }
 
+    const pickers = () => {
+        return products.map((product) => 
+            <Picker.item 
+            label={product.label}
+            value={product.value}
+            />
+        );
+    }
+
     ListViewItemSeparator = () => {
         return (
             <View style={{ height: 0.5, width: '100%', backgroundColor: '#000' }} />
         );
     };
 
-    if(qrList.length === 0){
+    if(products.length === 0){
         return(
             <View style={styles.container}>
+                <Text>{loadingText}</Text>
+            </View>
+        );
+    }else if(qrList.length === 0){
+        return(
+            <View style={styles.container}>
+                <DropDownPicker
+                    items={products}
+                    defaultValue={products[0].value}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeItem={item => setSelectedProduct(item.value)}
+                />
                 <Mytextinput
                 placeholder={'Enter number of qr codes'}
                 keyboardType="numeric"
@@ -146,186 +227,3 @@ export default function createQr({ route }){
     }
 }
 
-// useEffect(() => {
-
-    //     getDataURL();
-
-    // }, [getDataURL]);
-
-    // // const print = () => {
-    // //     Print.printAsync({
-    // //       html: `
-    // //          <img src="data:image/jpeg;base64,${qrData}"/>
-    // //        `
-    // //     });
-    // // }
-
-    // const getDataURL = () => {
-
-    //     svg.toDataURL(callback);
-
-    // }
-
-
-    // const callback = (dataURL) => {
-
-    //     console.log(dataURL);
-    //     setQrData(dataURL);
-
-    // }
-
-    // export default function createQr({ route }){
-
-    //     const{item} = route.params;
-    //     const url = 'http://62.171.181.137/createProducts/new';
-    //     console.log(item);
-    //     const[qrText, setQrText] = useState('change me');
-    //     const[qrTextHolder, setQrTextHolder] = useState('');
-    //     const[qrNum, setQrNum] = useState(0);
-    //     const[qrList, setQrList] = useState([]);
-    //     const[qrSize, setQrSize] = useState(200);
-    //     // const[qrData, setQrData] = useState([]);
-    //     const qrDataSet = [];
-    
-    //     const getQrData = async() => {
-    //         if(qrNum === 0){
-    //             alert('Please set a number!');
-    //         }
-    //         let count = 0;
-    //         //setUpdate(true);
-    //         for(i = 1; i <= qrNum; i++){
-    //             //let _qrdata = new QrData(item);
-    //             let randomNumString = Math.floor((Math.random()*100000000) + 1).toString();
-    //             let _qrdata = {
-    //                 profileId:item._id,
-    //                 name:item.name,
-    //                 description:item.description,
-    //                 manufacturer:item.manufacturer,
-    //                 dateOfManufacture:new Date(),
-    //                 dateOfExpiry: addDays(item.daysBeforeExpiry),
-    //                 UUID:await hash(item._id + item.manufacturer + new Date() + randomNumString)
-    //             }
-    //             await postData(url, _qrdata)
-    //             .then(async(response) => {
-    //                 if(response.ok){
-    //                     count++;
-    //                     let data = await response.json();
-    //                     console.log('Success:', data);
-    //                 }else{
-    //                     let data = await response.json();
-    //                     console.log('Failure:', data);
-    //                     Alert.alert(
-    //                         'Failure',
-    //                         data.message,
-    //                         [
-    //                             {
-    //                                 text: 'Ok',
-    //                                 //onPress: () => navigation.navigate('login'),
-    //                             },
-    //                         ],
-    //                         { cancelable: false }
-    //                     );
-    //                 }
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error:', error);
-    //             });
-    //             qrDataSet.push(_qrdata);
-    //         }
-    //         // console.log(qrDataSet);
-    //         // console.log(`data length: ${qrDataSet.length}`);
-    //         // console.log(`qrNum: ${qrNum}`);
-    //         // console.log((qrDataSet.length == qrNum).toString());
-    //         // console.log(typeof qrDataSet.length + ' ' + typeof qrNum);
-    //         if(count == qrNum){
-    //             setQrList([...qrDataSet]);
-    //             console.log(qrDataSet);
-    //             Alert.alert(
-    //                 'Success',
-    //                 'Qr data successfully added',
-    //                 [
-    //                     {
-    //                         text: 'Ok',
-    //                         onPress: () => qrDataSet.length =  0,
-    //                     },
-    //                 ],
-    //                 { cancelable: false }
-    //             );
-    //         }else{
-    //             qrDataSet.length =  0;
-    //             alert('Products were not added!');
-    //         }
-            
-    //     }
-    
-    //     const handleChange = () => {
-    
-    //         setQrText(qrTextHolder);
-    
-    //     }
-    
-    //     ListViewItemSeparator = () => {
-    //         return (
-    //             <View style={{ height: 0.5, width: '100%', backgroundColor: '#000' }} />
-    //         );
-    //     };
-    
-    //     if(qrList.length === 0){
-    //         return(
-    //             <View style={styles.container}>
-    //                 <QRCode 
-    //                     value={qrText}
-    //                     logo={require('../assets/logo.png')}
-    //                     ecl='H'
-    //                     getRef={(c) => svg = c}
-    //                 />
-    //                 <Mytextinput
-    //                 value={qrTextHolder}
-    //                 placeholder={'Enter text for Qr code'}
-    //                 //onChangeText={(qrText) => setQrText(qrText)}
-    //                 onChangeText={(qrTextHolder) => setQrTextHolder(qrTextHolder)}
-    //                 />
-    //                 <Mybutton
-    //                 title='Create'
-    //                 customClick={handleChange}
-    //                 />
-    //                 <Mytextinput
-    //                 placeholder={'Enter number of qr codes'}
-    //                 keyboardType="numeric"
-    //                 onChangeText={(qrNum) => setQrNum(qrNum)}
-    //                 />
-    //                 <Mybutton
-    //                 title='Generate Data'
-    //                 customClick={getQrData}
-    //                 />
-    //                 {/* <Mybutton
-    //                 title='Print'
-    //                 customClick={print}
-    //                 /> */}
-    //             </View>
-    //         );
-    //     }else{
-    //         return(
-    //             <View style={styles.container}>
-    //                 <Text>List of QR Codes</Text>
-    //                 <FlatList 
-    //                 data={qrList}
-    //                 ItemSeparatorComponent={ListViewItemSeparator}
-    //                 renderItem={({ item }) =>
-    //                     <TouchableOpacity>
-    //                         <View style={{ backgroundColor: 'white', padding: 20 }}>
-    //                             <QRCode 
-    //                                 value={JSON.stringify(item)}
-    //                                 //logo={require('../assets/logo.png')}
-    //                                 ecl='M'
-    //                                 size={qrSize}
-    //                             />
-    //                         </View>
-    //                     </TouchableOpacity> 
-    //                 } 
-    //                 keyExtractor={(item) => item.UUID}
-    //                 />
-    //             </View>
-    //         );
-    //     }
-    // }
