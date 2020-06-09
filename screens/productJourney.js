@@ -20,6 +20,8 @@ import hasProperties from '../functions/hasProperties';
 export default function SingleProduct({navigation, route}){
     const productData = global.PRODUCTDATA;
     const data = productData.data;
+    const loc = productData.loc;
+    console.log(loc);
     const[transactions, setTransactions] = useState([]);
     const[loadingText, setLoadingText] = useState('Loading Transactions...');
 
@@ -105,7 +107,12 @@ export default function SingleProduct({navigation, route}){
             <View style={styles.container}>
                 <MapView
                     style={{ ...StyleSheet.absoluteFillObject }}
-                    >
+                    initialRegion={{
+                        latitude: loc.latitude,
+                        longitude: loc.longitude,
+                        latitudeDelta: .005,
+                        longitudeDelta: .005
+                    }} >
                     {mapViewMarkers()}
                 </MapView>
             </View>

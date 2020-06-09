@@ -147,12 +147,6 @@ export default function scan({ navigation }){
 
     const handleBarCodeScanned = async({ type, data }) => {
         setScanned(true);
-        global.PRODUCTDATA = {
-            data:data, 
-            user_id:user, 
-            loc:location, 
-            time:timestamp
-        }
         let url = 'http://62.171.181.137/transactions/new';
         if(isJson(data)){
             let json = await JSON.parse(data);
@@ -162,6 +156,12 @@ export default function scan({ navigation }){
                 console.log(`product props okay`);
                 if(hasProperties(locProps, location)){
                     console.log(`location props okay`);
+                    global.PRODUCTDATA = {
+                        data:data, 
+                        user_id:user, 
+                        loc:location, 
+                        time:timestamp
+                    }
                     let tx = {
                         user:user,
                         location:location,
