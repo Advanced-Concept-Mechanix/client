@@ -33,7 +33,7 @@ export default function createQr({ route }){
     const user = global.User;
     const[products, setProducts] = useState([]);
     const[loadingText, setLoadingText] = useState('Loading products...');
-    const[selectedProduct, setSelectedProduct] = useState('select a profile');
+    const[selectedProduct, setSelectedProduct] = useState(null);
 
     //usEffect to get url and fetch products
     useEffect(() => {
@@ -53,14 +53,15 @@ export default function createQr({ route }){
 
                     if(loading){
                         console.log(data.products);
-                        let productArr = [
-                            {
-                                label:"Please select a profile",
-                                value:"Select Profile",
-                                selected: true,
-                                disabled: true
-                            }
-                        ];
+                        // let productArr = [
+                        //     {
+                        //         label:"Please select a profile",
+                        //         value:"Select Profile",
+                        //         selected: true,
+                        //         disabled: true
+                        //     }
+                        // ];
+                        let productArr = [];
                         for(i=0;i<data.products.length;i++){
                             let itemObj = {
                                 label:data.products[i].name,
@@ -179,6 +180,8 @@ export default function createQr({ route }){
         return(
             <View style={styles.container}>
                 <DropDownPicker
+                    defaultValue={selectedProduct}
+                    placeholder="Select a Profile"
                     items={products}
                     containerStyle={{height: 40}}
                     style={{backgroundColor: '#fafafa'}}
@@ -222,7 +225,11 @@ export default function createQr({ route }){
                 />
                 <Mybutton
                 title='Create Again'
-                customClick={() => setQrList([])}
+                customClick={() => {
+                    setQrList([]);
+                    setSelectedProduct(null);
+                }
+                }
                 />
             </View>
         );
