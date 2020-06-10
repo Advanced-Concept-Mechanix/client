@@ -94,7 +94,8 @@ export default function newUser({ navigation }){
     const storeSecurity = async () => {
         let securityQuestion = {
             question:question,
-            answer:answer}
+            answer:answer.toLowerCase()
+        }
         return await store('security', securityQuestion);
     }
 

@@ -123,7 +123,7 @@ export default function updatePassword({ navigation, route }){
                         <Text>Please answer: {question}</Text>
                         <MyTextInput
                         placeholder="Enter Answer"
-                        onChangeText={(answer) => setAnswer(answer)}
+                        onChangeText={(answer) => setAnswer(answer.toLowerCase())}
                         />
                         <MyButton
                         title="Check"
