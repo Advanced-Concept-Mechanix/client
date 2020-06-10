@@ -116,49 +116,41 @@ export default function updatePassword({ navigation, route }){
     if(permission === false){
         return(
             <View style={styles.container}>
-                <ScrollView keyboardShouldPersistTaps="handled">
-                    <KeyboardAvoidingView
-                    behavior="padding"
-                    style={{ flex: 1, justifyContent: 'space-between' }}>
-                        <Text>Please answer: {question}</Text>
-                        <MyTextInput
-                        placeholder="Enter Answer"
-                        onChangeText={(answer) => setAnswer(answer.toLowerCase())}
-                        />
-                        <MyButton
-                        title="Check"
-                        customClick={updatePermission}
-                        />
-                        <MyButton
-                        title="Go Back"
-                        customClick={() => navigation.goBack()}
-                        />
-                    </KeyboardAvoidingView>
-                </ScrollView>
+                <View style={{ flex: 1, justifyContent: 'center'}}>
+                    <Text>{question}</Text>
+                    <MyTextInput
+                    placeholder="Enter Answer"
+                    onChangeText={(answer) => setAnswer(answer.toLowerCase())}
+                    />
+                    <MyButton
+                    title="Check"
+                    customClick={updatePermission}
+                    />
+                    <MyButton
+                    title="Go Back"
+                    customClick={() => navigation.goBack()}
+                    />
+                </View>
             </View>
         );
     }else{
         return(
             <View style={styles.container}>
-                <ScrollView keyboardShouldPersistTaps="handled">
-                    <KeyboardAvoidingView
-                    behavior="padding"
-                    style={{ flex: 1, justifyContent: 'space-between' }}>
-                        <MyText text="Enter Password to Update Password"/>
-                        <MyTextInput
-                        placeholder="Enter password"
-                        onChangeText={(password) => setPassword(password)}
-                        />
-                        <MyButton
-                        title="Update"
-                        customClick={registerUpdate}
-                        />
-                        <MyButton
-                        title="Go Back"
-                        customClick={() => navigation.goBack()}
-                        />
-                    </KeyboardAvoidingView>
-                </ScrollView>
+                    <View style={{ flex: 1, justifyContent: 'center'}}>
+                    <MyText text="Enter Password to Update Password"/>
+                    <MyTextInput
+                    placeholder="Enter password"
+                    onChangeText={(password) => setPassword(password)}
+                    />
+                    <MyButton
+                    title="Update"
+                    customClick={registerUpdate}
+                    />
+                    <MyButton
+                    title="Go Back"
+                    customClick={() => navigation.goBack()}
+                    />
+                </View>
             </View>
         );
     }
