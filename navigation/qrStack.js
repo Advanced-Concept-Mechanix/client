@@ -15,6 +15,7 @@ import myProductsCreate from '../screens/myProductsCreate';
 import authentic from '../screens/authenticate';
 import singleProduct from '../screens/singleProduct';
 import productJourney from '../screens/productJourney';
+import login from '../screens/login';
 
 function LogoTitle() {
     return (
@@ -97,6 +98,7 @@ function scanStackScreen(){
         }}
         >
             <scanStack.Screen name="scan" component={scan} options={{ title: 'Scan'}}/>
+            <scanStack.Screen name="login" component={login} options={{ title: 'Login'}}/>
             <scanStack.Screen name="scanningNav" component={scanningNav} options={{ title: 'Scanning Results'}}/>
         </scanStack.Navigator>
     );

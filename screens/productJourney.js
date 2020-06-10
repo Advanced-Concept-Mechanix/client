@@ -79,12 +79,13 @@ export default function SingleProduct({navigation, route}){
     }, [data]);
 
     const mapViewMarkers = () => {
+        //console.log(transactions);
         return transactions.map((transaction) => 
             <Marker
             key={transaction._id}
             coordinate={{ latitude: transaction.location.latitude, longitude: transaction.location.longitude }}
-            title={transaction.user}
-            description={transaction.createdAt}
+            title={`User: ${transaction.user}`}
+            description={`Timestamp: ${transaction.createdAt}`}
             >
             </Marker >
         );

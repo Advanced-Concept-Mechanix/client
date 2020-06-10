@@ -48,6 +48,7 @@ const Mytextinput = forwardRef((props,ref) => {
         value={props.value}
         ref={textInputRef}
         secureTextEntry={props.secureTextEntry}
+        maxLength={props.maxLength}
       />
       <Text style={styles.errorText}>{props.error || ""}</Text>
     </View>

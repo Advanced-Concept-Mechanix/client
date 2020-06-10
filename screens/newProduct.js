@@ -105,6 +105,7 @@ export default function newProduct({ navigation }){
                     placeholder="Enter number of days before expiry"
                     onChangeText={(daysBeforeExpiry) => setDaysBeforeExpiry(daysBeforeExpiry)}
                     keyboardType="numeric"
+                    maxLength={5}
                     />
                     <MyButton
                     title="Create"

@@ -14,17 +14,73 @@ import MyTextInput from '../components/mytextinput';
 import styles from './style';
 import postData from '../functions/postData';
 import store from '../functions/store';
+import MyDropDown from '../components/myDropDown'
+import DropDownPicker from 'react-native-dropdown-picker';
+import { set } from 'react-native-reanimated';
+import metrics from '../config/metrics';
 
 export default function newUser({ navigation }){
 
-    const[name, setName] = useState('');
-    const[password, setPassword] = useState('');
-    const[email, setEmail] = useState('');
-    const[phone, setPhone] = useState(0);
-    const[company, setCompany] = useState('');
-    const[type, setType] = useState('manufacturer');
-    const[question, setQuestion] = useState('');
-    const[answer, setAnswer] = useState('');
+    const TYPES = [
+        {
+            "label":'Manufacturer',
+            "value":'manufacturer'
+        },
+        {
+            "label":'Distributor',
+            "value":'distributor'
+        },
+        {
+            "label":'Retailer',
+            "value":'retailer'
+        },
+        {
+            "label":'End-User',
+            "value":'end-user'
+        }
+    ];
+
+    const QUESTIONS = [
+        {
+            "label":"What was your childhood nickname?",
+            "value":"What was your childhood nickname?"
+        },
+        {
+            "label":"What is the name of your favorite childhood friend?",
+            "value":"What is the name of your favorite childhood friend?"
+        },
+        {
+            "label":"What is your oldest sibling's middle name?",
+            "value":"What is your oldest sibling's middle name?"
+        },
+        {
+            "label":"What is your oldest cousin's first name?",
+            "value":"What is your oldest cousin's first name?"
+        },
+        {
+            "label":"Which high school did you attend?",
+            "value":"Which high school did you attend?"
+        },
+        {
+            "label":"What is your maternal grandmother's maiden name?",
+            "value":"What is your maternal grandmother's maiden name?"
+        },
+        {
+            "label":"What was the name of your elementary / primary school?",
+            "value":"What was the name of your elementary / primary school?"
+        },
+    ]
+    //console.log(TYPES);
+
+    const[name, setName] = useState(null);
+    const[password, setPassword] = useState(null);
+    const[email, setEmail] = useState(null);
+    const[phone, setPhone] = useState(null);
+    const[company, setCompany] = useState(null);
+    const[type, setType] = useState(null);
+    const[question, setQuestion] = useState(null);
+    const[answer, setAnswer] = useState(null);
+    const[next, setNext] = useState(null);
 
     const clearState = () => {
         setName('')
@@ -124,13 +180,11 @@ export default function newUser({ navigation }){
         }
     }
 
-    return(
-        <View style={styles.container}>
-            <ScrollView keyboardShouldPersistTaps="handled">
-                <KeyboardAvoidingView
-                behavior="padding"
-                style={{ flex: 1, justifyContent: 'space-between' }}>
-                    <MyText text="Enter Details to Create Account"/>
+    if(!next){
+        return(
+            <View style={styles.container}>
+                <View style={{ flex: 1, justifyContent: 'space-around' }}>
+                    <MyText text="Account Details" style={{ zIndex: 1 }}/>
                     <MyTextInput
                     placeholder="Enter name"
                     onChangeText={(name) => setName(name)}
@@ -139,7 +193,7 @@ export default function newUser({ navigation }){
                     placeholder="Enter email address"
                     onChangeText={(email) => setEmail(email)}
                     />
-                     <MyTextInput
+                    <MyTextInput
                     placeholder="Enter phone number"
                     onChangeText={(phone) => setPhone(phone)}
                     maxLength={10}
@@ -154,31 +208,76 @@ export default function newUser({ navigation }){
                     placeholder="Enter the name of your company"
                     onChangeText={(company) => setCompany(company)}
                     />
-                    <Picker
-                    type={type}
-                    style={{ height: 50, width: 150 }}
-                    onValueChange={(itemValue, itemIndex) => setType(itemValue)}
-                    >
-                        <Picker.Item label="Manufacturer" value="manufacturer" />
-                        <Picker.Item label="Distributor" value="distributor" />
-                        <Picker.Item label="Retailer" value="retailer" />
-                        <Picker.Item label="End-User" value="end-user" />
-                    </Picker>
-                    <MyText text="Pleas provide a security question and answer to be used when resetting your password"/>
-                    <MyTextInput
-                    placeholder="Enter a security question"
-                    onChangeText={(question) => setQuestion(question)}
+                    <MyButton
+                    title="Next"
+                    customClick={() => setNext(true)}
+                    />
+                </View>
+            </View>
+        );
+    }else{
+        return(
+            <View style={styles.container}>
+                <View style={{ flex: 10, justifyContent: 'space-around' }}>
+                    <MyText text="Type and Password Settings"/>
+                    <DropDownPicker 
+                        defaultValue={type}
+                        placeholder="Select a Type"
+                        items={TYPES}
+                        onChangeItem={item => {
+                            console.log(item.value);
+                            setType(item.value);
+                            }
+                        }
+                        containerStyle={{
+                            height: 40,
+                            width: metrics.DEVICE_WIDTH * 0.8,
+                            alignItems: 'center'
+                        }}
+                        style={{backgroundColor: '#fafafa'}}
+                        dropDownStyle={{backgroundColor: '#fafafa'}}
+                        disabled={false}
+                        zIndex={2}
+                    />
+                    <DropDownPicker 
+                        defaultValue={question}
+                        placeholder="Select a Question"
+                        items={QUESTIONS}
+                        onChangeItem={item => {
+                            console.log(item.value);
+                            setQuestion(item.value);
+                            }
+                        }
+                        containerStyle={{
+                            height: 80,
+                            width: metrics.DEVICE_WIDTH * 0.8
+                        }}
+                        style={{backgroundColor: '#fafafa'}}
+                        dropDownStyle={{
+                            backgroundColor: '#fafafa',
+                            marginTop: 2,
+                            alignItems: 'center',
+                            height: metrics.DEVICE_HEIGHT * 0.5
+                        }}
+                        disabled={false}
+                        zIndex={1}
                     />
                     <MyTextInput
-                    placeholder="Enter the answer"
-                    onChangeText={(answer) => setAnswer(answer)}
+                        placeholder="Enter the answer"
+                        onChangeText={(answer) => setAnswer(answer)}
+                    />
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <MyButton
+                        title="Back"
+                        customClick={() => setNext(null)}
                     />
                     <MyButton
-                    title="Create"
-                    customClick={registerUser}
+                        title="Create"
+                        customClick={registerUser}
                     />
-                </KeyboardAvoidingView>
-            </ScrollView>
-        </View>
-    );
+                </View>
+            </View>
+        );
+    }
 }

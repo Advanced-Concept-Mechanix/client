@@ -34,7 +34,17 @@ export default function scan({ navigation }){
                 fetchUser()
                 .then((user) => {
                     if(!user){
-                        alert('Please login first');
+                        Alert.alert(
+                            'Login Failed',
+                            'Please login first',
+                            [
+                                {
+                                    text: 'Ok',
+                                    onPress: () => navigation.navigate('login'),
+                                },
+                            ],
+                            { cancelable: false }
+                        );
                         setUser(null)
                     }else{
                         setUser(user.name);

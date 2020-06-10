@@ -63,7 +63,7 @@ export default function authentic({ navigation, route}){
     }else if(authentication === false){
         return(
             <View style={styles.container}>
-                <Text>{`Authentication: ${authentication.toString()}`}</Text>
+                {/* <Text>{`Authentication: ${authentication.toString()}`}</Text> */}
                 <Image 
                 source={require("../assets/no.webp")}
                 />
@@ -72,7 +72,7 @@ export default function authentic({ navigation, route}){
     }else{
         return(
             <View style={styles.container}>
-                <Text>{`Authentication: ${authentication.toString()}`}</Text>
+                {/* <Text>{`Authentication: ${authentication.toString()}`}</Text> */}
                 <Image 
                 source={require("../assets/ok.webp")}
                 />

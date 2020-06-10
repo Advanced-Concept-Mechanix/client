@@ -52,7 +52,7 @@ export default function createQr({ route }){
                     }
 
                     if(loading){
-                        console.log(data.products);
+                        //console.log(data.products);
                         // let productArr = [
                         //     {
                         //         label:"Please select a profile",
