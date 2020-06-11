@@ -22,7 +22,11 @@ function myProductStackScreen(){
         }}
         >
             <myProductStack.Screen name="myProducts" component={myProducts} options={{ title: 'My Profiles'}}/>
-            <myProductStack.Screen name="myProductsList" component={myProductsList} options={{ title: 'Products List'}}/>
+            <myProductStack.Screen 
+            name="myProductsList" 
+            component={myProductsList} 
+            options={({ route }) => ({ title: route.params.item.name })}
+            />
             <myProductStack.Screen name="allProducts" component={allProducts} options={{ title: 'All Products'}}/>
             <myProductStack.Screen 
             name="singleProduct" 

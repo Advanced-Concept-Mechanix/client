@@ -39,7 +39,13 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-    }
+    },
+    item: {
+        backgroundColor: colors.SILVER,
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+    },
   });
 
   export default styles;

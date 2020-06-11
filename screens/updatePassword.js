@@ -177,6 +177,7 @@ export default function updatePassword({ navigation, route }){
         return(
             <View style={styles.container}>
                 <View style={{ flex: 1, justifyContent: 'center'}}>
+                    <Text>{email}</Text>
                     <Text>{question}</Text>
                     <MyTextInput
                     placeholder="Enter Answer"

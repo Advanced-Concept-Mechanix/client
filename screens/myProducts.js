@@ -11,6 +11,7 @@ import styles from './style';
 import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import store from '../functions/store';
+import MyList from '../components/myList';
 
 export default function myProducts({ navigation, route}){
 
@@ -107,8 +108,8 @@ export default function myProducts({ navigation, route}){
     }else{
         return(
             <View style={styles.container}>
-                <Text>List of My Products</Text>
-                <FlatList 
+                {/* <Text>List of My Products</Text> */}
+                {/* <FlatList 
                 data={products}
                 ItemSeparatorComponent={ListViewItemSeparator}
                 renderItem={({ item }) =>
@@ -126,6 +127,24 @@ export default function myProducts({ navigation, route}){
                     </TouchableOpacity> 
                 } 
                 keyExtractor={(item) => item._id}
+                /> */}
+                <MyList 
+                    data={products}
+                    keyExtractor={(item) => item._id}
+                    renderItem={({ item }) =>
+                        <TouchableOpacity onPress={() => navigation.navigate('myProductsList', {
+                            item: item
+                        })} style={styles.item}>
+                            <View style={{ backgroundColor: 'white', padding: 20 }}>
+                                <Text>Name: {item.name}</Text>
+                                <Text>Manufacturer: {item.manufacturer}</Text>
+                                <Text>Description: {item.description}</Text>
+                                <Text>Date Of Manufacture: {item.dateOfManufacture}</Text>
+                                <Text>Days Before Expiry: {item.daysBeforeExpiry}</Text>
+                                <Text>Id: {item._id}</Text>
+                            </View>
+                        </TouchableOpacity> 
+                    } 
                 />
             </View>
         );
