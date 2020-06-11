@@ -115,7 +115,9 @@ export default function newUser({ navigation }){
                                             email:email,
                                             phone:phone,
                                             company:company,
-                                            type:type
+                                            type:type,
+                                            question:question,
+                                            answer:answer
                                         };
 
                                         await postData('http://62.171.181.137/users/new', user)

@@ -24,6 +24,8 @@ export default function updateUser({ navigation, route }){
     const[phone, setPhone] = useState(user.phone);
     const[company, setCompany] = useState(user.company);
     const[type, setType] = useState(user.type);
+    const[question, setQuestion] = useState('');
+    const[answer, setAnswer] = useState('');
 
     useEffect(() => {
         let loading = true;
