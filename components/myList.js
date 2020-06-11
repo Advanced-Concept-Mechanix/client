@@ -44,6 +44,7 @@ const MyList = (props) => {
                 ListFooterComponent={props.ListFooterComponent}
                 ListHeaderComponent={props.ListHeaderComponent}
                 onRefresh={props.onRefresh}
+                refreshing={props.refreshing}
             />
         </View>
     );
