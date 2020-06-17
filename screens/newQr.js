@@ -69,7 +69,7 @@ export default function createQr({ route }){
                             }
                             productArr.push(itemObj);
                         }
-                        console.log(productArr);
+                        //console.log(productArr);
                         setProducts(productArr);
                     }
                 }else{

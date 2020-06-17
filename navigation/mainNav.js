@@ -14,6 +14,8 @@ import productStack from './productStack';
 import blockStack from './blockStack';
 import qrStack from './qrStack';
 
+import sample from '../sample';
+
   
 
 const MainNavDrawer = createDrawerNavigator();
@@ -59,6 +61,14 @@ export default function mainNav(){
                     headerLeft: <NavigationDrawerStructure navigationProps={navigation} />
                 })}
                 />
+                {/* <MainNavDrawer.Screen 
+                name="sample" 
+                component={sample} 
+                options = {({ navigation }) => ({
+                    title: 'Sample', 
+                    headerLeft: <NavigationDrawerStructure navigationProps={navigation} />
+                })}
+                /> */}
             </MainNavDrawer.Navigator>
         </NavigationContainer>
     );

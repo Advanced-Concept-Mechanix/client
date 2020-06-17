@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, Text } from 'react-native';
+import { View, StyleSheet, Alert, Text, ActivityIndicatorBase } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Location from 'expo-location';
+import LottieView from 'lottie-react-native';
 
 import styles from './style';
 import Mybutton from '../components/mybutton';
@@ -20,6 +21,22 @@ export default function scan({ navigation }){
     const[locationPermission, setLocationPermission] = useState(false);
     const[scanPermission, setScanPermission] = useState(false);
     const[locationEnable, setLocationEnable] = useState(false);
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/24344-retro-loading-bar.json'));
+    const[progress, setProgress] = useState(0);
+
+    const ChangeAnimation = (url) => {
+        setLoadingAnimation(url);
+        setProgress(0);
+    }
+
+    const recheck = () => {
+        setTimeout(() => {
+            if(!locationEnable)setLocationEnable(true);
+            if(!scanPermission)setScanPermission(true);
+            if(!locationPermission)setLocationPermission(true);
+            if(!user)setUser(true);
+        }, 5000);
+    }
 
     //UseEffect for getting user
     useEffect(() => {
@@ -73,6 +90,7 @@ export default function scan({ navigation }){
                     if(status !== 'granted'){
                         alert('Permission to scan was denied');
                         setScanPermission(false);
+                        ChangeAnimation(require('../assets/lottie/10568-camera-permission.json'));
                     }else{
                         setScanPermission(true);
                     }
@@ -103,10 +121,24 @@ export default function scan({ navigation }){
 
         async function getLocation(){
             let locationEnabled = await Location.hasServicesEnabledAsync();
-            //console.log(`locationEnabled: ${locationEnabled}`);
+            console.log(`locationEnabled: ${locationEnabled}`);
             if(loading){
                 if (!locationEnabled) {
-                    alert('Please turn on location services');
+                    // alert('Please turn on location services');
+                    Alert.alert(
+                        'Location',
+                        'Please turn on location services',
+                        [
+                            {
+                                text: 'Ok',
+                                onPress: () => {
+                                    ChangeAnimation(require('../assets/lottie/96-permission (1).json'));
+                                    recheck();
+                                },
+                            },
+                        ],
+                        { cancelable: false }
+                    );
                     setLocationEnable(false);
                 }else{
                     setLocationEnable(true);
@@ -115,6 +147,7 @@ export default function scan({ navigation }){
                         if(status !== 'granted'){
                             alert('Permission to access location was denied');
                             setLocationPermission(false);
+                            ChangeAnimation(require('../assets/lottie/4199-location-search.json'));
                         }else{
                             setLocationPermission(true);
                             let loc = await Location.getCurrentPositionAsync({});
@@ -137,9 +170,10 @@ export default function scan({ navigation }){
         }
 
         if(loading){
-            if(!location || !timestamp || !locationPermission || !locationEnable){
-                getLocation();
-            }
+            // if(!location || !timestamp || !locationPermission || !locationEnable){
+            //     getLocation();
+            // }
+            getLocation();
         }
 
         return () => {
@@ -148,13 +182,7 @@ export default function scan({ navigation }){
 
     }, [location, timestamp, locationEnable, locationPermission])
 
-    const handleChecks = () => {
-        if(!locationEnable)setLocationEnable(true)
-        if(!scanPermission)setScanPermission(true)
-        if(!locationPermission)setLocationPermission(true)
-        if(!user)setUser(true);
-    }
-
+    
     const handleBarCodeScanned = async({ type, data }) => {
         setScanned(true);
         let url = 'http://62.171.181.137/transactions/new';
@@ -230,12 +258,16 @@ export default function scan({ navigation }){
 
     if(!location || !user || !timestamp || !scanPermission ||!locationPermission){
         return(
-            <View style={styles.container}>
-                <Text>Checking Permissions...</Text>
-                <Mybutton 
-                title="Check again"
-                customClick={handleChecks}
-                />
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
         );
     }else{

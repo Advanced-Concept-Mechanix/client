@@ -2,6 +2,7 @@ import {
     StyleSheet, Dimensions
 } from 'react-native';
 import colors from '../config/colors';
+import metrics from '../config/metrics';
 
 const styles = StyleSheet.create({
     container: {
@@ -9,6 +10,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.WHITE
+    },
+    containerDark: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.BLACK
     },
     logo: {
         flex: 1,
@@ -46,6 +53,17 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         marginHorizontal: 16,
     },
+    loadingBackgroundStyle: {
+        backgroundColor: 'rgba(125, 125, 255, 1)',
+    },
+    root: {
+        flex: 1,
+    },
+    lottie: {
+        width: metrics.DEVICE_WIDTH * 0.5,
+        height: metrics.DEVICE_HEIGHT * 0.5,
+        backgroundColor: "rgba(0,0,0,1)"
+    }
   });
 
   export default styles;
