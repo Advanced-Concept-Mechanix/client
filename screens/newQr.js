@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
+import LottieView from 'lottie-react-native';
 import styles from './style';
 import QRCode from 'react-native-qrcode-svg';
 import Mytextinput from '../components/mytextinput';
@@ -34,6 +35,11 @@ export default function createQr({ route }){
     const[products, setProducts] = useState([]);
     const[loadingText, setLoadingText] = useState('Loading products...');
     const[selectedProduct, setSelectedProduct] = useState(null);
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
+    const[constructionAnimation, setConstructionAnimation] = useState(require('../assets/lottie/7146-under-construction.json'));
+    const[progress, setProgress] = useState(0);
+    const[constructionProgress, setConstructionProgress] = useState(0);
+    const[construction, setConstruction] = useState(false);
 
     //usEffect to get url and fetch products
     useEffect(() => {
@@ -152,7 +158,10 @@ export default function createQr({ route }){
                 [
                     {
                         text: 'Ok',
-                        onPress: () => qrDataSet.length =  0,
+                        onPress: () => {
+                            qrDataSet.length =  0;
+                            setConstruction(false);
+                        },
                     },
                 ],
                 { cancelable: false }
@@ -172,37 +181,80 @@ export default function createQr({ route }){
 
     if(products.length === 0){
         return(
-            <View style={styles.container}>
-                <Text>{loadingText}</Text>
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
         );
     }else if(qrList.length === 0){
-        return(
-            <View style={styles.container}>
-                <DropDownPicker
-                    defaultValue={selectedProduct}
-                    placeholder="Select a Profile"
-                    items={products}
-                    containerStyle={{height: 40}}
-                    style={{backgroundColor: '#fafafa'}}
-                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                    onChangeItem={item => setSelectedProduct(item.value)}
-                    searchable={true}
-                    searchablePlaceholder="Search..."
-                    searchableError="Not Found"
-                />
-                <Mytextinput
-                placeholder={'Enter number of qr codes'}
-                keyboardType="numeric"
-                onChangeText={(qrNum) => setQrNum(qrNum)}
-                />
-                <Mybutton
-                title='Create'
-                customClick={getQrData}
-                />
-            </View>
-        );
+        if(!construction){
+            return(
+                <View style={styles.container}>
+                    <DropDownPicker
+                        defaultValue={selectedProduct}
+                        placeholder="Select a Profile"
+                        items={products}
+                        containerStyle={{height: 40}}
+                        style={{backgroundColor: '#fafafa'}}
+                        dropDownStyle={{backgroundColor: '#fafafa'}}
+                        onChangeItem={item => setSelectedProduct(item.value)}
+                        searchable={true}
+                        searchablePlaceholder="Search..."
+                        searchableError="Not Found"
+                    />
+                    <Mytextinput
+                    placeholder={'Enter number of qr codes'}
+                    keyboardType="numeric"
+                    onChangeText={(qrNum) => setQrNum(qrNum)}
+                    />
+                    <Mybutton
+                    title='Create'
+                    customClick={() => {
+                        setConstruction(true);
+                        getQrData();
+                    }}
+                    />
+                </View>
+            );
+        }else{
+            return(
+                <View style={styles.containerDark}>
+                    <LottieView 
+                        speed={1}
+                        source={loadingAnimation}
+                        style={styles.lottie}
+                        loop={true}
+                        autoPlay={true}
+                        progress={constructionProgress}
+                    >
+                    </LottieView>
+                </View>
+            );
+        }
+        
     }else{
+        if(construction){
+            return(
+                <View style={styles.containerDark}>
+                    <LottieView 
+                        speed={1}
+                        source={loadingAnimation}
+                        style={styles.lottie}
+                        loop={true}
+                        autoPlay={true}
+                        progress={constructionProgress}
+                    >
+                    </LottieView>
+                </View>
+            );
+        }
         return(
             <View style={styles.container}>
                 <Text>List of QR Codes</Text>

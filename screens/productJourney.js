@@ -16,6 +16,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Mybutton from '../components/mybutton';
 import isJson from '../functions/isJson';
 import hasProperties from '../functions/hasProperties';
+import LottieView from 'lottie-react-native';
 
 export default function SingleProduct({navigation, route}){
     const productData = global.PRODUCTDATA;
@@ -24,6 +25,8 @@ export default function SingleProduct({navigation, route}){
     console.log(loc);
     const[transactions, setTransactions] = useState([]);
     const[loadingText, setLoadingText] = useState('Loading Transactions...');
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/1055-world-locations.json'));
+    const[progress, setProgress] = useState(0);
 
     useEffect(() => {
         let loading = true;
@@ -99,8 +102,16 @@ export default function SingleProduct({navigation, route}){
 
     if(transactions.length === 0){
         return(
-            <View style={styles.container}>
-                <Text style={{ marginTop: 20}}>{loadingText}</Text>
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
         );
     }else{

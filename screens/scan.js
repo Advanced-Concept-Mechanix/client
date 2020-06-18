@@ -21,7 +21,7 @@ export default function scan({ navigation }){
     const[locationPermission, setLocationPermission] = useState(false);
     const[scanPermission, setScanPermission] = useState(false);
     const[locationEnable, setLocationEnable] = useState(false);
-    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/24344-retro-loading-bar.json'));
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
     const[progress, setProgress] = useState(0);
 
     const ChangeAnimation = (url) => {
@@ -170,9 +170,6 @@ export default function scan({ navigation }){
         }
 
         if(loading){
-            // if(!location || !timestamp || !locationPermission || !locationEnable){
-            //     getLocation();
-            // }
             getLocation();
         }
 
@@ -182,7 +179,7 @@ export default function scan({ navigation }){
 
     }, [location, timestamp, locationEnable, locationPermission])
 
-    
+
     const handleBarCodeScanned = async({ type, data }) => {
         setScanned(true);
         let url = 'http://62.171.181.137/transactions/new';

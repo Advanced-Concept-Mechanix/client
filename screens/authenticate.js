@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Text, View, Alert, Image } from 'react-native';
+import LottieView from 'lottie-react-native';
 
 import styles from './style';
 import hash from '../functions/hash';
@@ -15,6 +16,8 @@ export default function authentic({ navigation, route}){
     //const{data} = route.params;
     const[authentication, setAuthentication] = useState(null);
     const[loadingText, setLoadingText] = useState('Checking...');
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/8478-checking.json'));
+    const[progress, setProgress] = useState(0);
 
     useEffect(() => {
         let loading = true;
@@ -56,8 +59,16 @@ export default function authentic({ navigation, route}){
 
     if(authentication === null){
         return(
-            <View style={styles.container}>
-                <Text>{loadingText}</Text>
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
         );
     }else if(authentication === false){

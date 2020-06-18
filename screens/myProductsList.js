@@ -11,17 +11,23 @@ import getData from '../functions/getData';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Mybutton from '../components/mybutton';
 import MyList from '../components/myList';
+import LottieView from 'lottie-react-native';
 
 export default function myProductList({navigation, route}){
     const{item} = route.params;
     const[products, setProducts] = useState([]);
     const[loadingText, setLoadingText] = useState('Loading products...');
     const[isFetching, setIsFetching] = useState(false);
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
+    const[progress, setProgress] = useState(0);
+    const[loadingProducts, setLoadingProducts] = useState(true);
+
 
     async function fetchData(){
         await getData(`http://62.171.181.137/createProducts/${item._id}`)
         .then(async (response) => {
             setIsFetching(false);
+            setLoadingProducts(false);
             if(response.ok){
                 let data = await response.json();
                 if(data.products.length === 0){
@@ -73,6 +79,21 @@ export default function myProductList({navigation, route}){
     }
 
     if(products.length === 0){
+        if(loadingProducts){
+            return(
+                <View style={styles.containerDark}>
+                    <LottieView 
+                        speed={1}
+                        source={loadingAnimation}
+                        style={styles.lottie}
+                        loop={true}
+                        autoPlay={true}
+                        progress={progress}
+                    >
+                    </LottieView>
+                </View>
+            );
+        }
         return(
             <View style={styles.container}>
                 <View style={{ backgroundColor: 'white', padding: 20 }}>

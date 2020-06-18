@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Text, View, Alert } from 'react-native';
+import LottieView from 'lottie-react-native';
 
 import styles from './style';
 import isJson from '../functions/isJson';
@@ -11,6 +12,8 @@ export default function productDetails(){
     const data = productData.data;
     const[dataObj, setDataObj] = useState(null);
     const[loadingText, setLoadingText] = useState('Loading Product Details...');
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
+    const[progress, setProgress] = useState(0);
 
     useEffect(() => {
 
@@ -41,8 +44,16 @@ export default function productDetails(){
 
     if(!dataObj){
         return(
-            <View style={styles.container}>
-                <Text>{loadingText}</Text>
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
         );
     }

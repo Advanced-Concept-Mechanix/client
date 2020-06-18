@@ -13,6 +13,7 @@ import MyButton from '../components/mybutton';
 import MyTextInput from '../components/mytextinput';
 import styles from './style';
 import postData from '../functions/postData';
+import LottieView from 'lottie-react-native';
 
 export default function newProduct({ navigation }){
 
@@ -20,6 +21,9 @@ export default function newProduct({ navigation }){
     const[description, setDescription] = useState([]);
     const[manufacturer, setManufacturer] = useState(global.User.id);
     const[daysBeforeExpiry, setDaysBeforeExpiry] = useState(0);
+    const[creating, setCreating] = useState(false);
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
+    const[progress, setProgress] = useState(0);
 
     const registerProduct = async () => {
 
@@ -27,6 +31,7 @@ export default function newProduct({ navigation }){
             if(description){
                 if(manufacturer){
                     if(daysBeforeExpiry){
+                        setCreating(true);
 
                         let product = {
                             name:name,
@@ -47,7 +52,7 @@ export default function newProduct({ navigation }){
                                         [
                                         {
                                             text: 'Ok',
-                                            //onPress: () => navigation.navigate('singleProduct', {item:item}),
+                                            onPress: () => setCreating(false),
                                         },
                                         ],
                                         { cancelable: false }
@@ -61,7 +66,7 @@ export default function newProduct({ navigation }){
                                             [
                                                 {
                                                     text: 'Ok',
-                                                        //onPress: () => navigation.navigate('Scan'),
+                                                    onPress: () => setCreating(false),
                                                 },
                                             ],
                                             { cancelable: false }
@@ -84,6 +89,22 @@ export default function newProduct({ navigation }){
         }else{
             alert('Please fill name'); 
         }
+    }
+
+    if(creating === true){
+        return(
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
+            </View>
+        );
     }
 
     return(
