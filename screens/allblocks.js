@@ -11,12 +11,20 @@ import store from '../functions/store';
 import Mybutton from '../components/mybutton';
 import strings from '../config/strings';
 import getData from '../functions/getData';
+import LottieView from 'lottie-react-native';
+import MyList from '../components/myList';
 
 export default function Allblocks({navigation}){
 
     const[blocks, setBlocks] = useState([]);
-    const[loadingText, setLoadingText] = useState('Loading Blocks...');
     const[validity, setValidity] = useState('true');
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
+    const[progress, setProgress] = useState(0);
+
+    const ChangeAnimation = (url) => {
+        setLoadingAnimation(url);
+        setProgress(0);
+    }
 
     useEffect(() => {
         let loading = true;
@@ -27,15 +35,25 @@ export default function Allblocks({navigation}){
                 if(response.ok){
                     let data = await response.json();
                     if(data.blocks.length === 0){
-                        setLoadingText('No Blocks Found!');
+                        Alert.alert(
+                            'Blocks',
+                            'No blocks found',
+                            [
+                                {
+                                    text: 'Ok',
+                                    onPress: () => {
+                                        ChangeAnimation(require('../assets/lottie/4958-404-not-found.json'));
+                                    },
+                                },
+                            ],
+                            { cancelable: false }
+                        );
                     }
                     if(loading){
                         if(data.validity === true){
-                            setLoadingText('Blockchain');
                             setValidity('true');
                             setBlocks(data.blocks);
                         }else{
-                            setLoadingText('Blockchain');
                             setValidity('false');
                             setBlocks(data.blocks);
                         }
@@ -72,22 +90,28 @@ export default function Allblocks({navigation}){
 
     if(blocks.length === 0){
         return(
-            <View style={styles.container}>
-                <Text>{loadingText}</Text>
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
         );
     }else{
         return(
             <View style={styles.container}>
-                <Text>{loadingText}</Text>
                 <Text>{`Validity: ${validity}`}</Text>
-                <FlatList 
+                <MyList
                 data={blocks}
-                ItemSeparatorComponent={ListViewItemSeparator}
                 renderItem={({ item }) =>
                     <TouchableOpacity onPress={() => navigation.navigate('singleBlock', {
                         item: item
-                    })}>
+                    })} style={styles.item}>
                         <View style={{ backgroundColor: 'white', padding: 20 }}>
                             <Text>Id: {item._id}</Text>
                             <Text>Nonce: {item.nonce}</Text>

@@ -10,6 +10,8 @@ import store from '../functions/store';
 import Mybutton from '../components/mybutton';
 import strings from '../config/strings';
 import postData from '../functions/postData';
+import LottieView from 'lottie-react-native';
+import MyList from '../components/myList';
 
 export default function newBlock({navigation}){
 
@@ -21,6 +23,13 @@ export default function newBlock({navigation}){
     const[nonce, setNonce] = useState(null);
     const[difficulty, setDifficulty] = useState(null);
     const[loadingText, setLoadingText] = useState('Creating Block...');
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/1012-construction-site.json'));
+    const[progress, setProgress] = useState(0);
+
+    const ChangeAnimation = (url) => {
+        setLoadingAnimation(url);
+        setProgress(0);
+    }
 
     useEffect(() => {
         let loading = true;
@@ -44,10 +53,13 @@ export default function newBlock({navigation}){
                     console.log('Failure: ', data);
                     Alert.alert(
                         'Failed',
-                        data.message,
+                        'No new transactions',
                         [
                             {
-                                text: 'Ok'
+                                text: 'Ok',
+                                onPress: () => {
+                                    ChangeAnimation(require('../assets/lottie/4958-404-not-found.json'));
+                                },
                             },
                         ],
                         { cancelable: false }
@@ -66,12 +78,18 @@ export default function newBlock({navigation}){
 
     if(!index || !timestamp || !txSummary || !hash || !previousHash || !nonce || !difficulty){
         return(
-            <View style={styles.container}>
-                <TouchableOpacity>
-                    <Text>{loadingText}</Text>
-                </TouchableOpacity> 
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
-        )
+        );
     }
     
     return(

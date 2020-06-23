@@ -15,7 +15,6 @@ export default function authentic({ navigation, route}){
     
     //const{data} = route.params;
     const[authentication, setAuthentication] = useState(null);
-    const[loadingText, setLoadingText] = useState('Checking...');
     const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/8478-checking.json'));
     const[progress, setProgress] = useState(0);
 

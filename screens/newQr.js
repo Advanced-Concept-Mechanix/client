@@ -36,7 +36,7 @@ export default function createQr({ route }){
     const[loadingText, setLoadingText] = useState('Loading products...');
     const[selectedProduct, setSelectedProduct] = useState(null);
     const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
-    const[constructionAnimation, setConstructionAnimation] = useState(require('../assets/lottie/7146-under-construction.json'));
+    const[constructionAnimation, setConstructionAnimation] = useState(require('../assets/lottie/1012-construction-site.json'));
     const[progress, setProgress] = useState(0);
     const[constructionProgress, setConstructionProgress] = useState(0);
     const[construction, setConstruction] = useState(false);
@@ -228,7 +228,7 @@ export default function createQr({ route }){
                 <View style={styles.containerDark}>
                     <LottieView 
                         speed={1}
-                        source={loadingAnimation}
+                        source={constructionAnimation}
                         style={styles.lottie}
                         loop={true}
                         autoPlay={true}
@@ -245,7 +245,7 @@ export default function createQr({ route }){
                 <View style={styles.containerDark}>
                     <LottieView 
                         speed={1}
-                        source={loadingAnimation}
+                        source={constructionAnimation}
                         style={styles.lottie}
                         loop={true}
                         autoPlay={true}
