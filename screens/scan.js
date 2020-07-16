@@ -57,7 +57,7 @@ export default function scan({ navigation }){
                             [
                                 {
                                     text: 'Ok',
-                                    onPress: () => navigation.navigate('login'),
+                                    // onPress: () => navigation.navigate('login'),
                                 },
                             ],
                             { cancelable: false }

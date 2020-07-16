@@ -20,7 +20,7 @@ function loginStackScreen(){
             headerTitleStyle: styles.title
         }}
         >
-            <settingStack.Screen name="login" component={login} options={{ title: 'Login'}}/>
+            <loginStack.Screen name="login" component={login} options={{ title: 'Login'}}/>
             <loginStack.Screen name="newUser" component={newUser} options={{ title: 'Create User'}}/>
             <loginStack.Screen name="updatePassword" component={updatePassword} options={{ title: 'Update Password'}}/>
         </loginStack.Navigator>
@@ -47,7 +47,7 @@ const accountTab = createBottomTabNavigator();
 
 export default function accountNav(){
     return(
-        <accountTab.Navigator initialRouteName="settingsTab">
+        <accountTab.Navigator initialRouteName="loginTab">
             <accountTab.Screen 
             name="loginTab" 
             component={loginStackScreen} 

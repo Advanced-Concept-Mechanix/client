@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import styles from './style';
 import getData from '../functions/getData';
+import del from '../functions/del';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Mybutton from '../components/mybutton';
 
@@ -62,6 +63,41 @@ export default function SingleProduct({navigation, route}){
             loading = false;
         };
     }, [item]);
+
+    const deleteProduct = async () => {
+        await del(`http://62.171.181.137/products/delete/${item._id}`)
+        .then(async (response) => {
+            if(response.ok){
+                let data = await response.json();
+                Alert.alert(
+                    'Success',
+                    data.msg,
+                    [
+                        {
+                            text: 'Ok'
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }else{
+                let data = await response.json();
+                console.log('Failure: ', data);
+                Alert.alert(
+                    'Failed',
+                    data.message,
+                    [
+                        {
+                            text: 'Ok'
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
 
     ListViewItemSeparator = () => {
         return (

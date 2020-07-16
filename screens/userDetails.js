@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native';
+import LottieView from 'lottie-react-native';
 import styles from './style';
 import isEmpty from '../functions/isEmpty';
 import store from '../functions/store';
@@ -16,6 +17,13 @@ export default function userDetails({ navigation }){
     const[publicKey, setPublicKey] = useState('');
     const[secretKey, setSecretKey] = useState('');
     const[loadingText, setLoadingText] = useState('Loading User Details...');
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
+    const[progress, setProgress] = useState(0);
+
+    const ChangeAnimation = (url) => {
+        setLoadingAnimation(url);
+        setProgress(0);
+    }
 
     useEffect(() => {
         let loading = true;
@@ -23,7 +31,7 @@ export default function userDetails({ navigation }){
         (async()=> {
             if(loading){
                 if(!user){
-                    setLoadingText('No user found. Please login first');
+                    ChangeAnimation(require('../assets/lottie/4958-404-not-found.json'));
                 }
                 else{
                     let public_key = await hash(JSON.stringify(user.publicKey));
@@ -41,23 +49,39 @@ export default function userDetails({ navigation }){
     },[]);
 
     const logout = async () => {
-        await store('user', 'delete')
-        .then(() => {
-            Alert.alert(
-                'Success',
-                'User logged out successfully',
-                [
-                {
-                    text: 'Ok',
-                    //onPress: () => navigation.navigate('Scan'),
+        Alert.alert(
+            'Confirm',
+            'Are you sure you want to logout?',
+            [
+            {
+                text: 'Ok',
+                onPress: async() => {
+                    await store('user', 'delete')
+                    .then(() => {
+                        Alert.alert(
+                            'Success',
+                            'User logged out successfully',
+                            [
+                            {
+                                text: 'Ok',
+                                //onPress: () => navigation.navigate('Scan'),
+                            },
+                            ],
+                            { cancelable: false }
+                        );
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
                 },
-                ],
-                { cancelable: false }
-            );
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            },
+            {
+                text: 'Cancel',
+                style: 'cancel'
+            },
+            ],
+            { cancelable: false }
+        );
     }
 
     ListViewItemSeparator = () => {
@@ -68,10 +92,18 @@ export default function userDetails({ navigation }){
 
     if(isEmpty(user) && publicKey.length === 0 && secretKey.length === 0){
         return(
-            <View style={styles.container}>
-                <Text>{loadingText}</Text>
+            <View style={styles.containerDark}>
+                <LottieView 
+                    speed={1}
+                    source={loadingAnimation}
+                    style={styles.lottie}
+                    loop={true}
+                    autoPlay={true}
+                    progress={progress}
+                >
+                </LottieView>
             </View>
-        )
+        );
     }else{
         return(
             <View style={styles.container}>
@@ -92,10 +124,6 @@ export default function userDetails({ navigation }){
                         <Mybutton
                         title='logout'
                         customClick={logout}
-                        />
-                        <Mybutton
-                        title='Go Back'
-                        customClick={() => navigation.goBack()}
                         />
                     </View>
                 </TouchableOpacity> 

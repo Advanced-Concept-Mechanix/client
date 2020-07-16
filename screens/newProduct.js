@@ -22,7 +22,7 @@ export default function newProduct({ navigation }){
     const[manufacturer, setManufacturer] = useState(global.User.id);
     const[daysBeforeExpiry, setDaysBeforeExpiry] = useState(0);
     const[creating, setCreating] = useState(false);
-    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/968-loading.json'));
+    const[loadingAnimation, setLoadingAnimation] = useState(require('../assets/lottie/1012-construction-site.json'));
     const[progress, setProgress] = useState(0);
 
     const registerProduct = async () => {

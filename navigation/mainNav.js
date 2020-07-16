@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Image,
@@ -13,10 +13,8 @@ import accountStack from './accountStack';
 import productStack from './productStack';
 import blockStack from './blockStack';
 import qrStack from './qrStack';
-
-import sample from '../sample';
-
-  
+import scanStack from './scanStack';
+import settings from './settings';
 
 const MainNavDrawer = createDrawerNavigator();
 
@@ -24,7 +22,7 @@ export default function mainNav(){
     return(
         <NavigationContainer>
             <MainNavDrawer.Navigator 
-            initialRouteName="qr"
+            initialRouteName="scan"
             screenOptions={({ navigation }) => ({ 
                 headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
             })}
@@ -61,14 +59,14 @@ export default function mainNav(){
                     headerLeft: <NavigationDrawerStructure navigationProps={navigation} />
                 })}
                 />
-                {/* <MainNavDrawer.Screen 
-                name="sample" 
-                component={sample} 
+                <MainNavDrawer.Screen 
+                name="scan" 
+                component={scanStack} 
                 options = {({ navigation }) => ({
-                    title: 'Sample', 
+                    title: 'Scan', 
                     headerLeft: <NavigationDrawerStructure navigationProps={navigation} />
                 })}
-                /> */}
+                />
             </MainNavDrawer.Navigator>
         </NavigationContainer>
     );

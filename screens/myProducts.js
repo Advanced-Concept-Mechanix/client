@@ -25,6 +25,10 @@ export default function myProducts({ navigation, route}){
     const[progress, setProgress] = useState(0);
 
     //console.log(user_id);
+    const ChangeAnimation = (url) => {
+        setLoadingAnimation(url);
+        setProgress(0);
+    }
 
     async function fetchData(){
         await getData(`http://62.171.181.137/products/${user.id}`)
@@ -36,6 +40,7 @@ export default function myProducts({ navigation, route}){
                 //console.log(data);
                 if(data.products.length === 0){
                     setLoadingText('No Products Found!');
+                    ChangeAnimation(require('../assets/lottie/4958-404-not-found.json'));
                 }else{
                     setProducts(data.products);
                 }

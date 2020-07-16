@@ -12,6 +12,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Mybutton from '../components/mybutton';
 import MyList from '../components/myList';
 import LottieView from 'lottie-react-native';
+import del from '../functions/del';
 
 export default function myProductList({navigation, route}){
     const{item} = route.params;
@@ -54,6 +55,42 @@ export default function myProductList({navigation, route}){
             console.error('Error:', error);
         });
     }
+
+    const deleteProduct = async () => {
+        await del(`http://62.171.181.137/products/delete/${item._id}`)
+        .then(async (response) => {
+            if(response.ok){
+                let data = await response.json();
+                Alert.alert(
+                    'Success',
+                    data.msg,
+                    [
+                        {
+                            text: 'Ok'
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }else{
+                let data = await response.json();
+                console.log('Failure: ', data);
+                Alert.alert(
+                    'Failed',
+                    data.message,
+                    [
+                        {
+                            text: 'Ok'
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
 
     useEffect(() => {
         let loading = true;
@@ -107,6 +144,10 @@ export default function myProductList({navigation, route}){
 
                     <Text style={{ marginTop: 20}}>{loadingText}</Text>
                     <Mybutton
+                    title='Delete'
+                    customClick={deleteProduct}
+                    />
+                    <Mybutton
                     title='Update Profile'
                     customClick={() => navigation.navigate('updateProduct', {product:item})}
                     />
@@ -138,12 +179,12 @@ export default function myProductList({navigation, route}){
                     } 
                 />
                 <Mybutton
-                title='Update Profile'
-                customClick={() => navigation.navigate('updateProduct', {product:item})}
+                title='Delete'
+                customClick={deleteProduct}
                 />
                 <Mybutton
-                title='Go Back'
-                customClick={() => navigation.goBack()}
+                title='Update Profile'
+                customClick={() => navigation.navigate('updateProduct', {product:item})}
                 />
             </View>
         );

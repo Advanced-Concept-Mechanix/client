@@ -41,6 +41,11 @@ export default function createQr({ route }){
     const[constructionProgress, setConstructionProgress] = useState(0);
     const[construction, setConstruction] = useState(false);
 
+    const ChangeAnimation = (url) => {
+        setLoadingAnimation(url);
+        setProgress(0);
+    }
+
     //usEffect to get url and fetch products
     useEffect(() => {
 
@@ -54,7 +59,7 @@ export default function createQr({ route }){
                     let data = await response.json();
                     //console.log(data);
                     if(data.products.length === 0){
-                        setLoadingText('No Products Found!');
+                        ChangeAnimation(require('../assets/lottie/4958-404-not-found.json'));
                     }
 
                     if(loading){

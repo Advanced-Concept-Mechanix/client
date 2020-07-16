@@ -63,6 +63,9 @@ const styles = StyleSheet.create({
         width: metrics.DEVICE_WIDTH * 0.5,
         height: metrics.DEVICE_HEIGHT * 0.5,
         backgroundColor: "rgba(0,0,0,1)"
+    },
+    slider:{
+        padding: 10
     }
   });
 
