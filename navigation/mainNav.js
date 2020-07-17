@@ -5,23 +5,8 @@ import {
     TouchableOpacity,
     Alert
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import DrawerImage from '../components/drawerImage';
-import NavigationDrawerStructure from '../components/drawerImageClass';
 import store from '../functions/store';
 import LottieView from 'lottie-react-native';
-
-import accountStack from './stacks/accountStack';
-import productStack from './stacks/productStack';
-import blockStack from './stacks/blockStack';
-import qrStack from './stacks/qrStack';
-import scanStack from './stacks/scanStack';
-import settings from './stacks/settings';
-
-import AccessControl from './accessControl/accessControl';
-import NoAccess from './accessControl/noAccess';
-import Users from './accessControl/users';
 import styles from '../screens/style';
 
 import AdminPanel from './panels/adminPanel';
@@ -38,26 +23,6 @@ export default function mainNav(){
     const[progress, setProgress] = useState(0);
 
     const login = (user) => {
-        // switch(user){
-        //     case 'admin':
-        //         setName(Users.admin);
-        //         break;
-        //     case 'manufacturer':
-        //         setName(Users.manufacturer);
-        //         break;
-        //     case 'distributor':
-        //         setName(Users.distributor);
-        //         break;
-        //     case 'retailer':
-        //         setName(Users.retailer);
-        //         break;
-        //     case 'end-user':
-        //         setName(Users.end-user);
-        //         break;
-        //     case 'other':
-        //         setName(Users.other);
-        //         break;
-        // }
         setName(user);
     }
 
