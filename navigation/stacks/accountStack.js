@@ -2,13 +2,13 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../screens/style';
+import styles from '../../screens/style';
 
-import newUser from '../screens/newUser';
-import userDetails from '../screens/userDetails';
-import updateUser from '../screens/updateUser';
-import login from '../screens/login';
-import updatePassword from '../screens/updatePassword';
+import newUser from '../../screens/newUser';
+import userDetails from '../../screens/userDetails';
+import updateUser from '../../screens/updateUser';
+import login from '../../screens/login';
+import updatePassword from '../../screens/updatePassword';
 
 const loginStack = createStackNavigator();
 

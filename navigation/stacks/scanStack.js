@@ -5,13 +5,13 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../screens/style';
+import styles from '../../screens/style';
 
 
-import productDetails from '../screens/productDetails';
-import scan from '../screens/scan';
-import authentic from '../screens/authenticate';;
-import productJourney from '../screens/productJourney';
+import productDetails from '../../screens/productDetails';
+import scan from '../../screens/scan';
+import authentic from '../../screens/authenticate';;
+import productJourney from '../../screens/productJourney';
 
 const scanningTab = createBottomTabNavigator();
 

@@ -2,11 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../screens/style';
+import styles from '../../screens/style';
 
-import allblocks from '../screens/allblocks';
-import newBlock from '../screens/newBlock';
-import singleBlock from '../screens/singleBlock';
+import allblocks from '../../screens/allblocks';
+import newBlock from '../../screens/newBlock';
+import singleBlock from '../../screens/singleBlock';
 
 const createBlockStack = createStackNavigator();
 

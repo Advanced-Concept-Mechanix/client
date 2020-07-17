@@ -1,9 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import userDetails from '../screens/userDetails';
-import updateUser from '../screens/updateUser';
-import styles from '../screens/style';
+import userDetails from '../../screens/userDetails';
+import updateUser from '../../screens/updateUser';
+import styles from '../../screens/style';
 
 const settingsTab = createBottomTabNavigator();
 

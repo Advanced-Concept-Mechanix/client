@@ -2,14 +2,14 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../screens/style';
+import styles from '../../screens/style';
 
-import newProduct from '../screens/newProduct';
-import allProducts from '../screens/allProducts';
-import myProducts from '../screens/myProducts';
-import singleProduct from '../screens/singleProduct';
-import updateProduct from '../screens/updateProduct';
-import myProductsList from '../screens/myProductsList';
+import newProduct from '../../screens/newProduct';
+import allProducts from '../../screens/allProducts';
+import myProducts from '../../screens/myProducts';
+import singleProduct from '../../screens/singleProduct';
+import updateProduct from '../../screens/updateProduct';
+import myProductsList from '../../screens/myProductsList';
 
 const myProductStack = createStackNavigator();
 

@@ -5,9 +5,9 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../screens/style';
+import styles from '../../screens/style';
 
-import newQr from '../screens/newQr';
+import newQr from '../../screens/newQr';
 
 const createQrTab = createBottomTabNavigator();
 
