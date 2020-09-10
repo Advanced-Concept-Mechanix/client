@@ -66,7 +66,8 @@ export default function login({ navigation }){
               if(response.ok){
                 let data = await response.json();
                 //console.log('Success:', data);
-                storeUser(data).then(() => navigation.navigate('scan'));
+                storeUser(data);
+                // storeUser(data).then(() => navigation.navigate('scan'));
               }else{
                 let data = await response.json();
                 console.log('Failure:', data);

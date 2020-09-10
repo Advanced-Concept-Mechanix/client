@@ -22,6 +22,7 @@ import postData from '../functions/postData';
 import convertNum from '../functions/convertNumToString';
 import addDays from '../functions/addDays';
 import getData from '../functions/getData';
+import QrCode from '../components/qrcode';
 
 export default function createQr({ route }){
 
@@ -184,6 +185,15 @@ export default function createQr({ route }){
         );
     };
 
+    const qrStringify = (arr) => {
+        let newArr = [];
+        arr.forEach((el) => {
+            let str = JSON.stringify(el);
+            newArr.push(str);
+        })
+        return newArr;
+    }
+
     if(products.length === 0){
         return(
             <View style={styles.containerDark}>
@@ -269,11 +279,8 @@ export default function createQr({ route }){
                 renderItem={({ item }) =>
                     <TouchableOpacity>
                         <View style={{ backgroundColor: 'white', padding: 20 }}>
-                            <QRCode 
+                            <QrCode 
                                 value={JSON.stringify(item)}
-                                //logo={require('../assets/logo.png')}
-                                ecl='M'
-                                size={qrSize}
                             />
                         </View>
                     </TouchableOpacity> 

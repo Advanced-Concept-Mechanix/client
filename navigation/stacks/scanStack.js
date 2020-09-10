@@ -12,6 +12,7 @@ import productDetails from '../../screens/productDetails';
 import scan from '../../screens/scan';
 import authentic from '../../screens/authenticate';;
 import productJourney from '../../screens/productJourney';
+import cdp from '../../screens/cdp';
 
 const scanningTab = createBottomTabNavigator();
 
@@ -88,6 +89,16 @@ export default function scanNav(){
                 tabBarLabel: 'Scan',
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="qrcode-scan" color={color} size={size} />
+                ),
+            }}
+            />
+            <scanTab.Screen 
+            name='cdp'
+            component={cdp}
+            options={{
+                tabBarLabel: 'CDP',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="bug-check" color={color} size={size} />
                 ),
             }}
             />
