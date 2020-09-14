@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Alert, Image, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
 
 import styles from './style';
 import Mybutton from '../components/mybutton';
+import postData from '../functions/postData';
 
 export default function cdp(){
 
@@ -11,6 +12,8 @@ export default function cdp(){
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [isCameraReady, setIsCameraReady] = useState(false);
     const camera = useRef();
+    const [image, setImage] = useState(null);
+    const [imageBase64, setImageBase64] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -21,9 +24,60 @@ export default function cdp(){
 
     const snap = async () => {
         if (camera.current) {
-          let photo = await camera.current.takePictureAsync();
+            const options = { quality: 1, base64: true, skipProcessing: true };
+            const data = await camera.current.takePictureAsync(options);
+            //console.log(`data:image/jpg;base64,${data.base64}`)
+            setImage(data.uri)
+            setImageBase64(`data:image/jpg;base64,${data.base64}`);
         }
     };
+
+    const detect = async() => {
+
+        if(imageBase64){
+            let imageData = {
+                img: imageBase64
+            }
+            await postData('http://62.171.181.137/cdp/check', imageData)
+            .then(async(response) => {
+                if(response.ok){
+                    let data = await response.json();
+                    console.log('Success:', data);
+                    Alert.alert(
+                        'Success',
+                        'Image Sent',
+                        [
+                            {
+                                text: 'Ok',
+                                //onPress: () => navigation.navigate('scanningNav'),
+                            },
+                        ],
+                        { cancelable: false }
+                    );
+                    
+                }else{
+                    let data = await response.json();
+                    console.log('Failure:', data);
+                    Alert.alert(
+                        'Failure',
+                        data.message,
+                        [
+                            {
+                                text: 'Ok',
+                                //onPress: () => navigation.navigate('Scan'),
+                            },
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }else{
+            alert('Please take an image first!');
+        }
+    }
 
     const onCameraReady = () => {
         setIsCameraReady(true);
@@ -35,6 +89,7 @@ export default function cdp(){
     if (hasPermission === false) {
     return <Text>No access to camera</Text>;
     }
+    if (!image){
     return (
     <View style={{ flex: 1 }}>
         <Camera 
@@ -74,5 +129,14 @@ export default function cdp(){
             </View>
         </Camera>
     </View>
+    );
+    }
+    return(
+        <View style={styles.container}>
+            {/* <ImageBackground source={image} style={styles.image}>
+                <Mybutton title={'Detect'} customClick={() => detect()} />  
+            </ImageBackground> */}
+            <Mybutton title={'Detect'} customClick={() => detect()} />
+        </View>
     );
 }

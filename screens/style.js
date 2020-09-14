@@ -66,6 +66,11 @@ const styles = StyleSheet.create({
     },
     slider:{
         padding: 10
+    },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center"
     }
   });
 
