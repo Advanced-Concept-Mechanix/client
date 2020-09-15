@@ -13,6 +13,7 @@ import scan from '../../screens/scan';
 import authentic from '../../screens/authenticate';;
 import productJourney from '../../screens/productJourney';
 import cdp from '../../screens/cdp';
+import canvas from '../../screens/canvas';
 
 const scanningTab = createBottomTabNavigator();
 
@@ -93,8 +94,8 @@ export default function scanNav(){
             }}
             />
             <scanTab.Screen 
-            name='cdp'
-            component={cdp}
+            name='canvas'
+            component={canvas}
             options={{
                 tabBarLabel: 'CDP',
                 tabBarIcon: ({ color, size }) => (
