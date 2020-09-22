@@ -1,3 +1,4 @@
+import Canvas, {Image as CanvasImage, Path2D, ImageData} from 'react-native-canvas';
 /**
  * Colour transformation functions
  *
@@ -15,10 +16,13 @@ export default class Colour
      * @return ImageData Returns a new ImageData object
      * @see http://www.johndcook.com/blog/2009/08/24/algorithms-convert-color-grayscale/
      */
-    static grayscale(imageData) {
+    static grayscale(canvas, imageData) {
         let pixelCount = imageData.width * imageData.height,
             converted = new Uint8ClampedArray(pixelCount * 4);
 
+        console.log(`graywidth:${imageData.width}, grayheight:${imageData.height}`);
+        let h = imageData.height;
+        let w = imageData.w;
         for (let i = 0; i < pixelCount; i++) {
             let offset = i * 4,
                 gray = Math.floor(imageData.data[offset] + imageData.data[offset + 1] + imageData.data[offset + 2]) / 3;
@@ -31,7 +35,7 @@ export default class Colour
             converted[offset + 3] = imageData[offset + 3];
         }
 
-        return new ImageData(converted, imageData.width, imageData.height);
+        return new ImageData(canvas, Object.values(converted), w, h);
     }
 
     /**
@@ -44,7 +48,7 @@ export default class Colour
      * @return ImageData Returns a converted ImageData object
      * @see https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
      */
-    static luminosity(imageData) {
+    static luminosity(canvas, imageData) {
         let pixels = imageData.width * imageData.height;
         let converted = new Uint8ClampedArray(pixels * 4);
 
@@ -57,6 +61,6 @@ export default class Colour
             converted[offset + 3] = imageData.data[offset + 3];
         }
 
-        return new ImageData(converted, imageData.width, imageData.height);
+        return new ImageData(canvas, converted, imageData.width, imageData.height);
     }
 }

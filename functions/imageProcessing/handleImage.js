@@ -1,11 +1,12 @@
 import Canvas, {Image as CanvasImage, Path2D, ImageData} from 'react-native-canvas';
+import metrics from '../../config/metrics';
 
 //A function for getting the image data from a canvas
 
 const handleImage = (canvas) => {
     const context = canvas.getContext('2d');
-    // context.fillStyle = 'purple';
-    // context.fillRect(0, 0, 100, 100);
+    context.fillStyle = 'purple';
+    context.fillRect(0, 0, 100, 100);
 
     context.getImageData(0, 0, 100, 100)
     .then(imageData => {
@@ -23,7 +24,7 @@ const handleImage = (canvas) => {
             height:imageData.height,
             data:imageData.data
         }
-        // console.log(`width:${imageData.width}, height:${imageData.height}`)
+        console.log(`width:${imageData.width}, height:${imageData.height}`)
         // console.log(imgData);
         
         return imgData;

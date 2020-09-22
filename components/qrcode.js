@@ -18,7 +18,8 @@ class QR extends Component{
             linearGradient:['rgb(255,0,0)','rgb(0,255,255)'],
             enableLinearGradient:false,
             quietZone:0,
-            imageSource:require('../assets/logo.png')
+            imageSource:require('../assets/logo.png'),
+            pdfArr:[]
         };
     }
 
@@ -41,6 +42,14 @@ class QR extends Component{
     share = async() => {
         this.svg.toDataURL(async(data) => {
             await Sharing.shareAsync(`data:image/png;base64,${data}`);
+        })
+    }
+
+    addToArray = async() => {
+        this.svg.toDataURL(async(data) => {
+            this.setState({
+                pdfArr:[...pdfArr,`data:image/png;base64,${data}`]
+            })
         })
     }
 

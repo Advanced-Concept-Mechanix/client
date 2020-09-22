@@ -1,3 +1,4 @@
+import Canvas, {Image as CanvasImage, Path2D, ImageData} from 'react-native-canvas';
 /**
  * Image resampling algorithms
  *
@@ -14,13 +15,16 @@ export default class Resample
      * @return ImageData
      * @see http://tech-algorithm.com/articles/nearest-neighbor-image-scaling/
      */
-    static nearestNeighbour(imageData, targetWidth, targetHeight) {
+    static nearestNeighbour(canvas, imageData, targetWidth, targetHeight) {
+        // console.log(`reswidth:${imageData.width}. resheight:${imageData.height}`);
+        // console.log(`width:${targetWidth},${typeof targetWidth}. height:${targetHeight},${typeof targetHeight}`);
         let w = imageData.width,
             h = imageData.height,
             xr = w / targetWidth,
             yr = h / targetHeight,
             ret = new Uint8ClampedArray((targetWidth * targetHeight) * 4);
 
+        // console.log(`w:${w}, h:${h}, xr:${xr}, yr:${yr}`);
         for (let i = 0; i < targetHeight; i++) {
             for (let j = 0; j < targetWidth; j++) {
                 let px = Math.floor(j * xr),
@@ -35,7 +39,7 @@ export default class Resample
             }
         }
 
-        return new ImageData(ret, targetWidth, targetHeight);
+        return new ImageData(canvas, ret, targetWidth, targetHeight);
     }
 
 

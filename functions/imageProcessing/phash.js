@@ -1,4 +1,4 @@
-import array_sum from './array_sum';
+import array_sum from '../array_sum';
 
 const phash = (imgData, size) => {
     var pixels = [];

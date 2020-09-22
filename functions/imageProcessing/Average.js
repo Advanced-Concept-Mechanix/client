@@ -16,19 +16,26 @@ class Average
      * @param ImageData imageData An ImageData object, usually from a <canvas>
      * @return integer
      */
-    static hash(imageData) {
+    static hash(imageData, canvas) {
         let size = Average.size,
             pixelCount = (size * size);
 
+        // console.log(`avgwidth:${imageData.width}. avgheight:${imageData.height}`);
+
         if (imageData.width != size || imageData.size != size) {
-            imageData = Resample.nearestNeighbour(imageData, size, size);
+            // console.log(`Scaling the image`);
+            imageData = Resample.nearestNeighbour(canvas, imageData, size, size);
+            console.log(`new imagedata:${typeof imageData}`);
+            console.log(imageData.data);
         }
 
-        imageData = Colour.grayscale(imageData);
+        imageData = Colour.grayscale(canvas, imageData);
 
         let sum = 0;
         for (let i = 0; i < pixelCount; i++) {
             // already grayscale so just take the first channel
+            console.log(`new imagedata:${typeof imageData}`);
+            console.log(imageData.data);
             sum += imageData.data[4 * i];
         }
 
