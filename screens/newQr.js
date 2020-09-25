@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import {
     Text,
     View,
@@ -10,6 +10,7 @@ import {
     KeyboardAvoidingView,
     FlatList
 } from 'react-native';
+import * as Sharing from 'expo-sharing';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
 import LottieView from 'lottie-react-native';
@@ -23,6 +24,9 @@ import convertNum from '../functions/convertNumToString';
 import addDays from '../functions/addDays';
 import getData from '../functions/getData';
 import QrCode from '../components/qrcode';
+import toPdf from '../functions/pdfConverter';
+import RNImageToPdf from 'react-native-image-to-pdf';
+import metrics from '../config/metrics';
 
 export default function createQr({ route }){
 
@@ -41,6 +45,62 @@ export default function createQr({ route }){
     const[progress, setProgress] = useState(0);
     const[constructionProgress, setConstructionProgress] = useState(0);
     const[construction, setConstruction] = useState(false);
+
+    //qr config
+    const[size, setSize] = useState(200);
+    const[ecl, setEcl] = useState('M');
+    const[color, setColor] = useState('black');
+    const[backgroundColor, setBackgroundColor] = useState('white');
+    const[linearGradient, setLinearGradient] = useState(['rgb(255,0,0)','rgb(0,255,255)']);
+    const[enableLinearGradient, setEnableLinearGradient] = useState(false);
+    const[quietZone, setQuietZone] = useState(0);
+    const[imageSource, setImageSource] = useState(require('../assets/logo.png'));
+    const pdfArr = [];
+
+    //svg ref
+    var svg;
+
+    //function for adding qrcode to array
+    const addToArray = async(dataURL) => {
+        pdfArr.push(`data:image/png;base64,${dataURL}`);
+        console.log(`image added to array!`);
+        //console.log(`pdfArr:${pdfArr}`);
+    }
+
+    //convert the array to a pdf
+    // const convertArrtoPdf = async() => {
+    //     await toPdf(pdfArr)
+    //     .then((pdf) => {
+    //         console.log("pdf ", pdf);
+    //     })
+    // }
+
+    const myAsyncPDFFunction = async () => {
+        try {
+            const options = {
+                imagePaths: pdfArr,
+                name: 'PDFName',
+                maxSize: { // optional maximum image dimension - larger images will be resized
+                    width: 900,
+                    height: Math.round(metrics.DEVICE_HEIGHT / metrics.DEVICE_WIDTH * 900),
+                },
+                quality: .7, // optional compression paramter
+            };
+            const pdf = await RNImageToPdf.createPDFbyImages(options);
+            
+            console.log(pdf.filePath);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    const share = async(dataURL) => {
+        await Sharing.shareAsync(`data:image/png;base64,${dataURL}`);
+    }
+
+    const getDataURL = () => {
+        svg.toDataURL(addToArray);
+    }
 
     const ChangeAnimation = (url) => {
         setLoadingAnimation(url);
@@ -277,9 +337,18 @@ export default function createQr({ route }){
                 data={qrList}
                 ItemSeparatorComponent={ListViewItemSeparator}
                 renderItem={({ item }) =>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={getDataURL}>
                         <View style={{ backgroundColor: 'white', padding: 20 }}>
-                            <QrCode 
+                            <QRCode
+                                size={size}
+                                ecl={ecl}
+                                color={color}
+                                backgroundColor={backgroundColor}
+                                linearGradient={linearGradient}
+                                enableLinearGradient={enableLinearGradient}
+                                quietZone={quietZone}
+                                imageSource={imageSource}
+                                getRef={c => svg=c} 
                                 value={JSON.stringify(item)}
                             />
                         </View>
@@ -294,6 +363,10 @@ export default function createQr({ route }){
                     setSelectedProduct(null);
                 }
                 }
+                />
+                <Mybutton
+                title='Convert to Pdf'
+                customClick={myAsyncPDFFunction}
                 />
             </View>
         );
